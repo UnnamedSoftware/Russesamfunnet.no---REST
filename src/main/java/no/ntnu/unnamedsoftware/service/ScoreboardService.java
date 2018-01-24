@@ -1,8 +1,7 @@
 package no.ntnu.unnamedsoftware.service;
 
-import java.util.List;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -15,10 +14,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.entity.Russ;
-import no.ntnu.unnamedsoftware.entity.School;
+import no.ntnu.unnamedsoftware.entity.Scoreboard;
 
 @Service
-public class RussService {
+public class ScoreboardService {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -26,18 +25,18 @@ public class RussService {
 	@Autowired
 	ObjectMapper mapper;
 	
-	public String getRuss()
+	public String getScoreboard()
 	{
 	String jsonInString = null;
 	Session currentSession = sessionFactory.openSession();
 	
 	Query theQuery = currentSession.
-			createQuery("from Russ s"); 
+			createQuery("from Scoreboard s"); 
 	
-	List<Russ> userInfo = theQuery.list();
+	List<Scoreboard> userInfo = theQuery.list();
 	System.out.println(userInfo.size());
-	Russ r = userInfo.get(0);
-	System.out.println(r.getFirstName() + r.getLastName());
+	Scoreboard r = userInfo.get(0);
+	System.out.println("" + r.getRussId() + r.getPoints());
 	//return JSON
 	
 	//ObjectMapper mapper = new ObjectMapper();
@@ -57,6 +56,5 @@ public class RussService {
 	return jsonInString;
 	
 	}
-	
 
 }

@@ -62,11 +62,11 @@ public class School implements Serializable {
     @OneToMany(mappedBy = "schoolId", fetch=FetchType.LAZY, 
 			   cascade=CascadeType.ALL)
     private List<Russ> russList;
-    */
+    
     @OneToMany(mappedBy = "schoolId", fetch=FetchType.LAZY, 
 			   cascade=CascadeType.ALL)
     private List<Knots> knotsList;
-
+*/
     public School() {
     }
 
@@ -118,11 +118,11 @@ public class School implements Serializable {
     public List<Knots> getKnotsList() {
         return knotsList;
     }
-*/
+
     public void setKnotsList(List<Knots> knotsList) {
         this.knotsList = knotsList;
     }
-
+*/
     @Override
     public int hashCode() {
         int hash = 0;

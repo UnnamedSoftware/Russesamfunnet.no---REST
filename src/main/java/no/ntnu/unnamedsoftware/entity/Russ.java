@@ -78,6 +78,7 @@ public class Russ implements Serializable {
     private String email;
     @Basic(optional = false)
     @NotNull
+    @XmlTransient
     @Size(min = 1, max = 255)
     @Column(name = "russ_password")
     private String russPassword;
@@ -96,11 +97,14 @@ public class Russ implements Serializable {
     @NotNull
     @Column(name = "russ_year")
     private int russYear;
-    @OneToMany(mappedBy = "russId")
-    private List<Feed> feedList;
+    
     @JoinColumn(name = "school_id", referencedColumnName = "school_id")
     @ManyToOne
     private School schoolId;
+    
+    /*
+     * @OneToMany(mappedBy = "russId")
+    private List<Feed> feedList;
     @OneToMany(mappedBy = "russId")
     private List<Completed> completedList;
     @OneToMany(mappedBy = "witnessId1")
@@ -109,6 +113,7 @@ public class Russ implements Serializable {
     private List<Completed> completedList2;
     @OneToMany(mappedBy = "russId")
     private List<Tags> tagsList;
+    */
 
     public Russ() {
     }
@@ -207,7 +212,7 @@ public class Russ implements Serializable {
     public void setRussYear(int russYear) {
         this.russYear = russYear;
     }
-
+/*
     @XmlTransient
     public List<Feed> getFeedList() {
         return feedList;
@@ -216,7 +221,7 @@ public class Russ implements Serializable {
     public void setFeedList(List<Feed> feedList) {
         this.feedList = feedList;
     }
-
+*/
     public School getSchoolId() {
         return schoolId;
     }
@@ -224,7 +229,7 @@ public class Russ implements Serializable {
     public void setSchoolId(School schoolId) {
         this.schoolId = schoolId;
     }
-
+/*
     @XmlTransient
     public List<Completed> getCompletedList() {
         return completedList;
@@ -260,6 +265,7 @@ public class Russ implements Serializable {
     public void setTagsList(List<Tags> tagsList) {
         this.tagsList = tagsList;
     }
+    */
 
     @Override
     public int hashCode() {
