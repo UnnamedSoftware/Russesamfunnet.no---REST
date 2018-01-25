@@ -25,13 +25,13 @@ public class ScoreboardService {
 	@Autowired
 	ObjectMapper mapper;
 	
-	public String getScoreboard()
+	public String getScoreboard(int theRussId)
 	{
 	String jsonInString = null;
 	Session currentSession = sessionFactory.openSession();
 	
 	Query theQuery = currentSession.
-			createQuery("from Scoreboard s"); 
+			createQuery("from Scoreboard s");  
 	
 	List<Scoreboard> userInfo = theQuery.list();
 	System.out.println(userInfo.size());
