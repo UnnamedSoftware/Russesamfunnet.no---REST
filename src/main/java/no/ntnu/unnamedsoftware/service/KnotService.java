@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,6 +21,7 @@ import no.ntnu.unnamedsoftware.DAO.KnotDAO;
 import no.ntnu.unnamedsoftware.entity.Completed;
 import no.ntnu.unnamedsoftware.entity.KnotTemp;
 import no.ntnu.unnamedsoftware.entity.Knots;
+import no.ntnu.unnamedsoftware.entity.Russ;
 import no.ntnu.unnamedsoftware.entity.School;
 
 @Service
@@ -97,6 +99,25 @@ public class KnotService {
 		  catch (JsonMappingException e) { e.printStackTrace();} 
 		  catch (IOException e) { e.printStackTrace();}
 		return mapStringJson;
+	}
+
+	public String registerCompletedKnot(int theRussId, int theKnotId, int witness2, int witness1) {
+		//Dersom det ikke er vinter lag tomme vitneobjekter som kan fylles ut senere
+		//dersom brukeren ønsker det
+		
+		//Hente russ object
+		Russ theRuss = null;  //knotsDAO.getRuss(theRussId);
+		//Hente knute object
+		Knots theKnot = null;
+		//sjekke vitner
+		Russ theWitness1 = null;
+		Russ theWitness2 = null;
+		//legge alt inn i databasen
+		
+		
+		
+		
+		return knotDAO.registerCompletedKnot(theRuss, theKnot, theWitness1, theWitness2); //knotDAO.registerCompletedKnot(theRussId, theKnotId);
 	}
 	
 	/* IDE!
