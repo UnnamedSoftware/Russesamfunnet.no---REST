@@ -289,7 +289,7 @@ public class Russ implements Serializable {
 
     @Override
     public String toString() {
-        return "com.glutenfreesoftware.russesamfunnet.entity.Russ[ russId=" + russId + " ]";
+        return "no.ntnu.unnamedsoftware.entity.Russ[ russId=" + russId + " ]";
     }
     
 }

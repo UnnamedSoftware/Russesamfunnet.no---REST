@@ -145,7 +145,7 @@ public class School implements Serializable {
 
     @Override
     public String toString() {
-        return "com.glutenfreesoftware.russesamfunnet.entity.School[ schoolId=" + schoolId + " ]";
+        return "no.ntnu.unnamedsoftware.entity.School[ schoolId=" + schoolId + " ]";
     }
     
 }
