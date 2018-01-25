@@ -48,16 +48,29 @@ public class Knots implements Serializable {
     @Size(min = 1, max = 500)
     @Column(name = "details")
     private String details;
+    /*
     @OneToMany(mappedBy = "knotId")
     private List<Completed> completedList;
+    */
     @JoinColumn(name = "school_id", referencedColumnName = "school_id")
     @ManyToOne
     private School schoolId;
+    
+    
+    //private String status;
 
     public Knots() {
     }
+/*
+    public String getStatus() {
+		return status;
+	}
 
-    public Knots(Integer knotId) {
+	public void setStatus(String status) {
+		this.status = status;
+	}
+*/
+	public Knots(Integer knotId) {
         this.knotId = knotId;
     }
 
@@ -82,6 +95,7 @@ public class Knots implements Serializable {
         this.details = details;
     }
 
+    /*
     @XmlTransient
     public List<Completed> getCompletedList() {
         return completedList;
@@ -90,6 +104,7 @@ public class Knots implements Serializable {
     public void setCompletedList(List<Completed> completedList) {
         this.completedList = completedList;
     }
+    */
 
     public School getSchoolId() {
         return schoolId;
