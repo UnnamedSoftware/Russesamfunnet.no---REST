@@ -136,7 +136,7 @@ public class Knots implements Serializable {
 
     @Override
     public String toString() {
-        return "com.glutenfreesoftware.russesamfunnet.entity.Knots[ knotId=" + knotId + " ]";
+        return "no.ntnu.unnamedsoftware.entity.Knots[ knotId=" + knotId + " ]";
     }
     
 }

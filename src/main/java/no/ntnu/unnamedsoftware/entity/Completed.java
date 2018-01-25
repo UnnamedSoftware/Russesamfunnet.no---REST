@@ -120,7 +120,7 @@ public class Completed implements Serializable {
 
     @Override
     public String toString() {
-        return "com.glutenfreesoftware.russesamfunnet.entity.Completed[ completedId=" + completedId + " ]";
+        return "no.ntnu.unnamedsoftware.entity.Completed[ completedId=" + completedId + " ]";
     }
     
 }

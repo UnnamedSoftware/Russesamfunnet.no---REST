@@ -98,7 +98,7 @@ public class Tags implements Serializable {
 
     @Override
     public String toString() {
-        return "com.glutenfreesoftware.russesamfunnet.entity.Tags[ tagId=" + tagId + " ]";
+        return "no.ntnu.unnamedsoftware.entity.Tags[ tagId=" + tagId + " ]";
     }
     
 }

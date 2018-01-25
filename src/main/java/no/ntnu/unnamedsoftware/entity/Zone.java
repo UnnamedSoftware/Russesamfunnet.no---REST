@@ -74,7 +74,7 @@ public class Zone implements Serializable {
 
     @Override
     public String toString() {
-        return "com.glutenfreesoftware.russesamfunnet.entity.Zone[ zoneId=" + zoneId + " ]";
+        return "no.ntnu.unnamedsoftware.entity.Zone[ zoneId=" + zoneId + " ]";
     }
     
 }

@@ -157,7 +157,7 @@ public class Feed implements Serializable {
 
     @Override
     public String toString() {
-        return "com.glutenfreesoftware.russesamfunnet.entity.Feed[ feedId=" + feedId + " ]";
+        return "no.ntnu.unnamedsoftware.entity.Feed[ feedId=" + feedId + " ]";
     }
     
 }

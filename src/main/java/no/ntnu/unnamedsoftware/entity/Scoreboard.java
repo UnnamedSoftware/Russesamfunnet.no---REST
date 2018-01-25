@@ -106,7 +106,7 @@ public class Scoreboard implements Serializable {
 
     @Override
     public String toString() {
-        return "com.glutenfreesoftware.russesamfunnet.entity.Scoreboard[ scoreboardId=" + scoreboardId + " ]";
+        return "no.ntnu.unnamedsoftware.entity.Scoreboard[ scoreboardId=" + scoreboardId + " ]";
     }
     
 }
