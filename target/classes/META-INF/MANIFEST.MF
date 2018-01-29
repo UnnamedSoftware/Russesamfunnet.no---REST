@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: Russesamfunnet API
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Hallvard
+Built-By: HallvardPC
 Implementation-Vendor-Id: no.ntnu.unnamedsoftware
 Build-Jdk: 1.8.0_144
 Implementation-URL: http://projects.spring.io/spring-boot/russesamfunn
