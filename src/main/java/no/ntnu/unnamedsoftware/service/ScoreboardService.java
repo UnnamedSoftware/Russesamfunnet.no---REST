@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import no.ntnu.unnamedsoftware.DAO.ScoreboardDAO;
 import no.ntnu.unnamedsoftware.entity.Russ;
 import no.ntnu.unnamedsoftware.entity.Scoreboard;
 
@@ -20,41 +21,11 @@ import no.ntnu.unnamedsoftware.entity.Scoreboard;
 public class ScoreboardService {
 	
 	@Autowired
-	private SessionFactory sessionFactory;
+	ScoreboardDAO scoreboardDAO;
 	
-	@Autowired
-	ObjectMapper mapper;
-	
-	public String getScoreboard()
+	public String getScoreboardTop10(int theRussId)
 	{
-	String jsonInString = null;
-	Session currentSession = sessionFactory.openSession();
-	
-	Query theQuery = currentSession.
-			createQuery("from Scoreboard s"); 
-	
-	List<Scoreboard> userInfo = theQuery.list();
-	System.out.println(userInfo.size());
-	Scoreboard r = userInfo.get(0);
-	System.out.println("" + r.getRussId() + r.getPoints());
-	//return JSON
-	
-	//ObjectMapper mapper = new ObjectMapper();
-	
-	try {
-		jsonInString = mapper.writeValueAsString(userInfo);
-	} catch (JsonGenerationException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (JsonMappingException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	return jsonInString;
-	
+		return scoreboardDAO.getScoreboardTop10(theRussId);
 	}
 
 }

@@ -54,7 +54,7 @@ public class Feed implements Serializable {
     private String zone;
     @Size(max = 255)
     @Column(name = "school_id")
-    private String schoolId;
+    private School schoolId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 500)
@@ -78,7 +78,7 @@ public class Feed implements Serializable {
         this.message = message;
     }
 
-    public Integer getFeedId() {
+    public int getFeedId() {
         return feedId;
     }
 
@@ -102,11 +102,11 @@ public class Feed implements Serializable {
         this.zone = zone;
     }
 
-    public String getSchoolId() {
+    public School getSchoolId() {
         return schoolId;
     }
 
-    public void setSchoolId(String schoolId) {
+    public void setSchoolId(School schoolId) {
         this.schoolId = schoolId;
     }
 

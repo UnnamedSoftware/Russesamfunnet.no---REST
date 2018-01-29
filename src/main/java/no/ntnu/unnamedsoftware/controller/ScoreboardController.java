@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.ntnu.unnamedsoftware.service.RussService;
@@ -17,12 +18,12 @@ public class ScoreboardController {
 	private ScoreboardService scoreboardService;
 	
 	
-	@RequestMapping(value="/scoreboard", produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/scoreboardTop10", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	
-	public String getScoreboard() {
+	public String getScoreboardTop10(@RequestParam int theRussId) {
 		
-		return scoreboardService.getScoreboard();
+		return scoreboardService.getScoreboardTop10(theRussId);
 	}
 
 }
