@@ -18,12 +18,12 @@ public class ScoreboardController {
 	private ScoreboardService scoreboardService;
 	
 	
-	@RequestMapping(value="/scoreboard", produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/scoreboardTop10", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	
-	public String getScoreboard(@RequestParam int theRussId) {
+	public String getScoreboardTop10(@RequestParam int theRussId) {
 		
-		return scoreboardService.getScoreboard(theRussId);
+		return scoreboardService.getScoreboardTop10(theRussId);
 	}
 
 }
