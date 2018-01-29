@@ -32,7 +32,7 @@ public class KnotDAO {
 	public String getKnots(int theSchoolId) {
 		Session currentSession = sessionFactory.openSession();
 		String knotsInJsonString = null;
-		Query knotQuery = currentSession.createQuery("from Knots k where (k.schoolId IS NULL) OR (k.schoolId.schoolId = :test)")
+		Query knotQuery = currentSession.createQuery("from Knots k where k.schoolId.schoolId = :test") //("from Knots k where (k.schoolId IS NULL) OR (k.schoolId.schoolId = :test)")
 				.setParameter("test", theSchoolId);
 		List<Knots> knots = knotQuery.list();
 		try {
@@ -42,6 +42,7 @@ public class KnotDAO {
 		  catch (IOException e) { e.printStackTrace();}
 		return knotsInJsonString;
 	}
+	
 
 	@Transactional
 	public int getSchoolId(int theRussId) {
@@ -60,21 +61,22 @@ public class KnotDAO {
 	}
 	
 	@Transactional
-	public void getCompleted(int theRussId) {
+	public List<Completed> getCompleted(int theRussId) {
 		Session currentSession = sessionFactory.openSession();
 		Query completedQuery = currentSession.createQuery("from Completed c where c.russId.russId = :theRussId")
 				.setParameter("theRussId", theRussId);
 		List<Completed> completed = completedQuery.list();
-		System.out.println(completed.size());
-		for(Completed c: completed) {
-			System.out.println(c.getRussId().getFirstName());
-		}
+		//System.out.println(completed.size());
+		//for(Completed c: completed) {
+		//	System.out.println(c.getRussId().getFirstName());
+		//}
+		return completed;
 	}
 	
 	@Transactional
 	public List<Knots> getKnotsList(int theSchoolId) {
 		Session currentSession = sessionFactory.openSession();
-		Query knotQuery = currentSession.createQuery("from Knots k where (k.schoolId IS NULL) OR (k.schoolId.schoolId = :test)")
+		Query knotQuery = currentSession.createQuery("from Knots k where k.schoolId.schoolId = :test")
 				.setParameter("test", theSchoolId);
 		List<Knots> knots = knotQuery.list();
 		return knots;
@@ -88,6 +90,25 @@ public class KnotDAO {
 		List<Completed> completed = completedQuery.list();
 		return completed;
 	}
+	
+	@Transactional
+	public Russ getRuss(int theRussId) {
+		Session currentSession = sessionFactory.openSession();
+		Query theQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
+				.setParameter("theRussId", theRussId);
+		Russ theRuss = (Russ) theQuery.uniqueResult();
+		return theRuss;
+	}
+	
+	@Transactional
+	public Knots getKnot(int theKnotId) {
+		Session currentSession = sessionFactory.openSession();
+		Query theQuery = currentSession.createQuery("from Knots k where k.knotId = :theKnotId")
+				.setParameter("theKnotId", theKnotId);
+		Knots theKnot = (Knots) theQuery.uniqueResult();
+		return theKnot;
+	}
+	
 
 	@Transactional
 	public String registerCompletedKnot(Russ theRussId, Knots theKnotId, 
@@ -103,6 +124,48 @@ public class KnotDAO {
 		return "OK";
 	}
 	
+	@Transactional
+	public Russ getEmptyWitness() {
+		Russ emptyWitness = new Russ();
+		return emptyWitness;
+	}
+	
+	@Transactional
+	public Completed getCompletedKnot(int theCompletedKnotId) {
+		Session currentSession = sessionFactory.openSession();
+		Query theQuery = currentSession.createQuery("from Completed c where c.completedId = :theCompletedKnotId")
+				.setParameter("theCompletedKnotId", theCompletedKnotId);
+		Completed completedKnot = (Completed) theQuery.uniqueResult();
+		return completedKnot;
+	}
+	
+	@Transactional
+	public String registerWitnessCompletedKnot(int completedKnotId, Russ theWitness) {
+		Session currentSession = sessionFactory.openSession();
+		try {
+			Query theQuery = currentSession.createQuery("from Completed c where c.completedId = :theCompletedKnotId")
+				.setParameter("theCompletedKnotId", completedKnotId);
+			Completed completedKnot = (Completed) theQuery.uniqueResult();
+			Russ witness1 = completedKnot.getWitnessId1();
+			Russ witness2 = completedKnot.getWitnessId2();
+			if(witness1 == null) {
+				System.out.println("witness 1 == null");
+				Query addWitness = currentSession.createSQLQuery("UPDATE completed SET witness_id1 = "+theWitness.getRussId()+" WHERE completed_id = "+completedKnotId);
+				addWitness.executeUpdate();
+				return "OK";
+			}else if(witness2 == null) {
+				Query addWitness = currentSession.createSQLQuery("UPDATE completed SET witness_id2 = "+theWitness.getRussId()+" WHERE completed_id = "+completedKnotId);
+				addWitness.executeUpdate();
+				return "OK";
+			}else {
+				return "Witness already registered for this knot";
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "OK";
+	}
+
 }
 
 

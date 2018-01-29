@@ -24,13 +24,8 @@ public class KnotController {
 	}
 	
 	@RequestMapping(value="/completedKnots", produces=MediaType.APPLICATION_JSON_VALUE)
-	public void getCompleted(@RequestParam("russId") int theRussId){
-		knotService.getCompleted(theRussId);
-	}
-	
-	@RequestMapping(value="/mapTest", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String mapTest(@RequestParam("russId") int theRussId){
-		return knotService.mapTest(theRussId);
+	public String getCompleted(@RequestParam("russId") int theRussId){
+		return knotService.getCompleted(theRussId);
 	}
 	
 	@RequestMapping(value="/getKnotsList", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -54,7 +49,12 @@ public class KnotController {
 		return "Status: OK";  //knotService.getKnotsList(theRussId);
 	}
 	
-	
-	
-	
+	@RequestMapping(value="/registerWitnessCompletedKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String registerCompletedKnot(@RequestParam("completedId") int theCompletedKnotId,
+										@RequestParam("witness") int witness){
+		String registered = null;
+		registered = knotService.registerWitnessCompletedKnot(theCompletedKnotId, witness);
+
+		return registered;
+	}
 }
