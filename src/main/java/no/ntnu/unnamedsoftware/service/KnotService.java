@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,6 +21,7 @@ import no.ntnu.unnamedsoftware.DAO.KnotDAO;
 import no.ntnu.unnamedsoftware.entity.Completed;
 import no.ntnu.unnamedsoftware.entity.KnotTemp;
 import no.ntnu.unnamedsoftware.entity.Knots;
+import no.ntnu.unnamedsoftware.entity.Russ;
 import no.ntnu.unnamedsoftware.entity.School;
 
 @Service
@@ -37,24 +39,15 @@ public class KnotService {
 		return knotDAO.getKnots(theSchoolId);
 	}
 	
-	public void getCompleted(int theRussId) {
-		knotDAO.getCompleted(theRussId);
-	}
-	
-	public String mapTest(int theRussId) {
-		String mapStringJson = null;
-		int theSchoolId = knotDAO.getSchoolId(theRussId);
-		String s1 = knotDAO.getKnots(theSchoolId);
-		String s2 = knotDAO.getKnots(theSchoolId);
-		Map newMap = new HashMap<String, String>();
-		newMap.put(s2, "NotCompleted");
-		newMap.put(s1, "Completed");
+	public String getCompleted(int theRussId) {
+		String completedInJsonString = null;
+		List<Completed> completed = knotDAO.getCompleted(theRussId);
 		try {
-			mapStringJson = mapper.writeValueAsString(newMap);
+			completedInJsonString = mapper.writeValueAsString(completed);
 		} catch (JsonGenerationException e) {e.printStackTrace();} 
 		  catch (JsonMappingException e) { e.printStackTrace();} 
 		  catch (IOException e) { e.printStackTrace();}
-		return mapStringJson;
+		return completedInJsonString;
 	}
 	
 	
@@ -97,6 +90,60 @@ public class KnotService {
 		  catch (JsonMappingException e) { e.printStackTrace();} 
 		  catch (IOException e) { e.printStackTrace();}
 		return mapStringJson;
+	}
+
+	public String registerCompletedKnot(int theRussId, int theKnotId, int witness1, int witness2) {
+		//Dersom det ikke er vitner lag tomme vitneobjekter som kan fylles ut senere
+		//dersom brukeren ønsker det
+		Russ theWitness1 = null;
+		Russ theWitness2 = null;
+		
+		//Hente russ object
+		Russ theRuss = knotDAO.getRuss(theRussId);
+		//Hente knute object
+		Knots theKnot = knotDAO.getKnot(theKnotId);
+		//sjekke vitner
+		if(witness1 == 0) {
+			// vitne1 er ikke lagt til
+			theWitness1 = knotDAO.getEmptyWitness();
+		}else{
+			theWitness1 = knotDAO.getRuss(witness1);
+		}
+		if(witness2 == 0) {
+			// vitne1 er ikke lagt til
+			theWitness2 = knotDAO.getEmptyWitness();
+		}else{
+			theWitness2 = knotDAO.getRuss(witness2);
+		}
+		
+		//legge alt inn i databasen
+		
+		return knotDAO.registerCompletedKnot(theRuss, theKnot, theWitness1, theWitness2); //knotDAO.registerCompletedKnot(theRussId, theKnotId);
+	}
+
+	public String registerWitnessCompletedKnot(int theCompletedKnotId, int witness) {
+		
+		
+		//Completed theCompletedKnot = knotDAO.getCompletedKnot(theCompletedKnotId);
+		Russ theWitness = knotDAO.getRuss(witness);
+		
+		try{
+			//Russ witness1 = theCompletedKnot.getWitnessId1();
+			//Russ witness2 = theCompletedKnot.getWitnessId2();
+			return knotDAO.registerWitnessCompletedKnot(theCompletedKnotId, theWitness);
+			/*
+			if(witness1 == null) {
+				return knotDAO.registerWitness1CompletedKnot(theCompletedKnot, theWitness);
+			}if(witness2 == null) {
+				return knotDAO.registerWitness2CompletedKnot(theCompletedKnot, theWitness);
+			}else {
+				return "Witness already registered for this knot";
+			}*/
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "Something went wrong";
 	}
 	
 	/* IDE!
