@@ -19,7 +19,6 @@ public class LoginController {
 	
 	@RequestMapping(value="/login", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String Login(@RequestParam("email") String email, @RequestParam("password") String password) {
-		System.out.println("Hello");
 		return loginService.Login(email, password);
 	}
 

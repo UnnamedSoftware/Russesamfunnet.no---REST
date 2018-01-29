@@ -29,10 +29,10 @@ public class ScoreboardDAO {
 	ObjectMapper mapper;
 	
 	@Transactional
-	public String getScoreboardTop10(int theRussId) {
+	public List<Scoreboard> getScoreboardTop10(int theRussId) {
 		int theSchoolId = this.getSchoolId(theRussId);
 		Session currentSession = sessionFactory.openSession();
-		String scoreboardInJsonString = null;
+		
 		Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.schoolId.schoolId = :test) ORDER by points desc")
 				.setParameter("test", theSchoolId);
 		List<Scoreboard> scoreboard = scoreboardQuery.list();
@@ -44,13 +44,45 @@ public class ScoreboardDAO {
 			top10.add((Scoreboard) it.next());
 			countTo10 ++;
 		}
-		try {
-			scoreboardInJsonString = mapper.writeValueAsString(top10);
-		} catch (JsonGenerationException e) {e.printStackTrace();} 
-		  catch (JsonMappingException e) { e.printStackTrace();} 
-		  catch (IOException e) { e.printStackTrace();}
-		return scoreboardInJsonString;
+		return top10;
 	}
+		
+	
+	@Transactional
+	public Integer getRussPosition(int theRussId) {
+		int theSchoolId = this.getSchoolId(theRussId);
+		Session currentSession = sessionFactory.openSession();
+		
+		Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.schoolId.schoolId = :schoolId) ORDER by points desc")
+				.setParameter("schoolId", theSchoolId);
+		List<Scoreboard> scoreboard = scoreboardQuery.list();
+		int count = 0;
+		Iterator it = scoreboard.iterator();
+		while(it.hasNext())
+		{
+			Scoreboard tempScoreboard = (Scoreboard) it.next();
+			if(tempScoreboard.getRussId().getRussId() == theRussId)
+			{
+				return count;
+			}
+			count++;
+		}
+		return count;
+		
+	}
+	
+	@Transactional
+	public Scoreboard getScoreboard(int theRussId) {
+		Session currentSession = sessionFactory.openSession();
+		
+		Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.russId = :russId)")
+				.setParameter("russId", theRussId);
+		Scoreboard scoreboard =(Scoreboard) scoreboardQuery.uniqueResult();
+		return scoreboard;
+		
+	}
+	
+
 	
 	
 	@Transactional

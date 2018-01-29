@@ -23,7 +23,7 @@ public class ScoreboardController {
 	
 	public String getScoreboardTop10(@RequestParam int theRussId) {
 		
-		return scoreboardService.getScoreboardTop10(theRussId);
+		return scoreboardService.getScoreboard(theRussId);
 	}
 
 }

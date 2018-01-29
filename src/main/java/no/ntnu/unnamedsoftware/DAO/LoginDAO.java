@@ -34,7 +34,6 @@ public class LoginDAO {
 				.setParameter("email", email);
 	    Russ russ = (Russ) russQuery.uniqueResult();
 		String password = russ.getRussPassword();
-		System.out.println(password);
 		return password;
 	}
 
