@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,26 +36,26 @@ public class Tags implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "tag_id")
-    private Integer tagId;
+    private Long tagId;
     @JoinColumn(name = "feed_id", referencedColumnName = "feed_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Feed feedId;
     @JoinColumn(name = "russ_id", referencedColumnName = "russ_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Russ russId;
 
     public Tags() {
     }
 
-    public Tags(Integer tagId) {
+    public Tags(Long tagId) {
         this.tagId = tagId;
     }
 
-    public Integer getTagId() {
+    public Long getTagId() {
         return tagId;
     }
 
-    public void setTagId(Integer tagId) {
+    public void setTagId(Long tagId) {
         this.tagId = tagId;
     }
 

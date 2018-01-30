@@ -35,7 +35,7 @@ public class KnotService {
 	
 	public String getKnots(int theRussId)
 	{
-		int theSchoolId = knotDAO.getSchoolId(theRussId);
+		Long theSchoolId = knotDAO.getSchoolId(theRussId);
 		return knotDAO.getKnots(theSchoolId);
 	}
 	
@@ -60,7 +60,7 @@ public class KnotService {
 		//Listen som skal gjøres om til JSON
 		List<KnotTemp> listToBeReturned = new ArrayList<KnotTemp>();
 		//Knutene fra denne skolen skal hentes
-		int theSchoolId = knotDAO.getSchoolId(theRussId);
+		Long theSchoolId = knotDAO.getSchoolId(theRussId);
 		allKnots = knotDAO.getKnotsList(theSchoolId);
 		completedList = knotDAO.getCompletedKnots(theRussId);
 		for(Knots k : allKnots) {
@@ -78,10 +78,10 @@ public class KnotService {
 			}
 			if(match) {
 				// KnotTemp object med completed "true"
-				listToBeReturned.add(new KnotTemp(k.getKnotId(), k.getDetails(), theSchoolId, true, theRussId));
+				listToBeReturned.add(new KnotTemp(k.getKnotId(), k.getKnotDetails(), theSchoolId, true, theRussId));
 			} else {
 				// KnotTemp object med completed "false"
-				listToBeReturned.add(new KnotTemp(k.getKnotId(), k.getDetails(), theSchoolId, false, theRussId));
+				listToBeReturned.add(new KnotTemp(k.getKnotId(), k.getKnotDetails(), theSchoolId, false, theRussId));
 			}
 		}
 		try {

@@ -29,7 +29,7 @@ public class KnotDAO {
 	ObjectMapper mapper;
 
 	@Transactional
-	public String getKnots(int theSchoolId) {
+	public String getKnots(Long theSchoolId) {
 		Session currentSession = sessionFactory.openSession();
 		String knotsInJsonString = null;
 		Query knotQuery = currentSession.createQuery("from Knots k where k.schoolId.schoolId = :test") //("from Knots k where (k.schoolId IS NULL) OR (k.schoolId.schoolId = :test)")
@@ -45,7 +45,7 @@ public class KnotDAO {
 	
 
 	@Transactional
-	public int getSchoolId(int theRussId) {
+	public Long getSchoolId(int theRussId) {
 		Session currentSession = sessionFactory.openSession();
 		try{
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
@@ -57,7 +57,7 @@ public class KnotDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return 9001;
+		return (long) 9001;
 	}
 	
 	@Transactional
@@ -74,7 +74,7 @@ public class KnotDAO {
 	}
 	
 	@Transactional
-	public List<Knots> getKnotsList(int theSchoolId) {
+	public List<Knots> getKnotsList(Long theSchoolId) {
 		Session currentSession = sessionFactory.openSession();
 		Query knotQuery = currentSession.createQuery("from Knots k where k.schoolId.schoolId = :test")
 				.setParameter("test", theSchoolId);

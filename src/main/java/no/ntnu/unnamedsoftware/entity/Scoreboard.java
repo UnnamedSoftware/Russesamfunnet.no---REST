@@ -9,7 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,32 +38,32 @@ public class Scoreboard implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "scoreboard_id")
-    private Integer scoreboardId;
+    private Long scoreboardId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "points")
     private int points;
     @JoinColumn(name = "russ_id", referencedColumnName = "russ_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Russ russId;
 
     public Scoreboard() {
     }
 
-    public Scoreboard(Integer scoreboardId) {
+    public Scoreboard(Long scoreboardId) {
         this.scoreboardId = scoreboardId;
     }
 
-    public Scoreboard(Integer scoreboardId, int points) {
+    public Scoreboard(Long scoreboardId, int points) {
         this.scoreboardId = scoreboardId;
         this.points = points;
     }
 
-    public Integer getScoreboardId() {
+    public Long getScoreboardId() {
         return scoreboardId;
     }
 
-    public void setScoreboardId(Integer scoreboardId) {
+    public void setScoreboardId(Long scoreboardId) {
         this.scoreboardId = scoreboardId;
     }
 

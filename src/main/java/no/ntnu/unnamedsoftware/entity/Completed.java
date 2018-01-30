@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,32 +36,32 @@ public class Completed implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "completed_id")
-    private Integer completedId;
+    private Long completedId;
     @JoinColumn(name = "knot_id", referencedColumnName = "knot_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Knots knotId;
     @JoinColumn(name = "russ_id", referencedColumnName = "russ_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Russ russId;
-    @JoinColumn(name = "witness_id1", referencedColumnName = "russ_id")
-    @ManyToOne
-    private Russ witnessId1;
     @JoinColumn(name = "witness_id2", referencedColumnName = "russ_id")
     @ManyToOne
     private Russ witnessId2;
+    @JoinColumn(name = "witness_id1", referencedColumnName = "russ_id")
+    @ManyToOne
+    private Russ witnessId1;
 
     public Completed() {
     }
 
-    public Completed(Integer completedId) {
+    public Completed(Long completedId) {
         this.completedId = completedId;
     }
 
-    public Integer getCompletedId() {
+    public Long getCompletedId() {
         return completedId;
     }
 
-    public void setCompletedId(Integer completedId) {
+    public void setCompletedId(Long completedId) {
         this.completedId = completedId;
     }
 
@@ -82,20 +81,20 @@ public class Completed implements Serializable {
         this.russId = russId;
     }
 
-    public Russ getWitnessId1() {
-        return witnessId1;
-    }
-
-    public void setWitnessId1(Russ witnessId1) {
-        this.witnessId1 = witnessId1;
-    }
-
     public Russ getWitnessId2() {
         return witnessId2;
     }
 
     public void setWitnessId2(Russ witnessId2) {
         this.witnessId2 = witnessId2;
+    }
+
+    public Russ getWitnessId1() {
+        return witnessId1;
+    }
+
+    public void setWitnessId1(Russ witnessId1) {
+        this.witnessId1 = witnessId1;
     }
 
     @Override

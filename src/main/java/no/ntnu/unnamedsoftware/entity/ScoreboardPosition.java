@@ -3,15 +3,15 @@ package no.ntnu.unnamedsoftware.entity;
 public class ScoreboardPosition {
 	
 
-    private Integer scoreboardId;
+    private Long scoreboardId;
     private int points;
     private int position;
 	private Russ russId;
 
 
-    public ScoreboardPosition(Integer scoreboardId, int points, int position, Russ russId) 
+    public ScoreboardPosition(Long long1, int points, int position, Russ russId) 
     {
-        this.scoreboardId = scoreboardId;
+        this.scoreboardId = long1;
         this.points = points;
         this.position = position;
         this.russId = russId;
@@ -25,11 +25,11 @@ public class ScoreboardPosition {
 		this.position = position;
 	}
 
-    public Integer getScoreboardId() {
+    public Long getScoreboardId() {
         return scoreboardId;
     }
 
-    public void setScoreboardId(Integer scoreboardId) {
+    public void setScoreboardId(Long scoreboardId) {
         this.scoreboardId = scoreboardId;
     }
 

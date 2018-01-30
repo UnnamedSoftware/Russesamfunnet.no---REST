@@ -8,6 +8,7 @@ package no.ntnu.unnamedsoftware.entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,8 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Feed.findAll", query = "SELECT f FROM Feed f")
     , @NamedQuery(name = "Feed.findByFeedId", query = "SELECT f FROM Feed f WHERE f.feedId = :feedId")
     , @NamedQuery(name = "Feed.findByType", query = "SELECT f FROM Feed f WHERE f.type = :type")
-    , @NamedQuery(name = "Feed.findByZone", query = "SELECT f FROM Feed f WHERE f.zone = :zone")
-    , @NamedQuery(name = "Feed.findBySchoolId", query = "SELECT f FROM Feed f WHERE f.schoolId = :schoolId")
     , @NamedQuery(name = "Feed.findByMessage", query = "SELECT f FROM Feed f WHERE f.message = :message")})
 public class Feed implements Serializable {
 
@@ -45,44 +44,47 @@ public class Feed implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "feed_id")
-    private Integer feedId;
-    @Size(max = 255)
-    @Column(name = "type")
-    private String type;
-    @Size(max = 255)
-    @Column(name = "zone")
-    private String zone;
-    @Size(max = 255)
-    @Column(name = "school_id")
-    private School schoolId;
+    private Long feedId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 500)
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "type")
+    private String type;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1500)
     @Column(name = "message")
     private String message;
     @JoinColumn(name = "russ_id", referencedColumnName = "russ_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Russ russId;
-    @OneToMany(mappedBy = "feedId")
+    @JoinColumn(name = "school_id", referencedColumnName = "school_id")
+    @ManyToOne
+    private School schoolId;
+    @JoinColumn(name = "zone_id", referencedColumnName = "zone_id")
+    @ManyToOne
+    private Zone zoneId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "feedId")
     private List<Tags> tagsList;
 
     public Feed() {
     }
 
-    public Feed(Integer feedId) {
+    public Feed(Long feedId) {
         this.feedId = feedId;
     }
 
-    public Feed(Integer feedId, String message) {
+    public Feed(Long feedId, String type, String message) {
         this.feedId = feedId;
+        this.type = type;
         this.message = message;
     }
 
-    public int getFeedId() {
+    public Long getFeedId() {
         return feedId;
     }
 
-    public void setFeedId(Integer feedId) {
+    public void setFeedId(Long feedId) {
         this.feedId = feedId;
     }
 
@@ -92,22 +94,6 @@ public class Feed implements Serializable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getZone() {
-        return zone;
-    }
-
-    public void setZone(String zone) {
-        this.zone = zone;
-    }
-
-    public School getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(School schoolId) {
-        this.schoolId = schoolId;
     }
 
     public String getMessage() {
@@ -124,6 +110,22 @@ public class Feed implements Serializable {
 
     public void setRussId(Russ russId) {
         this.russId = russId;
+    }
+
+    public School getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(School schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public Zone getZoneId() {
+        return zoneId;
+    }
+
+    public void setZoneId(Zone zoneId) {
+        this.zoneId = zoneId;
     }
 
     @XmlTransient
@@ -154,7 +156,7 @@ public class Feed implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "no.ntnu.unnamedsoftware.entity.Feed[ feedId=" + feedId + " ]";

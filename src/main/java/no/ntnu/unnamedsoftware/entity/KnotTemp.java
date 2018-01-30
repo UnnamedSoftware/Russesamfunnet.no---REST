@@ -2,25 +2,25 @@ package no.ntnu.unnamedsoftware.entity;
 
 public class KnotTemp {
 	
-	private int knotId;
+	private Long knotId;
 	private String knotDetails;
-	private int schoolId;
+	private Long schoolId;
 	private boolean completed;
 	private int russId;
 	
-	public KnotTemp(int knotId, String knotDetails, int schoolId, boolean completed, int russId) {
-		this.knotId = knotId;
+	public KnotTemp(Long long1, String knotDetails, Long theSchoolId, boolean completed, int russId) {
+		this.knotId = long1;
 		this.knotDetails = knotDetails;
-		this.schoolId = schoolId;
+		this.schoolId = theSchoolId;
 		this.completed = completed;
 		this.russId = russId;
 	}
 
-	public int getKnotId() {
+	public Long getKnotId() {
 		return knotId;
 	}
 
-	public void setKnotId(int knotId) {
+	public void setKnotId(Long knotId) {
 		this.knotId = knotId;
 	}
 
@@ -32,11 +32,11 @@ public class KnotTemp {
 		this.knotDetails = knotDetails;
 	}
 
-	public int getSchoolId() {
+	public Long getSchoolId() {
 		return schoolId;
 	}
 
-	public void setSchoolId(int schoolId) {
+	public void setSchoolId(Long schoolId) {
 		this.schoolId = schoolId;
 	}
 
