@@ -97,11 +97,16 @@ public class Russ implements Serializable {
     @NotNull
     @Column(name = "russ_year")
     private int russYear;
+    
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
     private List<Feed> feedList;
+    */
     @JoinColumn(name = "school_id", referencedColumnName = "school_id")
     @ManyToOne(optional = false)
     private School schoolId;
+    
+    
     
     /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
@@ -115,11 +120,13 @@ public class Russ implements Serializable {
     private List<Completed> completedList2;
     */
     
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
     private List<Scoreboard> scoreboardList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
     private List<Tags> tagsList;
-
+*/ 
+    
     public Russ() {
     }
 
@@ -226,6 +233,7 @@ public class Russ implements Serializable {
         this.russYear = russYear;
     }
 
+    /*
     @XmlTransient
     public List<Feed> getFeedList() {
         return feedList;
@@ -234,6 +242,7 @@ public class Russ implements Serializable {
     public void setFeedList(List<Feed> feedList) {
         this.feedList = feedList;
     }
+    */
 
     public School getSchoolId() {
         return schoolId;
@@ -242,6 +251,7 @@ public class Russ implements Serializable {
     public void setSchoolId(School schoolId) {
         this.schoolId = schoolId;
     }
+    
 /*
     @XmlTransient
     public List<Completed> getCompletedList() {
@@ -270,6 +280,7 @@ public class Russ implements Serializable {
         this.completedList2 = completedList2;
     }
 */
+    /*
     @XmlTransient
     public List<Scoreboard> getScoreboardList() {
         return scoreboardList;
@@ -287,6 +298,7 @@ public class Russ implements Serializable {
     public void setTagsList(List<Tags> tagsList) {
         this.tagsList = tagsList;
     }
+    */
 
     @Override
     public int hashCode() {

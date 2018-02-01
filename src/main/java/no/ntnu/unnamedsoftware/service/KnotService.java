@@ -35,7 +35,9 @@ public class KnotService {
 	
 	public String getKnots(int theRussId)
 	{
+		System.out.println("In Get Knots Service: 1");
 		Long theSchoolId = knotDAO.getSchoolId(theRussId);
+		System.out.println("In Get Knots Service: 2 ->" + theSchoolId);
 		return knotDAO.getKnots(theSchoolId);
 	}
 	
@@ -78,10 +80,10 @@ public class KnotService {
 			}
 			if(match) {
 				// KnotTemp object med completed "true"
-				listToBeReturned.add(new KnotTemp(k.getKnotId(), k.getKnotDetails(), theSchoolId, true, theRussId));
+				listToBeReturned.add(new KnotTemp(k.getKnotId(), k.getKnotName(), k.getKnotDetails(), theSchoolId, true, theRussId));
 			} else {
 				// KnotTemp object med completed "false"
-				listToBeReturned.add(new KnotTemp(k.getKnotId(), k.getKnotDetails(), theSchoolId, false, theRussId));
+				listToBeReturned.add(new KnotTemp(k.getKnotId(), k.getKnotName(), k.getKnotDetails(), theSchoolId, false, theRussId));
 			}
 		}
 		try {
@@ -144,6 +146,23 @@ public class KnotService {
 		}
 		
 		return "Something went wrong";
+	}
+
+	public String getKnot(int theKnotId) {
+		Knots theKnot = knotDAO.getKnot(theKnotId);
+		String knotJSON = makeJSON(theKnot);
+		
+		return knotJSON;
+	}
+	
+	public String makeJSON(Knots theKnot) {
+		String knotString = null;
+		try {
+			knotString = mapper.writeValueAsString(theKnot);
+		} catch (JsonGenerationException e) {e.printStackTrace();} 
+		  catch (JsonMappingException e) { e.printStackTrace();} 
+		  catch (IOException e) { e.printStackTrace();}
+		return knotString;
 	}
 	
 	/* IDE!

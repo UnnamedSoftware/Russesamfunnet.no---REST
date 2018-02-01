@@ -43,9 +43,11 @@ public class Zone implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "zone_datails")
     private String zoneDatails;
+    
+    /*
     @OneToMany(mappedBy = "zoneId")
     private List<Feed> feedList;
-
+*/
     public Zone() {
     }
 
@@ -68,7 +70,7 @@ public class Zone implements Serializable {
     public void setZoneDatails(String zoneDatails) {
         this.zoneDatails = zoneDatails;
     }
-
+/*
     @XmlTransient
     public List<Feed> getFeedList() {
         return feedList;
@@ -77,7 +79,7 @@ public class Zone implements Serializable {
     public void setFeedList(List<Feed> feedList) {
         this.feedList = feedList;
     }
-
+*/
     @Override
     public int hashCode() {
         int hash = 0;

@@ -46,6 +46,7 @@ public class FeedDAO {
 	@Transactional
 	public Long getSchoolId(int theRussId) {
 		Session currentSession = sessionFactory.openSession();
+		Long errorCode = new Long(9001);
 		try{
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
 					.setParameter("theRussId", theRussId);
@@ -56,7 +57,7 @@ public class FeedDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return (long) 9001;
+		return errorCode;
 	}
 
 }

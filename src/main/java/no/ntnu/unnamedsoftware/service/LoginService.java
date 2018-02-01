@@ -23,9 +23,24 @@ public class LoginService {
 	public String Login(String email, String password) {
 		String loginInJsonString = null;
 		String loginSuccess = "false";
+		
+		String passwordInDatabase = null;
+		
+		try {
+			passwordInDatabase = loginDAO.getPassword(email);
+			if(passwordInDatabase == null) {
+				loginSuccess = "false";
+			} else{
+				if (password.equals(loginDAO.getPassword(email))) {
+					loginSuccess = "true";
+				}else{
+					loginSuccess = "false";
+				}
+			}
 
-		if (password.equals(loginDAO.getPassword(email))) {
-			loginSuccess = "true";
+			
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 
 		try {

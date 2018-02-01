@@ -53,13 +53,20 @@ public class School implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "school_status")
     private String schoolStatus;
+    
+    
+    /*
     @OneToMany(mappedBy = "schoolId")
     private List<Feed> feedList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "schoolId")
     private List<Russ> russList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "schoolId")
     private List<Knots> knotsList;
-
+*/
+    
+    
+    
+    
     public School() {
     }
 
@@ -97,6 +104,7 @@ public class School implements Serializable {
         this.schoolStatus = schoolStatus;
     }
 
+    /*
     @XmlTransient
     public List<Feed> getFeedList() {
         return feedList;
@@ -123,6 +131,7 @@ public class School implements Serializable {
     public void setKnotsList(List<Knots> knotsList) {
         this.knotsList = knotsList;
     }
+    */
 
     @Override
     public int hashCode() {

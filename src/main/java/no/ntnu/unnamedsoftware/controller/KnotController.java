@@ -23,6 +23,13 @@ public class KnotController {
 		return knotService.getKnots(theRussId);
 	}
 	
+	@RequestMapping(value="/getKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String getKnot(@RequestParam("knotId") int theKnotId){
+		return knotService.getKnot(theKnotId);
+	}
+	
+	
+	
 	@RequestMapping(value="/completedKnots", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String getCompleted(@RequestParam("russId") int theRussId){
 		return knotService.getCompleted(theRussId);
