@@ -34,7 +34,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "School.findAll", query = "SELECT s FROM School s")
     , @NamedQuery(name = "School.findBySchoolId", query = "SELECT s FROM School s WHERE s.schoolId = :schoolId")
     , @NamedQuery(name = "School.findBySchoolName", query = "SELECT s FROM School s WHERE s.schoolName = :schoolName")
-    , @NamedQuery(name = "School.findBySchoolStatus", query = "SELECT s FROM School s WHERE s.schoolStatus = :schoolStatus")})
+    , @NamedQuery(name = "School.findBySchoolStatus", query = "SELECT s FROM School s WHERE s.schoolStatus = :schoolStatus")
+    , @NamedQuery(name = "School.findBySchoolLocation", query = "SELECT s FROM School s WHERE s.schoolLocation = :schoolLocation")
+    , @NamedQuery(name = "School.findBySchoolMunicipality", query = "SELECT s FROM School s WHERE s.schoolMunicipality = :schoolMunicipality")
+    , @NamedQuery(name = "School.findBySchoolCoordinates", query = "SELECT s FROM School s WHERE s.schoolCoordinates = :schoolCoordinates")})
 public class School implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,6 +56,16 @@ public class School implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "school_status")
     private String schoolStatus;
+    
+    @Size(max = 255)
+    @Column(name = "school_location")
+    private String schoolLocation;
+    @Size(max = 255)
+    @Column(name = "school_municipality")
+    private String schoolMunicipality;
+    @Size(max = 100)
+    @Column(name = "school_coordinates")
+    private String schoolCoordinates;
     
     
     /*
@@ -74,9 +87,12 @@ public class School implements Serializable {
         this.schoolId = schoolId;
     }
 
-    public School(Long schoolId, String schoolName, String schoolStatus) {
+    public School(Long schoolId, String schoolName, String schoolLocation, String schoolMunicipality, String schoolCoordinates, String schoolStatus) {
         this.schoolId = schoolId;
         this.schoolName = schoolName;
+        this.schoolLocation = schoolLocation;
+        this.schoolMunicipality = schoolMunicipality;
+        this.schoolCoordinates = schoolCoordinates;
         this.schoolStatus = schoolStatus;
     }
 
@@ -102,6 +118,30 @@ public class School implements Serializable {
 
     public void setSchoolStatus(String schoolStatus) {
         this.schoolStatus = schoolStatus;
+    }
+    
+    public String getSchoolLocation() {
+        return schoolLocation;
+    }
+
+    public void setSchoolLocation(String schoolLocation) {
+        this.schoolLocation = schoolLocation;
+    }
+
+    public String getSchoolMunicipality() {
+        return schoolMunicipality;
+    }
+
+    public void setSchoolMunicipality(String schoolMunicipality) {
+        this.schoolMunicipality = schoolMunicipality;
+    }
+
+    public String getSchoolCoordinates() {
+        return schoolCoordinates;
+    }
+
+    public void setSchoolCoordinates(String schoolCoordinates) {
+        this.schoolCoordinates = schoolCoordinates;
     }
 
     /*
