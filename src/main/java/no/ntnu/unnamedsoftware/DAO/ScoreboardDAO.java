@@ -74,9 +74,10 @@ public class ScoreboardDAO {
 	@Transactional
 	public Scoreboard getScoreboard(int theRussId) {
 		Session currentSession = sessionFactory.openSession();
+		Long longRussId = new Long(theRussId);
 		
 		Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.russId = :russId)")
-				.setParameter("russId", theRussId);
+				.setParameter("russId", longRussId);
 		Scoreboard scoreboard =(Scoreboard) scoreboardQuery.uniqueResult();
 		return scoreboard;
 		
@@ -89,9 +90,10 @@ public class ScoreboardDAO {
 	public Long getSchoolId(int theRussId) {
 		Session currentSession = sessionFactory.openSession();
 		Long errorCode = new Long(9001);
+		Long longRussId = new Long(theRussId);
 		try{
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", theRussId);
+					.setParameter("theRussId", longRussId);
 			Russ test = (Russ) russQuery.uniqueResult();
 			if(test != null) {
 				return test.getSchoolId().getSchoolId();
