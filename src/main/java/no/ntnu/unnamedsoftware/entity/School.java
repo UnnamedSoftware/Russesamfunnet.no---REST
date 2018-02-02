@@ -11,7 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,7 +34,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "School.findAll", query = "SELECT s FROM School s")
     , @NamedQuery(name = "School.findBySchoolId", query = "SELECT s FROM School s WHERE s.schoolId = :schoolId")
     , @NamedQuery(name = "School.findBySchoolName", query = "SELECT s FROM School s WHERE s.schoolName = :schoolName")
-    , @NamedQuery(name = "School.findBySchoolStatus", query = "SELECT s FROM School s WHERE s.schoolStatus = :schoolStatus")})
+    , @NamedQuery(name = "School.findBySchoolStatus", query = "SELECT s FROM School s WHERE s.schoolStatus = :schoolStatus")
+    , @NamedQuery(name = "School.findBySchoolLocation", query = "SELECT s FROM School s WHERE s.schoolLocation = :schoolLocation")
+    , @NamedQuery(name = "School.findBySchoolMunicipality", query = "SELECT s FROM School s WHERE s.schoolMunicipality = :schoolMunicipality")
+    , @NamedQuery(name = "School.findBySchoolCoordinates", query = "SELECT s FROM School s WHERE s.schoolCoordinates = :schoolCoordinates")})
 public class School implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,48 +45,62 @@ public class School implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "school_id")
-    private Integer schoolId;
-    
+    private Long schoolId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "school_name")
     private String schoolName;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "school_status")
     private String schoolStatus;
     
+    @Size(max = 255)
+    @Column(name = "school_location")
+    private String schoolLocation;
+    @Size(max = 255)
+    @Column(name = "school_municipality")
+    private String schoolMunicipality;
+    @Size(max = 100)
+    @Column(name = "school_coordinates")
+    private String schoolCoordinates;
     
-/*
-    @OneToMany(mappedBy = "schoolId", fetch=FetchType.LAZY, 
-			   cascade=CascadeType.ALL)
+    
+    /*
+    @OneToMany(mappedBy = "schoolId")
+    private List<Feed> feedList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "schoolId")
     private List<Russ> russList;
-    
-    @OneToMany(mappedBy = "schoolId", fetch=FetchType.LAZY, 
-			   cascade=CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "schoolId")
     private List<Knots> knotsList;
 */
+    
+    
+    
+    
     public School() {
     }
 
-    public School(Integer schoolId) {
+    public School(Long schoolId) {
         this.schoolId = schoolId;
     }
 
-    public School(Integer schoolId, String schoolName, String schoolStatus) {
+    public School(Long schoolId, String schoolName, String schoolLocation, String schoolMunicipality, String schoolCoordinates, String schoolStatus) {
         this.schoolId = schoolId;
         this.schoolName = schoolName;
+        this.schoolLocation = schoolLocation;
+        this.schoolMunicipality = schoolMunicipality;
+        this.schoolCoordinates = schoolCoordinates;
         this.schoolStatus = schoolStatus;
     }
 
-    public Integer getSchoolId() {
+    public Long getSchoolId() {
         return schoolId;
     }
 
-    public void setSchoolId(Integer schoolId) {
+    public void setSchoolId(Long schoolId) {
         this.schoolId = schoolId;
     }
 
@@ -103,8 +119,41 @@ public class School implements Serializable {
     public void setSchoolStatus(String schoolStatus) {
         this.schoolStatus = schoolStatus;
     }
+    
+    public String getSchoolLocation() {
+        return schoolLocation;
+    }
+
+    public void setSchoolLocation(String schoolLocation) {
+        this.schoolLocation = schoolLocation;
+    }
+
+    public String getSchoolMunicipality() {
+        return schoolMunicipality;
+    }
+
+    public void setSchoolMunicipality(String schoolMunicipality) {
+        this.schoolMunicipality = schoolMunicipality;
+    }
+
+    public String getSchoolCoordinates() {
+        return schoolCoordinates;
+    }
+
+    public void setSchoolCoordinates(String schoolCoordinates) {
+        this.schoolCoordinates = schoolCoordinates;
+    }
 
     /*
+    @XmlTransient
+    public List<Feed> getFeedList() {
+        return feedList;
+    }
+
+    public void setFeedList(List<Feed> feedList) {
+        this.feedList = feedList;
+    }
+
     @XmlTransient
     public List<Russ> getRussList() {
         return russList;
@@ -122,7 +171,8 @@ public class School implements Serializable {
     public void setKnotsList(List<Knots> knotsList) {
         this.knotsList = knotsList;
     }
-*/
+    */
+
     @Override
     public int hashCode() {
         int hash = 0;

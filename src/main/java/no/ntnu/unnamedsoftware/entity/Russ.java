@@ -8,6 +8,7 @@ package no.ntnu.unnamedsoftware.entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Russ.findByLastName", query = "SELECT r FROM Russ r WHERE r.lastName = :lastName")
     , @NamedQuery(name = "Russ.findByEmail", query = "SELECT r FROM Russ r WHERE r.email = :email")
     , @NamedQuery(name = "Russ.findByRussPassword", query = "SELECT r FROM Russ r WHERE r.russPassword = :russPassword")
+    , @NamedQuery(name = "Russ.findByRussPasswordSalt", query = "SELECT r FROM Russ r WHERE r.russPasswordSalt = :russPasswordSalt")
     , @NamedQuery(name = "Russ.findByProfilePicture", query = "SELECT r FROM Russ r WHERE r.profilePicture = :profilePicture")
     , @NamedQuery(name = "Russ.findByRussCard", query = "SELECT r FROM Russ r WHERE r.russCard = :russCard")
     , @NamedQuery(name = "Russ.findByRussRole", query = "SELECT r FROM Russ r WHERE r.russRole = :russRole")
@@ -50,26 +52,22 @@ public class Russ implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "russ_id")
-    private Integer russId;
-    
+    private Long russId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "russ_status")
     private String russStatus;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "first_name")
     private String firstName;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "last_name")
     private String lastName;
-    
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -78,10 +76,12 @@ public class Russ implements Serializable {
     private String email;
     @Basic(optional = false)
     @NotNull
-    @XmlTransient
     @Size(min = 1, max = 255)
     @Column(name = "russ_password")
     private String russPassword;
+    @Size(max = 255)
+    @Column(name = "russ_password_salt")
+    private String russPasswordSalt;
     @Size(max = 255)
     @Column(name = "profile_picture")
     private String profilePicture;
@@ -98,31 +98,43 @@ public class Russ implements Serializable {
     @Column(name = "russ_year")
     private int russYear;
     
+    /*
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
+    private List<Feed> feedList;
+    */
     @JoinColumn(name = "school_id", referencedColumnName = "school_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private School schoolId;
     
+    
+    
     /*
-     * @OneToMany(mappedBy = "russId")
-    private List<Feed> feedList;
-    @OneToMany(mappedBy = "russId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
     private List<Completed> completedList;
-    @OneToMany(mappedBy = "witnessId1")
-    private List<Completed> completedList1;
+    
     @OneToMany(mappedBy = "witnessId2")
+    private List<Completed> completedList1;
+    
+    
+    @OneToMany(mappedBy = "witnessId1")
     private List<Completed> completedList2;
-    @OneToMany(mappedBy = "russId")
-    private List<Tags> tagsList;
     */
-
+    
+    /*
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
+    private List<Scoreboard> scoreboardList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
+    private List<Tags> tagsList;
+*/ 
+    
     public Russ() {
     }
 
-    public Russ(Integer russId) {
+    public Russ(Long russId) {
         this.russId = russId;
     }
 
-    public Russ(Integer russId, String russStatus, String firstName, String lastName, String email, String russPassword, String russRole, int russYear) {
+    public Russ(Long russId, String russStatus, String firstName, String lastName, String email, String russPassword, String russRole, int russYear) {
         this.russId = russId;
         this.russStatus = russStatus;
         this.firstName = firstName;
@@ -133,11 +145,11 @@ public class Russ implements Serializable {
         this.russYear = russYear;
     }
 
-    public Integer getRussId() {
+    public Long getRussId() {
         return russId;
     }
 
-    public void setRussId(Integer russId) {
+    public void setRussId(Long russId) {
         this.russId = russId;
     }
 
@@ -181,6 +193,14 @@ public class Russ implements Serializable {
         this.russPassword = russPassword;
     }
 
+    public String getRussPasswordSalt() {
+        return russPasswordSalt;
+    }
+
+    public void setRussPasswordSalt(String russPasswordSalt) {
+        this.russPasswordSalt = russPasswordSalt;
+    }
+
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -212,7 +232,8 @@ public class Russ implements Serializable {
     public void setRussYear(int russYear) {
         this.russYear = russYear;
     }
-/*
+
+    /*
     @XmlTransient
     public List<Feed> getFeedList() {
         return feedList;
@@ -221,7 +242,8 @@ public class Russ implements Serializable {
     public void setFeedList(List<Feed> feedList) {
         this.feedList = feedList;
     }
-*/
+    */
+
     public School getSchoolId() {
         return schoolId;
     }
@@ -229,6 +251,7 @@ public class Russ implements Serializable {
     public void setSchoolId(School schoolId) {
         this.schoolId = schoolId;
     }
+    
 /*
     @XmlTransient
     public List<Completed> getCompletedList() {
@@ -255,6 +278,16 @@ public class Russ implements Serializable {
 
     public void setCompletedList2(List<Completed> completedList2) {
         this.completedList2 = completedList2;
+    }
+*/
+    /*
+    @XmlTransient
+    public List<Scoreboard> getScoreboardList() {
+        return scoreboardList;
+    }
+
+    public void setScoreboardList(List<Scoreboard> scoreboardList) {
+        this.scoreboardList = scoreboardList;
     }
 
     @XmlTransient

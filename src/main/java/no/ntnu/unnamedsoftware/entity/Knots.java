@@ -8,6 +8,7 @@ package no.ntnu.unnamedsoftware.entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Knots.findAll", query = "SELECT k FROM Knots k")
     , @NamedQuery(name = "Knots.findByKnotId", query = "SELECT k FROM Knots k WHERE k.knotId = :knotId")
-    , @NamedQuery(name = "Knots.findByDetails", query = "SELECT k FROM Knots k WHERE k.details = :details")})
+    , @NamedQuery(name = "Knots.findByKnotName", query = "SELECT k FROM Knots k WHERE k.knotName = :knotName")
+    , @NamedQuery(name = "Knots.findByKnotDetails", query = "SELECT k FROM Knots k WHERE k.knotDetails = :knotDetails")
+    , @NamedQuery(name = "Knots.findByKnotPicture", query = "SELECT k FROM Knots k WHERE k.knotPicture = :knotPicture")})
 public class Knots implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,60 +45,75 @@ public class Knots implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "knot_id")
-    private Integer knotId;
+    private Long knotId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 500)
-    @Column(name = "details")
-    private String details;
+    @Size(min = 1, max = 255)
+    @Column(name = "knot_name")
+    private String knotName;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1000)
+    @Column(name = "knot_details")
+    private String knotDetails;
+    @Size(max = 255)
+    @Column(name = "knot_picture")
+    private String knotPicture;
+    
     /*
-    @OneToMany(mappedBy = "knotId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "knotId")
     private List<Completed> completedList;
     */
+    
     @JoinColumn(name = "school_id", referencedColumnName = "school_id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private School schoolId;
-    
-    
-    //private String status;
 
     public Knots() {
     }
-/*
-    public String getStatus() {
-		return status;
-	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-*/
-	public Knots(Integer knotId) {
+    public Knots(Long knotId) {
         this.knotId = knotId;
     }
 
-    public Knots(Integer knotId, String details) {
+    public Knots(Long knotId, String knotName, String knotDetails) {
         this.knotId = knotId;
-        this.details = details;
+        this.knotName = knotName;
+        this.knotDetails = knotDetails;
     }
 
-    public Integer getKnotId() {
+    public Long getKnotId() {
         return knotId;
     }
 
-    public void setKnotId(Integer knotId) {
+    public void setKnotId(Long knotId) {
         this.knotId = knotId;
     }
 
-    public String getDetails() {
-        return details;
+    public String getKnotName() {
+        return knotName;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setKnotName(String knotName) {
+        this.knotName = knotName;
     }
 
-    /*
+    public String getKnotDetails() {
+        return knotDetails;
+    }
+
+    public void setKnotDetails(String knotDetails) {
+        this.knotDetails = knotDetails;
+    }
+
+    public String getKnotPicture() {
+        return knotPicture;
+    }
+
+    public void setKnotPicture(String knotPicture) {
+        this.knotPicture = knotPicture;
+    }
+/*
     @XmlTransient
     public List<Completed> getCompletedList() {
         return completedList;
@@ -104,8 +122,7 @@ public class Knots implements Serializable {
     public void setCompletedList(List<Completed> completedList) {
         this.completedList = completedList;
     }
-    */
-
+*/
     public School getSchoolId() {
         return schoolId;
     }

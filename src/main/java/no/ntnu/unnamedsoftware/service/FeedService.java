@@ -15,7 +15,7 @@ public class FeedService {
 	
 	public String getSchoolFeed(int theRussId)
 	{
-		int theSchoolId = feedDAO.getSchoolId(theRussId);
+		Long theSchoolId = feedDAO.getSchoolId(theRussId);
 		return feedDAO.getSchoolFeed(theSchoolId);
 	}
 

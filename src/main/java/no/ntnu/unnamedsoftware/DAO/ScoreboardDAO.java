@@ -30,7 +30,7 @@ public class ScoreboardDAO {
 	
 	@Transactional
 	public List<Scoreboard> getScoreboardTop10(int theRussId) {
-		int theSchoolId = this.getSchoolId(theRussId);
+		Long theSchoolId = this.getSchoolId(theRussId);
 		Session currentSession = sessionFactory.openSession();
 		
 		Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.schoolId.schoolId = :test) ORDER by points desc")
@@ -50,7 +50,7 @@ public class ScoreboardDAO {
 	
 	@Transactional
 	public Integer getRussPosition(int theRussId) {
-		int theSchoolId = this.getSchoolId(theRussId);
+		Long theSchoolId = this.getSchoolId(theRussId);
 		Session currentSession = sessionFactory.openSession();
 		
 		Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.schoolId.schoolId = :schoolId) ORDER by points desc")
@@ -86,8 +86,9 @@ public class ScoreboardDAO {
 	
 	
 	@Transactional
-	public int getSchoolId(int theRussId) {
+	public Long getSchoolId(int theRussId) {
 		Session currentSession = sessionFactory.openSession();
+		Long errorCode = new Long(9001);
 		try{
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
 					.setParameter("theRussId", theRussId);
@@ -98,7 +99,7 @@ public class ScoreboardDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return 9001;
+		return errorCode;
 	}
 
 }
