@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import no.ntnu.unnamedsoftware.DAO.RussDAO;
 import no.ntnu.unnamedsoftware.entity.Russ;
 import no.ntnu.unnamedsoftware.entity.School;
 
@@ -21,41 +22,37 @@ import no.ntnu.unnamedsoftware.entity.School;
 public class RussService {
 	
 	@Autowired
-	private SessionFactory sessionFactory;
+	RussDAO russDAO;
 	
 	@Autowired
 	ObjectMapper mapper;
 	
 	public String getRuss()
 	{
-	String jsonInString = null;
-	Session currentSession = sessionFactory.openSession();
-	
-	Query theQuery = currentSession.
-			createQuery("from Russ s"); 
-	
-	List<Russ> userInfo = theQuery.list();
-	System.out.println(userInfo.size());
-	Russ r = userInfo.get(0);
-	System.out.println(r.getFirstName() + r.getLastName());
-	//return JSON
-	
-	//ObjectMapper mapper = new ObjectMapper();
-	
-	try {
-		jsonInString = mapper.writeValueAsString(userInfo);
-	} catch (JsonGenerationException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (JsonMappingException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		List<Russ> russ = russDAO.getRuss();
+		return this.writeAsJsonString(russ);
+		
 	}
-	return jsonInString;
 	
+	public String getUserRuss(int theRussId)
+	{
+		List<Russ> russ = new ArrayList<Russ>();
+		russ.add(russDAO.getUserRuss(theRussId));
+		return this.writeAsJsonString(russ);
+	}
+	
+	private String writeAsJsonString(List<Russ> object) {
+		String objectInJsonString = null;
+		try {
+			objectInJsonString = mapper.writeValueAsString(object);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return objectInJsonString;
 	}
 	
 
