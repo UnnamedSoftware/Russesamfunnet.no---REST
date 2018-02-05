@@ -64,8 +64,6 @@ public class Feed implements Serializable {
     @JoinColumn(name = "zone_id", referencedColumnName = "zone_id")
     @ManyToOne
     private Zone zoneId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "feedId")
-    private List<Tags> tagsList;
 
     public Feed() {
     }
@@ -128,14 +126,6 @@ public class Feed implements Serializable {
         this.zoneId = zoneId;
     }
 
-    @XmlTransient
-    public List<Tags> getTagsList() {
-        return tagsList;
-    }
-
-    public void setTagsList(List<Tags> tagsList) {
-        this.tagsList = tagsList;
-    }
 
     @Override
     public int hashCode() {

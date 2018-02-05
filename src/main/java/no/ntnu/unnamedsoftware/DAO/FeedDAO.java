@@ -28,18 +28,14 @@ public class FeedDAO {
 	ObjectMapper mapper;
 	
 	@Transactional
-	public String getSchoolFeed(Long theSchoolId) {
+	public List<Feed> getSchoolFeed(int theRussId) {
+		Long theSchoolId = this.getSchoolId(theRussId);
 		Session currentSession = sessionFactory.openSession();
-		String feedInJsonString = null;
-		Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :test)")
-				.setParameter("test", theSchoolId);
+		Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :schoolId)")
+				.setParameter("schoolId", theSchoolId);
 		List<Feed> feed = feedQuery.list();
-		try {
-			feedInJsonString = mapper.writeValueAsString(feed);
-		} catch (JsonGenerationException e) {e.printStackTrace();} 
-		  catch (JsonMappingException e) { e.printStackTrace();} 
-		  catch (IOException e) { e.printStackTrace();}
-		return feedInJsonString;
+		if(feed == null) System.out.println("DEADBEEF");
+		return feed;
 	}
 	
 	
@@ -47,9 +43,10 @@ public class FeedDAO {
 	public Long getSchoolId(int theRussId) {
 		Session currentSession = sessionFactory.openSession();
 		Long errorCode = new Long(9001);
+		Long longRussId = new Long(theRussId);
 		try{
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", theRussId);
+					.setParameter("theRussId", longRussId);
 			Russ test = (Russ) russQuery.uniqueResult();
 			if(test != null) {
 				return test.getSchoolId().getSchoolId();
