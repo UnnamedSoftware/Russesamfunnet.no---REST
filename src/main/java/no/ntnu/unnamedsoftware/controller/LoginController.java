@@ -21,5 +21,10 @@ public class LoginController {
 	public String Login(@RequestParam("email") String email, @RequestParam("password") String password) {
 		return loginService.Login(email, password);
 	}
+	
+	@RequestMapping(value="/facebookLogin", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String Login(@RequestParam("accessToken") String accessToken) {
+		return loginService.facebookLogin(accessToken);
+	}
 
 }
