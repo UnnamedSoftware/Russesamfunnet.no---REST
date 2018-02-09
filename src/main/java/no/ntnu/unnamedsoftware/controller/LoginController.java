@@ -23,7 +23,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="/facebookLogin", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String Login(@RequestParam("accessToken") String accessToken) {
+	public String facebookLogin(@RequestParam("accessToken") String accessToken) {
 		return loginService.facebookLogin(accessToken);
 	}
 
