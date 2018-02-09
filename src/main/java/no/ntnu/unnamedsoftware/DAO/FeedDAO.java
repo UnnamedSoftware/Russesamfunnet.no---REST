@@ -35,6 +35,7 @@ public class FeedDAO {
 				.setParameter("schoolId", theSchoolId);
 		List<Feed> feed = feedQuery.list();
 		if(feed == null) System.out.println("DEADBEEF");
+		currentSession.close();
 		return feed;
 	}
 	
@@ -54,6 +55,7 @@ public class FeedDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		currentSession.close();
 		return errorCode;
 	}
 

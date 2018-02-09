@@ -44,7 +44,7 @@ public class LoginDAO {
 		}catch(Exception e) {
 			e.getStackTrace();
 		}
-		
+		currentSession.close();
 		return password;
 	}
 	
@@ -64,7 +64,7 @@ public class LoginDAO {
 		}catch(Exception e) {
 			e.getStackTrace();
 		}
-		
+		currentSession.close();
 		return dbUserId;
 	}
 

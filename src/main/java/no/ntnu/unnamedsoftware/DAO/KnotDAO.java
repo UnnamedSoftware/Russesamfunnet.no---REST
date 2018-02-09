@@ -42,6 +42,7 @@ public class KnotDAO {
 		} catch (JsonGenerationException e) {e.printStackTrace();} 
 		  catch (JsonMappingException e) { e.printStackTrace();} 
 		  catch (IOException e) { e.printStackTrace();}
+		currentSession.close();
 		return knotsInJsonString;
 	}
 	
@@ -69,6 +70,7 @@ public class KnotDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		currentSession.close();
 		return errorCode;
 	}
 	
@@ -83,6 +85,7 @@ public class KnotDAO {
 		//for(Completed c: completed) {
 		//	System.out.println(c.getRussId().getFirstName());
 		//}
+		currentSession.close();
 		return completed;
 	}
 	
@@ -93,6 +96,7 @@ public class KnotDAO {
 		Query knotQuery = currentSession.createQuery("from Knots k where k.schoolId.schoolId = :test")
 				.setParameter("test", schoolId);
 		List<Knots> knots = knotQuery.list();
+		currentSession.close();
 		return knots;
 	}
 	
@@ -103,6 +107,7 @@ public class KnotDAO {
 		Query completedQuery = currentSession.createQuery("from Completed c where c.russId.russId = :theRussId")
 				.setParameter("theRussId", russId);
 		List<Completed> completed = completedQuery.list();
+		currentSession.close();
 		return completed;
 	}
 	
@@ -113,6 +118,7 @@ public class KnotDAO {
 		Query theQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
 				.setParameter("theRussId", russId);
 		Russ theRuss = (Russ) theQuery.uniqueResult();
+		currentSession.close();
 		return theRuss;
 	}
 	
@@ -123,6 +129,7 @@ public class KnotDAO {
 		Query theQuery = currentSession.createQuery("from Knots k where k.knotId = :theKnotId")
 				.setParameter("theKnotId", knotId);
 		Knots theKnot = (Knots) theQuery.uniqueResult();
+		currentSession.close();
 		return theKnot;
 	}
 	
@@ -137,13 +144,14 @@ public class KnotDAO {
 	    newCompleted.setWitnessId1(theWitnessId1);
 	    newCompleted.setWitnessId2(theWitnessId2);
 	    currentSession.save(newCompleted);
-		
+	    currentSession.close();
 		return "OK";
 	}
 	
 	@Transactional
 	public Russ getEmptyWitness() {
 		Russ emptyWitness = new Russ();
+		
 		return emptyWitness;
 	}
 	
@@ -153,6 +161,7 @@ public class KnotDAO {
 		Query theQuery = currentSession.createQuery("from Completed c where c.completedId = :theCompletedKnotId")
 				.setParameter("theCompletedKnotId", theCompletedKnotId);
 		Completed completedKnot = (Completed) theQuery.uniqueResult();
+		currentSession.close();
 		return completedKnot;
 	}
 	
@@ -170,17 +179,21 @@ public class KnotDAO {
 				System.out.println("witness 1 == null");
 				Query addWitness = currentSession.createSQLQuery("UPDATE completed SET witness_id1 = "+theWitness.getRussId()+" WHERE completed_id = "+completedKnotId);
 				addWitness.executeUpdate();
+				currentSession.close();
 				return "OK 1";
 			}else if(witness2 == null) {
 				Query addWitness = currentSession.createSQLQuery("UPDATE completed SET witness_id2 = "+theWitness.getRussId()+" WHERE completed_id = "+completedKnotId);
 				addWitness.executeUpdate();
+				currentSession.close();
 				return "OK 2";
 			}else {
+				currentSession.close();
 				return "Eror: Witness already registered for this knot";
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		currentSession.close();
 		return "Error: Something went wrong";
 	}
 
