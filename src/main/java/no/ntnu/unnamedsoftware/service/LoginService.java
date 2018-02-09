@@ -19,12 +19,18 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.LoginDAO;
+import no.ntnu.unnamedsoftware.DAO.RussDAO;
+import no.ntnu.unnamedsoftware.entity.LoginStatus;
+import no.ntnu.unnamedsoftware.entity.Russ;
 
 @Service
 public class LoginService {
 
 	@Autowired
 	LoginDAO loginDAO;
+	
+	@Autowired
+	RussDAO russDAO;
 
 	@Autowired
 	ObjectMapper mapper;
@@ -50,14 +56,14 @@ public class LoginService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return getJsonString(loginSuccess);
+		return loginSuccess;
 
 	}
 
-	public String getJsonString(String loginSuccess) {
-		String loginInJsonString = null;
+	public String getJsonString(Object object) {
+		String objectInJsonString = null;
 		try {
-			loginInJsonString = mapper.writeValueAsString(loginSuccess);
+			objectInJsonString = mapper.writeValueAsString(object);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -65,16 +71,16 @@ public class LoginService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return loginInJsonString;
+		return objectInJsonString;
 	}
-
+	
 	public String facebookLogin(String accessToken) {
-		String loginSuccess = "false";
 
-		Boolean userIdInDatabase = null;
 		String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
 		String appID = "291199641408779";
 		String app_id = null;
+		Boolean userIsInDb = false;
+		JSONObject jsonObject = new JSONObject();
 		try {
 			String url ="https://graph.facebook.com/debug_token?input_token="+accessToken+"&access_token="+appToken;
 			System.out.println(accessToken);
@@ -87,19 +93,20 @@ public class LoginService {
 			String userId = jsonObj2.getString("user_id");
 			app_id = jsonObj2.getString("app_id");
 			System.out.println(userId);
-			userIdInDatabase = loginDAO.checkUser(userId);
+			userIsInDb = loginDAO.checkUser(userId);
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (app_id.equals(appID) && userIdInDatabase == false) {
+		if (app_id.equals(appID) && userIsInDb == false) {
 			//createUser();
-			return getJsonString("true");
+			return getJsonString(new LoginStatus("User not in db"));
 		} else if(app_id.equals(appID)){
-			
-			return getJsonString("true");
+			return getJsonString(new LoginStatus("Login success"));
 			
 		}else {
-			return getJsonString("false");
+			return getJsonString(new LoginStatus("Wrong appToken"));
 		}
 
 	}
