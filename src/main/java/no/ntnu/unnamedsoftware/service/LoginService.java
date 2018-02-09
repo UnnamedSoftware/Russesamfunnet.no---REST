@@ -8,6 +8,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
+import javax.net.ssl.HttpsURLConnection;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,20 +72,33 @@ public class LoginService {
 		String loginSuccess = "false";
 
 		Boolean userIdInDatabase = null;
-		String userId = null;
 		String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
+		String appID = "291199641408779";
+		String app_id = null;
 		try {
-			String url ="http://graph.facebook.com/debug_token?input_token=" + accessToken + "&access_token=" + appToken;
+			String url ="https://graph.facebook.com/debug_token?input_token="+accessToken+"&access_token="+appToken;
 			System.out.println(accessToken);
 			String JSONString = this.uRLConnectionReader(url);
 			
+			JSONObject jsonObj = new JSONObject(JSONString);
+			System.out.println("WTF?");
+			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
+			System.out.println("WTF?");
+			String userId = jsonObj2.getString("user_id");
+			app_id = jsonObj2.getString("app_id");
+			System.out.println(userId);
 			userIdInDatabase = loginDAO.checkUser(userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (userIdInDatabase == true) {
+		if (app_id.equals(appID) && userIdInDatabase == false) {
+			//createUser();
 			return getJsonString("true");
-		} else {
+		} else if(app_id.equals(appID)){
+			
+			return getJsonString("true");
+			
+		}else {
 			return getJsonString("false");
 		}
 
@@ -91,8 +107,16 @@ public class LoginService {
 	public String uRLConnectionReader(String urlString) {
 		try {
 			System.out.println(urlString);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection) (new URL(urlString)).openConnection()).getInputStream(), Charset.forName("UTF-8")));
-            StringBuilder results = new StringBuilder();
+			HttpsURLConnection con = (HttpsURLConnection) new URL(urlString).openConnection();
+			con.setRequestMethod("GET");
+			con.setDoOutput(true);
+			con.connect();
+			System.out.println("connection");
+			InputStreamReader inputStream = new InputStreamReader(con.getInputStream());
+			System.out.println("Stream reader");
+			BufferedReader reader = new BufferedReader(inputStream);
+			System.out.println("Buffered reader");
+			StringBuilder results = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 results.append(line);
