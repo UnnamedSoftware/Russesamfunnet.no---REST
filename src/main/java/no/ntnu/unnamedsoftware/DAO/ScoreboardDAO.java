@@ -44,6 +44,7 @@ public class ScoreboardDAO {
 			top10.add((Scoreboard) it.next());
 			countTo10 ++;
 		}
+		currentSession.close();
 		return top10;
 	}
 		
@@ -63,10 +64,12 @@ public class ScoreboardDAO {
 			Scoreboard tempScoreboard = (Scoreboard) it.next();
 			if(tempScoreboard.getRussId().getRussId() == theRussId)
 			{
+				currentSession.close();
 				return count;
 			}
 			count++;
 		}
+		currentSession.close();
 		return count;
 		
 	}
@@ -79,6 +82,7 @@ public class ScoreboardDAO {
 		Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.russId = :russId)")
 				.setParameter("russId", longRussId);
 		Scoreboard scoreboard =(Scoreboard) scoreboardQuery.uniqueResult();
+		currentSession.close();
 		return scoreboard;
 		
 	}
@@ -96,11 +100,13 @@ public class ScoreboardDAO {
 					.setParameter("theRussId", longRussId);
 			Russ test = (Russ) russQuery.uniqueResult();
 			if(test != null) {
+				currentSession.close();
 				return test.getSchoolId().getSchoolId();
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		currentSession.close();
 		return errorCode;
 	}
 

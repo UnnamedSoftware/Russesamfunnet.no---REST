@@ -26,6 +26,7 @@ public class RussDAO {
 			createQuery("from Russ r"); 
 	
 	List<Russ> userInfo = theQuery.list();;
+	currentSession.close();
 	return userInfo;
 	//return JSON
 	}
@@ -38,6 +39,7 @@ public class RussDAO {
 		Query russQuery = currentSession.createQuery("from Russ r where (r.russId = :russId)")
 				.setParameter("russId", russId);
 		Russ russ = (Russ) russQuery.uniqueResult();
+		currentSession.close();
 		return russ;
 	}
 
