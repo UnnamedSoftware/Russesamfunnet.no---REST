@@ -70,7 +70,7 @@ public class RegisterService {
 				ageRange = jsonObject4.getInt("min");
 				System.out.println(ageRange);
 				
-				if (app_id.equals(appID) && ageRange < 17) {
+				if (app_id.equals(appID) && ageRange >= 17) {
 					return registerDAO.registerUser(userId, schoolId, firstName, lastName);
 				} else {
 					if(ageRange < 17)
