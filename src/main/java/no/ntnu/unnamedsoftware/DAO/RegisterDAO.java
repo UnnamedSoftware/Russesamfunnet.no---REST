@@ -21,7 +21,7 @@ public class RegisterDAO {
 	@Autowired
 	ObjectMapper mapper;
 	@Transactional
-	public String registerUser(String userId, String birthdate, String schoolId, String firstName, String lastName)
+	public String registerUser(String userId, String schoolId, String firstName, String lastName)
 	{
 		System.out.println("Success");
 		School school = this.getSchool(schoolId);
@@ -38,6 +38,7 @@ public class RegisterDAO {
 		russ.setLastName(lastName);
 		russ.setRussRole("Russ");
 		russ.setRussStatus("false");
+		
 		currentSession.save(russ);
 	//	currentSession.getTransaction().commit();
 		currentSession.close();

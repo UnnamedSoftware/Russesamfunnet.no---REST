@@ -10,6 +10,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.facebook.api.AgeRange;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class RegisterService {
 	@Autowired
 	RegisterDAO registerDAO;
 	
-	public String facebookRegister(String accessToken, String birthdate, String schoolId) {
+	public String facebookRegister(String accessToken,String birthdate, String schoolId) {
 
 			String userId;
 			String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
@@ -39,6 +40,10 @@ public class RegisterService {
 			String app_id = null;
 			String firstName = null;
 			String lastName = null;
+			String birthday = "";
+			JSONObject jsonObject4 = null;
+			int ageRange;
+			
 
 			JSONObject jsonObject = new JSONObject();
 			try {
@@ -53,23 +58,33 @@ public class RegisterService {
 				System.out.println(userId);
 				app_id = jsonObj2.getString("app_id");
 				System.out.println(app_id);
-				String newUrl = "https://graph.facebook.com/me?fields=id,first_name,last_name&access_token=" + accessToken;
+				String newUrl = "https://graph.facebook.com/me?fields=id,first_name,last_name,age_range&access_token=" + accessToken;
 				JSONObject jsonObj3 = new JSONObject(this.uRLConnectionReader(newUrl));
 				firstName = jsonObj3.getString("first_name");
 				lastName = jsonObj3.getString("last_name");
-
+				//Supposed to get birthday from facebook, this is temporary
+				birthday = birthdate;
 				System.out.println(firstName);
 				System.out.println(lastName);
-
-				if (app_id.equals(appID)) {
-					return registerDAO.registerUser(userId, birthdate, schoolId, firstName, lastName);
+				jsonObject4 = jsonObj3.getJSONObject("age_range");
+				ageRange = jsonObject4.getInt("min");
+				System.out.println(ageRange);
+				
+				if (app_id.equals(appID) && ageRange < 17) {
+					return registerDAO.registerUser(userId, schoolId, firstName, lastName);
 				} else {
+					if(ageRange < 17)
+					{
+						return "User is younger than 17";
+					}else {
+						
 					System.out.println("Access token appId is not the same as application appId");
 					System.out.println("Application appId");
 					System.out.println(appID);
 					System.out.println("Access token appId");
 					System.out.println(app_id);
 					return "Must log in through the facebook button in the app.";
+					}
 				}
 
 			} catch (Exception e) {
