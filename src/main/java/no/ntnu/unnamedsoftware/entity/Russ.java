@@ -70,12 +70,10 @@ public class Russ implements Serializable {
     private String lastName;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "email")
     private String email;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "russ_password")
     private String russPassword;
@@ -94,7 +92,6 @@ public class Russ implements Serializable {
     @Column(name = "russ_role")
     private String russRole;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "russ_year")
     private int russYear;
     

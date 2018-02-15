@@ -20,7 +20,7 @@ public class RegisterDAO {
 	
 	@Autowired
 	ObjectMapper mapper;
-	
+	@Transactional
 	public String registerUser(String userId, String birthdate, String schoolId, String firstName, String lastName)
 	{
 		System.out.println("Success");
@@ -31,13 +31,15 @@ public class RegisterDAO {
 		}
 		Session currentSession = sessionFactory.openSession();
 		Russ russ = new Russ();
-		russ.setRussId(new Long(userId));
+	//	russ.setRussId(new Long(userId));
 		System.out.println(russ.getRussId());
 		russ.setSchoolId(school);
 		russ.setFirstName(firstName);
 		russ.setLastName(lastName);
+		russ.setRussRole("Russ");
+		russ.setRussStatus("false");
 		currentSession.save(russ);
-		currentSession.getTransaction().commit();
+	//	currentSession.getTransaction().commit();
 		currentSession.close();
 				
 		

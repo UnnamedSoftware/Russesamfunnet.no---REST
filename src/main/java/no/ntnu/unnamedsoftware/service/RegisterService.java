@@ -9,6 +9,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.facebook.api.Facebook;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -19,6 +21,10 @@ import no.ntnu.unnamedsoftware.DAO.RegisterDAO;
 
 @Service
 public class RegisterService {
+	
+	private Facebook facebook;
+    private ConnectionRepository connectionRepository;
+	
 	@Autowired
 	ObjectMapper mapper;
 	
@@ -26,53 +32,52 @@ public class RegisterService {
 	RegisterDAO registerDAO;
 	
 	public String facebookRegister(String accessToken, String birthdate, String schoolId) {
-		
-		String userId;
-		String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
-		String appID = "291199641408779";
-		String app_id = null;
-		String firstName = null;
-		String lastName = null;
 
-		JSONObject jsonObject = new JSONObject();
-		try {
-			String url ="https://graph.facebook.com/debug_token?input_token="+accessToken+"&access_token="+appToken;
-			System.out.println(accessToken);
-			String JSONString = this.uRLConnectionReader(url);
-			
-			JSONObject jsonObj = new JSONObject(JSONString);
-			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
-			userId = jsonObj2.getString("user_id");
-			System.out.println(userId);
-			app_id = jsonObj2.getString("app_id");
-			System.out.println(app_id);
-			String newUrl = "https://graph.facebook.com/me?fields=id,first_name,last_name";
-			
-			JSONObject jsonObj3 = new JSONObject(this.uRLConnectionReader(url));
-			firstName = jsonObj3.getString("first_name");
-			lastName = jsonObj3.getString("last_name");
-			
-			
-			if(app_id.equals(appID))
-			{
-				return registerDAO.registerUser(userId, birthdate, schoolId, firstName, lastName);
-			}else
-			{
-				System.out.println("Access token appId is not the same as application appId");
-				System.out.println("Application appId");
-				System.out.println(appID);
-				System.out.println("Access token appId");
+			String userId;
+			String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
+			String appID = "291199641408779";
+			String app_id = null;
+			String firstName = null;
+			String lastName = null;
+
+			JSONObject jsonObject = new JSONObject();
+			try {
+				String url = "https://graph.facebook.com/debug_token?input_token=" + accessToken + "&access_token="
+						+ appToken;
+				System.out.println(accessToken);
+				String JSONString = this.uRLConnectionReader(url);
+
+				JSONObject jsonObj = new JSONObject(JSONString);
+				JSONObject jsonObj2 = jsonObj.getJSONObject("data");
+				userId = jsonObj2.getString("user_id");
+				System.out.println(userId);
+				app_id = jsonObj2.getString("app_id");
 				System.out.println(app_id);
-				return "Must log in through the facebook button in the app.";
-			}
+				String newUrl = "https://graph.facebook.com/me?fields=id,first_name,last_name&access_token=" + accessToken;
+				JSONObject jsonObj3 = new JSONObject(this.uRLConnectionReader(newUrl));
+				firstName = jsonObj3.getString("first_name");
+				lastName = jsonObj3.getString("last_name");
+
+				System.out.println(firstName);
+				System.out.println(lastName);
+
+				if (app_id.equals(appID)) {
+					return registerDAO.registerUser(userId, birthdate, schoolId, firstName, lastName);
+				} else {
+					System.out.println("Access token appId is not the same as application appId");
+					System.out.println("Application appId");
+					System.out.println(appID);
+					System.out.println("Access token appId");
+					System.out.println(app_id);
+					return "Must log in through the facebook button in the app.";
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return e.getStackTrace().toString();
 			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return e.getStackTrace().toString();
 		}
-		
-		
+
 	}
 	
 	
