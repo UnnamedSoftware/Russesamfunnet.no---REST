@@ -40,7 +40,7 @@ public class SchoolDAO {
 		String jsonInString = null;
 		Session currentSession = sessionFactory.openSession();
 		
-		Query theQuery = currentSession.createQuery("from School s where s.municipality = :municipality")
+		Query theQuery = currentSession.createQuery("from School s where s.schoolMunicipality = :municipality")
 				.setParameter("municipality", municipality);
 		
 		List<School> schoolList = theQuery.list();
