@@ -62,7 +62,7 @@ public class RegisterService {
 				JSONObject jsonObj3 = new JSONObject(this.uRLConnectionReader(newUrl));
 				firstName = jsonObj3.getString("first_name");
 				lastName = jsonObj3.getString("last_name");
-				//Supposed to get birthday from facebook, this is temporary
+				//This is temporary, supposed to get birthday from facebook
 				birthday = birthdate;
 				System.out.println(firstName);
 				System.out.println(lastName);

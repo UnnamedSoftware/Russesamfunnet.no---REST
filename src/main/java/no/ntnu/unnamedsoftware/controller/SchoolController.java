@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,10 +31,17 @@ public class SchoolController {
 	private SchoolService schoolService;
 	
 
-	@RequestMapping(value="/schools", produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/getAllSchools", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
-	public String getSchools() {
-		return schoolService.getSchool();
+	public String getAllSchools() {
+		return schoolService.getAllSchools();
+		
+	}
+	
+	@RequestMapping(value="/getSchools", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getSchools(@RequestParam String municipality, @RequestParam String location) {
+		return schoolService.getSchools(municipality, location);
 		
 	}
 	
