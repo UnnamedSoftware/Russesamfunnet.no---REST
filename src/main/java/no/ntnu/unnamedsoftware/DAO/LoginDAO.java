@@ -32,7 +32,7 @@ public class LoginDAO {
 		//String passwordInJsonString = null;
 		String password = null;
 		try {
-			Query russQuery = currentSession.createQuery("from Russ r where (r.email = :email)")
+			Query russQuery = currentSession.createQuery("from Russ r where r.email =:email")
 					.setParameter("email", email);
 		    Russ russ = (Russ) russQuery.uniqueResult();
 		    if(russ != null) {
