@@ -38,10 +38,17 @@ public class SchoolController {
 		
 	}
 	
-	@RequestMapping(value="/getSchools", produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/getMunicipalitySchools", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
-	public String getSchools(@RequestParam String municipality, @RequestParam String location) {
-		return schoolService.getSchools(municipality, location);
+	public String getMunicipalitySchools(@RequestParam String municipality) {
+		return schoolService.getMunicipalitySchools(municipality);
+		
+	}
+	
+	@RequestMapping(value="/getLocationSchools", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getLocationSchools(@RequestParam String location) {
+		return schoolService.getLocationSchools(location);
 		
 	}
 	

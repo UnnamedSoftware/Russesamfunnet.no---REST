@@ -35,12 +35,18 @@ public class SchoolService {
 	
 	}
 	
-	public String getSchools(String municipality, String location)
+	public String getMunicipalitySchools(String municipality)
 	{
-		return writeAsJsonString(schoolDAO.getSchools(municipality, location));
+		return writeAsJsonString(schoolDAO.getMunicipalitySchools(municipality));
 	
 	}
 	
+	public String getLocationSchools(String location)
+	{
+		return writeAsJsonString(schoolDAO.getLocationSchools(location));
+	
+	}
+		
 	public String writeAsJsonString(Object object)
 	{
 		String jsonInString = null;

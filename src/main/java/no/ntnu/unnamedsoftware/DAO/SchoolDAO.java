@@ -32,16 +32,32 @@ public class SchoolDAO {
 		return schoolList;
 	}
 	
-	public List<School> getSchools(String municipality, String location)
+	public List<School> getMunicipalitySchools(String municipality)
 	{
 		System.out.println("Hello?");
 		System.out.println(municipality);
-		System.out.println(location);
 		String jsonInString = null;
 		Session currentSession = sessionFactory.openSession();
 		
 		Query theQuery = currentSession.createQuery("from School s where s.schoolMunicipality = :municipality")
 				.setParameter("municipality", municipality);
+		
+		List<School> schoolList = theQuery.list();
+		System.out.println(schoolList.size());
+		School s = schoolList.get(0);
+		System.out.println(s.getSchoolName());
+		return schoolList;
+	}
+	
+	public List<School> getLocationSchools(String location)
+	{
+		System.out.println("Hello?");
+		System.out.println(location);
+		String jsonInString = null;
+		Session currentSession = sessionFactory.openSession();
+		
+		Query theQuery = currentSession.createQuery("from School s where s.schoolLocation = :location")
+				.setParameter("location", location);
 		
 		List<School> schoolList = theQuery.list();
 		System.out.println(schoolList.size());
