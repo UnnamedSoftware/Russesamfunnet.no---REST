@@ -22,7 +22,7 @@ public class FeedController {
 	@RequestMapping(value="/schoolFeed", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@ResponseBody
-	public String getfeed(@RequestParam("russId") int theRussId) {
+	public String getfeed(@RequestParam("russId") Long theRussId) {
 		return feedService.getSchoolFeed(theRussId);
 		
 	}

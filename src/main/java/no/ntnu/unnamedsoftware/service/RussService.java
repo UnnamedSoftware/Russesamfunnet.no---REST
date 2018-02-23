@@ -34,7 +34,7 @@ public class RussService {
 		
 	}
 	
-	public String getUserRuss(int theRussId)
+	public String getUserRuss(Long theRussId)
 	{
 		List<Russ> russ = new ArrayList<Russ>();
 		russ.add(russDAO.getUserRuss(theRussId));
