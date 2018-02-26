@@ -42,14 +42,14 @@ public class LoginService {
 
 		try {
 			if (loginDAO.getRuss(email) == null) {
-				
+				loginStatus.setLoginStatus("User not in db");
 			} 
 			else if (password.equals(loginDAO.getRuss(email).getRussPassword())) {
-					loginStatus.setLoginStatus("true");
+					loginStatus.setLoginStatus("Login success");
 					
 				} else {
 					System.out.println(loginDAO.getRuss(email).getRussPassword());
-					loginStatus.setLoginStatus("false");
+					loginStatus.setLoginStatus("Incorrect password");
 				}
 
 		} catch (Exception e) {
