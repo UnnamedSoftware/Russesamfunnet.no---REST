@@ -71,7 +71,7 @@ public class RegisterService {
 				System.out.println(ageRange);
 				
 				if (app_id.equals(appID) && ageRange >= 17) {
-					return registerDAO.registerUser(userId, schoolId, firstName, lastName);
+					return registerDAO.registerUserFB(userId, schoolId, firstName, lastName);
 				} else {
 					if(ageRange < 17)
 					{
