@@ -187,6 +187,7 @@ public class KnotDAO {
 				currentSession.close();
 				return "OK 2";
 			}else {
+				//currentSession.disconnect();
 				currentSession.close();
 				return "Eror: Witness already registered for this knot";
 			}
