@@ -232,6 +232,8 @@ public class Russ implements Serializable {
     public void setRussYear(int russYear) {
         this.russYear = russYear;
     }
+    
+    
 
     /*
     @XmlTransient
@@ -244,7 +246,15 @@ public class Russ implements Serializable {
     }
     */
 
-    public School getSchoolId() {
+    public Long getRussIdAlt() {
+		return russIdAlt;
+	}
+
+	public void setRussIdAlt(Long russIdAlt) {
+		this.russIdAlt = russIdAlt;
+	}
+
+	public School getSchoolId() {
         return schoolId;
     }
 

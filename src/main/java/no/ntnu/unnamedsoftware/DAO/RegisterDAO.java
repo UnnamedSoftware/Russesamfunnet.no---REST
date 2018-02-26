@@ -47,6 +47,39 @@ public class RegisterDAO {
 		return "User successfully registered";
 	}
 	
+	@Transactional
+	public String registerUserFB(String userId, Long schoolId, String firstName, String lastName)
+	{
+		
+		
+		System.out.println("Success");
+		
+		Long userIdOnFacebook = Long.parseLong(userId);
+		
+		School school = this.getSchool(schoolId);
+		if(school == null)
+		{
+			return "There is no school with that name";
+		}
+		Session currentSession = sessionFactory.openSession();
+		Russ russ = new Russ();
+	//	russ.setRussId(new Long(userId));
+		System.out.println(russ.getRussId());
+		russ.setRussIdAlt(userIdOnFacebook);
+		russ.setSchoolId(school);
+		russ.setFirstName(firstName);
+		russ.setLastName(lastName);
+		russ.setRussRole("Russ");
+		russ.setRussStatus("false");
+		
+		currentSession.save(russ);
+	//	currentSession.getTransaction().commit();
+		currentSession.close();
+				
+		
+		return "User successfully registered";
+	}
+	
 		@Transactional
 		public School getSchool(Long schoolId) {
 			Session currentSession = sessionFactory.openSession();
