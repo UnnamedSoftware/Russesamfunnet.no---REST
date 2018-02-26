@@ -62,5 +62,25 @@ public class LoginDAO {
 		currentSession.close();
 		return dbUserId;
 	}
+	
+	@Transactional
+	public Boolean checkUserFB(String userId) {
+		Session currentSession = sessionFactory.openSession();
+		//String passwordInJsonString = null;
+		boolean dbUserId = false;
+		try {
+			Query russQuery = currentSession.createQuery("from Russ r where (r.userId = :userId)")
+					.setParameter("userId", userId);
+		    Russ russ = (Russ) russQuery.uniqueResult();
+		    if(russ != null) {
+		    	dbUserId = true;
+		    }
+			
+		}catch(Exception e) {
+			e.getStackTrace();
+		}
+		currentSession.close();
+		return dbUserId;
+	}
 
 }
