@@ -29,7 +29,7 @@ public class ScoreboardDAO {
 	ObjectMapper mapper;
 	
 	@Transactional
-	public List<Scoreboard> getScoreboardTop10(int theRussId) {
+	public List<Scoreboard> getScoreboardTop10(Long theRussId) {
 		Long theSchoolId = this.getSchoolId(theRussId);
 		Session currentSession = sessionFactory.openSession();
 		
@@ -50,7 +50,7 @@ public class ScoreboardDAO {
 		
 	
 	@Transactional
-	public Integer getRussPosition(int theRussId) {
+	public Integer getRussPosition(Long theRussId) {
 		Long theSchoolId = this.getSchoolId(theRussId);
 		Session currentSession = sessionFactory.openSession();
 		
@@ -75,12 +75,11 @@ public class ScoreboardDAO {
 	}
 	
 	@Transactional
-	public Scoreboard getScoreboard(int theRussId) {
+	public Scoreboard getScoreboard(Long theRussId) {
 		Session currentSession = sessionFactory.openSession();
-		Long longRussId = new Long(theRussId);
 		
 		Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.russId = :russId)")
-				.setParameter("russId", longRussId);
+				.setParameter("russId", theRussId);
 		Scoreboard scoreboard =(Scoreboard) scoreboardQuery.uniqueResult();
 		currentSession.close();
 		return scoreboard;
@@ -91,13 +90,12 @@ public class ScoreboardDAO {
 	
 	
 	@Transactional
-	public Long getSchoolId(int theRussId) {
+	public Long getSchoolId(Long theRussId) {
 		Session currentSession = sessionFactory.openSession();
 		Long errorCode = new Long(9001);
-		Long longRussId = new Long(theRussId);
 		try{
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", longRussId);
+					.setParameter("theRussId", theRussId);
 			Russ test = (Russ) russQuery.uniqueResult();
 			if(test != null) {
 				currentSession.close();

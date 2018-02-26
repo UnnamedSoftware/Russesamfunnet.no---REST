@@ -27,25 +27,20 @@ public class LoginDAO {
 
 	
 	@Transactional
-	public String getPassword(String email) {
+	public Russ getRuss(String email) {
 		Session currentSession = sessionFactory.openSession();
 		//String passwordInJsonString = null;
-		String password = null;
+		Russ russ = null; 
 		try {
 			Query russQuery = currentSession.createQuery("from Russ r where r.email =:email")
 					.setParameter("email", email);
-		    Russ russ = (Russ) russQuery.uniqueResult();
-		    if(russ != null) {
-		    	password = russ.getRussPassword();
-		    } else{
-		    	password = "fdhsajdhsakghfdajkdsdsar3dsahjke32";
-		    }
+		    russ = (Russ) russQuery.uniqueResult();
 			
 		}catch(Exception e) {
 			e.getStackTrace();
 		}
 		currentSession.close();
-		return password;
+		return russ;
 	}
 	
 	@Transactional

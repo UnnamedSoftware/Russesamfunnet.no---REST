@@ -32,12 +32,11 @@ public class RussDAO {
 	}
 	
 	
-	public Russ getUserRuss(int theRussId)
+	public Russ getUserRuss(Long theRussId)
 	{
 		Session currentSession = sessionFactory.openSession();
-		Long russId = new Long(theRussId);
 		Query russQuery = currentSession.createQuery("from Russ r where (r.russId = :russId)")
-				.setParameter("russId", russId);
+				.setParameter("russId", theRussId);
 		Russ russ = (Russ) russQuery.uniqueResult();
 		currentSession.close();
 		return russ;

@@ -21,7 +21,7 @@ public class RegisterDAO {
 	@Autowired
 	ObjectMapper mapper;
 	@Transactional
-	public String registerUser(String userId, String schoolId, String firstName, String lastName)
+	public String registerUser(String userId, Long schoolId, String firstName, String lastName)
 	{
 		System.out.println("Success");
 		School school = this.getSchool(schoolId);
@@ -48,13 +48,12 @@ public class RegisterDAO {
 	}
 	
 		@Transactional
-		public School getSchool(String schoolId) {
+		public School getSchool(Long schoolId) {
 			Session currentSession = sessionFactory.openSession();
-			Long longSchoolId = Long.parseLong(schoolId);
 			School school = null;
 			try{
 				Query schoolQuery = currentSession.createQuery("from School s where s.schoolId = :schoolId")
-						.setParameter("schoolId", longSchoolId);
+						.setParameter("schoolId", schoolId);
 				school = (School) schoolQuery.uniqueResult();
 				System.out.println(school.getSchoolName());
 			} catch(Exception e) {

@@ -29,7 +29,7 @@ public class ScoreboardService {
 	@Autowired
 	ObjectMapper mapper;
 
-	public String getScoreboard(int theRussId) {
+	public String getScoreboard(Long theRussId) {
 		List<Scoreboard> scoreboard = this.getScoreboardTop10(theRussId);
 		Iterator it = scoreboard.iterator();
 		ArrayList<ScoreboardPosition> scoreboardPosition = new ArrayList<>();
@@ -78,15 +78,15 @@ public class ScoreboardService {
 		return scoreboardInJsonString;
 	}
 
-	public List<Scoreboard> getScoreboardTop10(int theRussId) {
+	public List<Scoreboard> getScoreboardTop10(Long theRussId) {
 		return scoreboardDAO.getScoreboardTop10(theRussId);
 	}
 
-	public Integer getRussPosition(int theRussId) {
+	public Integer getRussPosition(Long theRussId) {
 		return scoreboardDAO.getRussPosition(theRussId);
 	}
 	
-	private Scoreboard getSingleScoreboard(int theRussId)
+	private Scoreboard getSingleScoreboard(Long theRussId)
 	{
 		return scoreboardDAO.getScoreboard(theRussId);
 	}

@@ -28,7 +28,7 @@ public class FeedDAO {
 	ObjectMapper mapper;
 	
 	@Transactional
-	public List<Feed> getSchoolFeed(int theRussId) {
+	public List<Feed> getSchoolFeed(Long theRussId) {
 		Long theSchoolId = this.getSchoolId(theRussId);
 		Session currentSession = sessionFactory.openSession();
 		Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :schoolId)")
@@ -41,13 +41,12 @@ public class FeedDAO {
 	
 	
 	@Transactional
-	public Long getSchoolId(int theRussId) {
+	public Long getSchoolId(Long theRussId) {
 		Session currentSession = sessionFactory.openSession();
 		Long errorCode = new Long(9001);
-		Long longRussId = new Long(theRussId);
 		try{
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", longRussId);
+					.setParameter("theRussId", theRussId);
 			Russ test = (Russ) russQuery.uniqueResult();
 			if(test != null) {
 				return test.getSchoolId().getSchoolId();

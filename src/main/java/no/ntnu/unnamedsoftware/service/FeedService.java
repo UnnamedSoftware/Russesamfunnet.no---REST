@@ -22,7 +22,7 @@ public class FeedService {
 	@Autowired
 	ObjectMapper mapper;
 	
-	public String getSchoolFeed(int theRussId)
+	public String getSchoolFeed(Long theRussId)
 	{
 		List<Feed> schoolFeed = feedDAO.getSchoolFeed(theRussId);
 		return this.writeAsJsonString(schoolFeed);

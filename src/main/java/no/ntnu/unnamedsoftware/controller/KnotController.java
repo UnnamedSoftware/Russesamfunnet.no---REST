@@ -20,32 +20,32 @@ public class KnotController {
 	private KnotService knotService;
 	
 	@RequestMapping(value="/knots", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String getKnots(@RequestParam("russId") int theRussId){
+	public String getKnots(@RequestParam("russId") Long theRussId){
 		return knotService.getKnots(theRussId);
 	}
 	
 	@RequestMapping(value="/getKnot", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String getKnot(@RequestParam("knotId") int theKnotId){
+	public String getKnot(@RequestParam("knotId") Long theKnotId){
 		return knotService.getKnot(theKnotId);
 	}
 	
 	
 	
 	@RequestMapping(value="/completedKnots", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String getCompleted(@RequestParam("russId") int theRussId){
+	public String getCompleted(@RequestParam("russId") Long theRussId){
 		return knotService.getCompleted(theRussId);
 	}
 	
 	@RequestMapping(value="/getKnotsList", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String returnKnotsList(@RequestParam("russId") int theRussId){
+	public String returnKnotsList(@RequestParam("russId") Long theRussId){
 		return knotService.getKnotsList(theRussId);
 	}
 	
 	@RequestMapping(value="/registerCompletedKnot", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String registerCompletedKnot(@RequestParam("russId") int theRussId, 
-										@RequestParam("knotId") int theKnotId,
-										@RequestParam("witness1") int witness1,
-										@RequestParam("witness2") int witness2){
+	public String registerCompletedKnot(@RequestParam("russId") Long theRussId, 
+										@RequestParam("knotId") Long theKnotId,
+										@RequestParam("witness1") Long witness1,
+										@RequestParam("witness2") Long witness2){
 		String registered = null;
 		registered = knotService.registerCompletedKnot(theRussId, theKnotId, witness1, witness2);
 
@@ -53,13 +53,13 @@ public class KnotController {
 	}
 	
 	@RequestMapping(value="/updateKnot", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String updateKnot(@RequestParam("russId") int theRussId){
+	public String updateKnot(@RequestParam("russId") Long theRussId){
 		return "Status: OK";  //knotService.getKnotsList(theRussId);
 	}
 	
 	@RequestMapping(value="/registerWitnessCompletedKnot", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String registerCompletedKnot(@RequestParam("completedId") int theCompletedKnotId,
-										@RequestParam("witness") int witness){
+										@RequestParam("witness") Long witness){
 		String registered = null;
 		registered = knotService.registerWitnessCompletedKnot(theCompletedKnotId, witness);
 

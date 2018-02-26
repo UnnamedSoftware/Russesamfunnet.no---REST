@@ -37,26 +37,27 @@ public class LoginService {
 
 	public String Login(String email, String password) {
 
-		String loginSuccess = "false";
+		LoginStatus loginStatus = new LoginStatus("false");
 
 
 		try {
-			if (loginDAO.getPassword(email) == null) {
-				loginSuccess = "false";
+			if (loginDAO.getRuss(email) == null) {
+				loginStatus.setLoginStatus("User not in db");
 			} 
-			else if (password.equals(loginDAO.getPassword(email))) {
-					loginSuccess = "true";
+			else if (password.equals(loginDAO.getRuss(email).getRussPassword())) {
+					loginStatus.setLoginStatus("Login success");
 					
 				} else {
-					System.out.println(loginDAO.getPassword(email));
-					loginSuccess = "false";
+					System.out.println(loginDAO.getRuss(email).getRussPassword());
+					loginStatus.setLoginStatus("Incorrect password");
 				}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(loginSuccess);
-		return loginSuccess;
+		System.out.println(loginStatus.getLoginStatus().toString());
+		loginStatus.setUserId(loginDAO.getRuss(email).getRussId());
+		return getJsonString(loginStatus);
 
 	}
 

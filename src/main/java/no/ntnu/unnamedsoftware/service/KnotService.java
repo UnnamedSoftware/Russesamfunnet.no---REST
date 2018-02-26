@@ -33,7 +33,7 @@ public class KnotService {
 	@Autowired
 	ObjectMapper mapper;
 	
-	public String getKnots(int theRussId)
+	public String getKnots(Long theRussId)
 	{
 		System.out.println("In Get Knots Service: 1");
 		Long theSchoolId = knotDAO.getSchoolId(theRussId);
@@ -41,7 +41,7 @@ public class KnotService {
 		return knotDAO.getKnots(theSchoolId);
 	}
 	
-	public String getCompleted(int theRussId) {
+	public String getCompleted(Long theRussId) {
 		String completedInJsonString = null;
 		List<Completed> completed = knotDAO.getCompleted(theRussId);
 		try {
@@ -53,7 +53,7 @@ public class KnotService {
 	}
 	
 	
-	public String getKnotsList(int theRussId) {
+	public String getKnotsList(Long theRussId) {
 		String mapStringJson = null;
 		//Liste over alle knutene denne brukeren har gjort
 		List<Completed> completedList = null;
@@ -94,7 +94,7 @@ public class KnotService {
 		return mapStringJson;
 	}
 
-	public String registerCompletedKnot(int theRussId, int theKnotId, int witness1, int witness2) {
+	public String registerCompletedKnot(Long theRussId, Long theKnotId, Long witness1, Long witness2) {
 		//Dersom det ikke er vitner lag tomme vitneobjekter som kan fylles ut senere
 		//dersom brukeren ønsker det
 		Russ theWitness1 = null;
@@ -123,7 +123,7 @@ public class KnotService {
 		return knotDAO.registerCompletedKnot(theRuss, theKnot, theWitness1, theWitness2); //knotDAO.registerCompletedKnot(theRussId, theKnotId);
 	}
 
-	public String registerWitnessCompletedKnot(int theCompletedKnotId, int witness) {
+	public String registerWitnessCompletedKnot(int theCompletedKnotId, Long witness) {
 		
 		
 		//Completed theCompletedKnot = knotDAO.getCompletedKnot(theCompletedKnotId);
@@ -148,7 +148,7 @@ public class KnotService {
 		return "Something went wrong";
 	}
 
-	public String getKnot(int theKnotId) {
+	public String getKnot(Long theKnotId) {
 		Knots theKnot = knotDAO.getKnot(theKnotId);
 		String knotJSON = makeJSON(theKnot);
 		

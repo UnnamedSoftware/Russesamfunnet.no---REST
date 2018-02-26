@@ -23,7 +23,7 @@ public class ScoreboardController {
 	@RequestMapping(value="/scoreboardTop10", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	
-	public String getScoreboardTop10(@RequestParam int theRussId) {
+	public String getScoreboardTop10(@RequestParam Long theRussId) {
 		
 		return scoreboardService.getScoreboard(theRussId);
 	}
