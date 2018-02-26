@@ -28,7 +28,7 @@ public class LoginService {
 
 	@Autowired
 	LoginDAO loginDAO;
-	
+
 	@Autowired
 	RussDAO russDAO;
 
@@ -37,27 +37,27 @@ public class LoginService {
 
 	public String Login(String email, String password) {
 
-		String loginSuccess = "false";
+		LoginStatus loginStatus = new LoginStatus("false");
 
-		String passwordInDatabase = null;
 
 		try {
-			passwordInDatabase = loginDAO.getPassword(email);
-			if (passwordInDatabase == null) {
-				loginSuccess = "false";
-			} else {
-				if (password.equals(loginDAO.getPassword(email))) {
-					loginSuccess = "true";
+			if (loginDAO.getRuss(email) == null) {
+				loginStatus.setLoginStatus("User not in db");
+			} 
+			else if (password.equals(loginDAO.getRuss(email).getRussPassword())) {
+					loginStatus.setLoginStatus("Login success");
+					
 				} else {
-					loginSuccess = "false";
+					System.out.println(loginDAO.getRuss(email).getRussPassword());
+					loginStatus.setLoginStatus("Incorrect password");
 				}
-			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return loginSuccess;
+		System.out.println(loginStatus.getLoginStatus().toString());
+		loginStatus.setUserId(loginDAO.getRuss(email).getRussId());
+		return getJsonString(loginStatus);
 
 	}
 
@@ -74,7 +74,7 @@ public class LoginService {
 		}
 		return objectInJsonString;
 	}
-	
+
 	public String facebookLogin(String accessToken) {
 
 		String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
@@ -83,10 +83,11 @@ public class LoginService {
 		Boolean userIsInDb = false;
 		JSONObject jsonObject = new JSONObject();
 		try {
-			String url ="https://graph.facebook.com/debug_token?input_token="+accessToken+"&access_token="+appToken;
+			String url = "https://graph.facebook.com/debug_token?input_token=" + accessToken + "&access_token="
+					+ appToken;
 			System.out.println(accessToken);
 			String JSONString = this.uRLConnectionReader(url);
-			
+
 			JSONObject jsonObj = new JSONObject(JSONString);
 			System.out.println("WTF?");
 			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
@@ -95,23 +96,23 @@ public class LoginService {
 			app_id = jsonObj2.getString("app_id");
 			System.out.println(userId);
 			userIsInDb = loginDAO.checkUser(userId);
-			
-			
+			//russIdAlt
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (app_id.equals(appID) && userIsInDb == false) {
-			//createUser();
+			// createUser();
 			return getJsonString(new LoginStatus("User not in db"));
-		} else if(app_id.equals(appID)){
+		} else if (app_id.equals(appID)) {
 			return getJsonString(new LoginStatus("Login success"));
-			
-		}else {
+
+		} else {
 			return getJsonString(new LoginStatus("Wrong appToken"));
 		}
 
 	}
-	
+
 	public String uRLConnectionReader(String urlString) {
 		try {
 			System.out.println(urlString);
@@ -125,15 +126,15 @@ public class LoginService {
 			BufferedReader reader = new BufferedReader(inputStream);
 			System.out.println("Buffered reader");
 			StringBuilder results = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                results.append(line);
-            }
-            System.out.println(results.toString());
-            return results.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "ERROR: Something went wrong";
+			String line;
+			while ((line = reader.readLine()) != null) {
+				results.append(line);
+			}
+			System.out.println(results.toString());
+			return results.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "ERROR: Something went wrong";
 	}
 }

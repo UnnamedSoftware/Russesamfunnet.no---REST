@@ -48,16 +48,15 @@ public class KnotDAO {
 	
 
 	@Transactional
-	public Long getSchoolId(int theRussId) {
+	public Long getSchoolId(Long theRussId) {
 		System.out.println("In Get School ID: 1");
 		Session currentSession = sessionFactory.openSession();
 		Long errorCode = new Long(9001);
-		Long russId = new Long(theRussId);
 		System.out.println("In Get School ID: 1  -> ErrorCode: " + errorCode);
 		try{
 			System.out.println("In Get School ID: 2");
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", russId);
+					.setParameter("theRussId", theRussId);
 			System.out.println("In Get School ID: 3");
 			Russ test = (Russ) russQuery.uniqueResult();
 			if(test != null) {
@@ -75,11 +74,10 @@ public class KnotDAO {
 	}
 	
 	@Transactional
-	public List<Completed> getCompleted(int theRussId) {
+	public List<Completed> getCompleted(Long theRussId) {
 		Session currentSession = sessionFactory.openSession();
-		Long russId = new Long(theRussId);
 		Query completedQuery = currentSession.createQuery("from Completed c where c.russId.russId = :theRussId")
-				.setParameter("theRussId", russId);
+				.setParameter("theRussId", theRussId);
 		List<Completed> completed = completedQuery.list();
 		//System.out.println(completed.size());
 		//for(Completed c: completed) {
@@ -101,33 +99,30 @@ public class KnotDAO {
 	}
 	
 	@Transactional
-	public List<Completed> getCompletedKnots(int theRussId){	
+	public List<Completed> getCompletedKnots(Long theRussId){	
 		Session currentSession = sessionFactory.openSession();
-		Long russId = new Long(theRussId);
 		Query completedQuery = currentSession.createQuery("from Completed c where c.russId.russId = :theRussId")
-				.setParameter("theRussId", russId);
+				.setParameter("theRussId", theRussId);
 		List<Completed> completed = completedQuery.list();
 		currentSession.close();
 		return completed;
 	}
 	
 	@Transactional
-	public Russ getRuss(int theRussId) {
+	public Russ getRuss(Long theRussId) {
 		Session currentSession = sessionFactory.openSession();
-		Long russId = new Long(theRussId);
 		Query theQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-				.setParameter("theRussId", russId);
+				.setParameter("theRussId", theRussId);
 		Russ theRuss = (Russ) theQuery.uniqueResult();
 		currentSession.close();
 		return theRuss;
 	}
 	
 	@Transactional
-	public Knots getKnot(int theKnotId) {
+	public Knots getKnot(Long theKnotId) {
 		Session currentSession = sessionFactory.openSession();
-		Long knotId = new Long(theKnotId);
 		Query theQuery = currentSession.createQuery("from Knots k where k.knotId = :theKnotId")
-				.setParameter("theKnotId", knotId);
+				.setParameter("theKnotId", theKnotId);
 		Knots theKnot = (Knots) theQuery.uniqueResult();
 		currentSession.close();
 		return theKnot;

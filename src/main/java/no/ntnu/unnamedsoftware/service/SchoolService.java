@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import no.ntnu.unnamedsoftware.DAO.SchoolDAO;
 import no.ntnu.unnamedsoftware.entity.School;
 @Service
 public class SchoolService {
@@ -23,36 +24,44 @@ public class SchoolService {
 	@Autowired
 	ObjectMapper mapper;
 	
-	public String getSchool()
+	@Autowired
+	SchoolDAO schoolDAO;
+	
+	public String getAllSchools()
 	{
-	System.out.println("Hello?");
-	String jsonInString = null;
-	Session currentSession = sessionFactory.openSession();
 	
-	Query theQuery = currentSession.
-			createQuery("from School s"); 
+
+	return writeAsJsonString(schoolDAO.getAllSchools());
 	
-	List<School> userInfo = theQuery.list();
-	System.out.println(userInfo.size());
-	School s = userInfo.get(0);
-	System.out.println(s.getSchoolName());
-	//return JSON
-	
-	//ObjectMapper mapper = new ObjectMapper();
-	
-	try {
-		jsonInString = mapper.writeValueAsString(userInfo);
-	} catch (JsonGenerationException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (JsonMappingException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
 	}
-	return jsonInString;
 	
+	public String getMunicipalitySchools(String municipality)
+	{
+		return writeAsJsonString(schoolDAO.getMunicipalitySchools(municipality));
+	
+	}
+	
+	public String getLocationSchools(String location)
+	{
+		return writeAsJsonString(schoolDAO.getLocationSchools(location));
+	
+	}
+		
+	public String writeAsJsonString(Object object)
+	{
+		String jsonInString = null;
+		try {
+			jsonInString = mapper.writeValueAsString(object);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonInString;
 	}
 }

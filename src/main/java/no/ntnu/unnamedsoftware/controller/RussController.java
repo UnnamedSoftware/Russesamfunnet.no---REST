@@ -38,7 +38,7 @@ public class RussController
 	
 	@RequestMapping(value="/userRuss", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
-	public String getUserRuss(@RequestParam int russId) {
+	public String getUserRuss(@RequestParam Long russId) {
 		
 		return russService.getUserRuss(russId);
 	}

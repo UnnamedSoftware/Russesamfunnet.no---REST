@@ -7,9 +7,9 @@ public class KnotTemp {
 	private String knotDetails;
 	private Long schoolId;
 	private boolean completed;
-	private int russId;
+	private Long russId;
 	
-	public KnotTemp(Long long1, String knotName, String knotDetails, Long theSchoolId, boolean completed, int russId) {
+	public KnotTemp(Long long1, String knotName, String knotDetails, Long theSchoolId, boolean completed, Long russId) {
 		this.knotId = long1;
 		this.knotName = knotName;
 		this.knotDetails = knotDetails;
@@ -58,11 +58,11 @@ public class KnotTemp {
 		this.completed = completed;
 	}
 
-	public int getRussId() {
+	public long getRussId() {
 		return russId;
 	}
 
-	public void setRussId(int russId) {
+	public void setRussId(Long russId) {
 		this.russId = russId;
 	}
 
