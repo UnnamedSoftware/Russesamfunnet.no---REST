@@ -95,6 +95,7 @@ public class LoginService {
 			app_id = jsonObj2.getString("app_id");
 			System.out.println(userId);
 			userIsInDb = loginDAO.checkUser(userId);
+			//russIdAlt
 
 		} catch (Exception e) {
 			e.printStackTrace();

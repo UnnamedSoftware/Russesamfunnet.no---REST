@@ -14,8 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.unnamedsoftware.entity.LoginStatus;
 import no.ntnu.unnamedsoftware.service.RegisterService;
 
+@CrossOrigin
 @RestController
 public class RegisterController {
 	
@@ -39,7 +40,6 @@ public class RegisterController {
 	public String facebookRegister(@RequestParam("accessToken") String accessToken, @RequestParam("birthdate") String birthdate, @RequestParam("schoolId") String schoolId) {
 		//return registerService.facebookRegister(accessToken, birthdate, schoolId);
             
-        
         return getJsonString(new LoginStatus(registerService.facebookRegister(accessToken, birthdate, schoolId)));
 	}
 	

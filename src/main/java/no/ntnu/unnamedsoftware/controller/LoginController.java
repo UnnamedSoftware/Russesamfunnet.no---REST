@@ -24,6 +24,7 @@ public class LoginController {
 		return loginService.Login(email, password);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="/facebookLogin", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String facebookLogin(@RequestParam("accessToken") String accessToken) {
 		return loginService.facebookLogin(accessToken);

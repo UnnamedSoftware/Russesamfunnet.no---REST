@@ -95,6 +95,9 @@ public class Russ implements Serializable {
     @Column(name = "russ_year")
     private int russYear;
     
+    @Column(name = "russ_id_alt")
+    private Long russIdAlt;
+    
     /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "russId")
     private List<Feed> feedList;
