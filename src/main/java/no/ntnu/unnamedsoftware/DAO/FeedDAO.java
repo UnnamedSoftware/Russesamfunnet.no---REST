@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.entity.Feed;
 import no.ntnu.unnamedsoftware.entity.Russ;
+import no.ntnu.unnamedsoftware.entity.School;
 
 @Repository
 public class FeedDAO {
@@ -23,6 +24,9 @@ public class FeedDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	RussDAO russDAO;
 	
 	@Autowired
 	ObjectMapper mapper;
@@ -57,5 +61,43 @@ public class FeedDAO {
 		currentSession.close();
 		return errorCode;
 	}
+	
+	public List<Feed> postFeed(Long russId, String message)
+	{	
+		Session currentSession = sessionFactory.openSession();
+		Feed feed = new Feed();
+		feed.setMessage(message);
+		Russ russ = russDAO.getUserRuss(russId);
+		School school = this.getSchoolObject(russId);
+		feed.setRussId(russ);
+		
+		
+		
+		currentSession.save(feed);
+		currentSession.close();
+		
+		return getSchoolFeed(russId);
+		
+	}
+	
+	@Transactional
+	public School getSchoolObject(Long theRussId) {
+		Session currentSession = sessionFactory.openSession();
+		Russ russ = null;
+		try{
+			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
+					.setParameter("theRussId", theRussId);
+			russ = (Russ) russQuery.uniqueResult();
+			if (russ == null)
+			{
+				//do something to prevent nullPointer
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		currentSession.close();
+		return russ.getSchoolId();
+	}
+
 
 }
