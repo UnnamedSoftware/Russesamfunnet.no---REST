@@ -16,6 +16,10 @@ public class LoginStatus {
 		super();
 		this.loginStatus = loginStatus;
 	}
+	public LoginStatus()
+	{
+		
+	}
 
 	public String getLoginStatus() {
 		return loginStatus;

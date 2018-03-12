@@ -83,36 +83,30 @@ public class LoginService {
 		Boolean userIsInDb = false;
 		JSONObject jsonObject = new JSONObject();
 		try {
-			String url = "https://graph.facebook.com/debug_token?input_token=" + accessToken + "&access_token="
-					+ appToken;
-			System.out.println(accessToken);
+			String url = "https://graph.facebook.com/debug_token?input_token=" + accessToken 
+					+ "&access_token=" + appToken;
 			String JSONString = this.uRLConnectionReader(url);
 
 			JSONObject jsonObj = new JSONObject(JSONString);
-			System.out.println("WTF?");
 			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
-			System.out.println("WTF?");
 			String userId = jsonObj2.getString("user_id");
 			app_id = jsonObj2.getString("app_id");
-			System.out.println(userId);
 			userIsInDb = loginDAO.checkUser(userId);
-			//russIdAlt
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (app_id.equals(appID) && userIsInDb == false) {
-			// createUser();
 			return getJsonString(new LoginStatus("User not in db"));
 		} else if (app_id.equals(appID)) {
 			return getJsonString(new LoginStatus("Login success"));
-
 		} else {
 			return getJsonString(new LoginStatus("Wrong appToken"));
 		}
 
 	}
-
+	
+	//Retieves the data from the given url string.
 	public String uRLConnectionReader(String urlString) {
 		try {
 			System.out.println(urlString);
@@ -120,11 +114,8 @@ public class LoginService {
 			con.setRequestMethod("GET");
 			con.setDoOutput(true);
 			con.connect();
-			System.out.println("connection");
 			InputStreamReader inputStream = new InputStreamReader(con.getInputStream());
-			System.out.println("Stream reader");
 			BufferedReader reader = new BufferedReader(inputStream);
-			System.out.println("Buffered reader");
 			StringBuilder results = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -134,7 +125,7 @@ public class LoginService {
 			return results.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "ERROR: Something went wrong";
 		}
-		return "ERROR: Something went wrong";
 	}
 }
