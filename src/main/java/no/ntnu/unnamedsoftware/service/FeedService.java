@@ -42,9 +42,9 @@ public class FeedService {
 		return feedInJsonString;
 	}
 	
-	public String postFeed(Long russId, String message)
+	public void postFeed(Long russId, String message)
 	{	
-		return writeAsJsonString(feedDAO.postFeed(russId, message)); 
+		feedDAO.postFeed(russId, message); 
 	
 		
 	}
