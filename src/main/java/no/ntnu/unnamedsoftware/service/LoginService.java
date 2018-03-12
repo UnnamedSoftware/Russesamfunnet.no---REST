@@ -47,7 +47,7 @@ public class LoginService {
 		
 		// Check to see if user exists
 		try {
-			Russ russInDB = loginDAO.getRuss(email);
+			Russ russInDB = russDAO.getUserRussFromEmail(email);
 			if (russInDB == null) {
 				return "User not in db";
 			} 
@@ -55,17 +55,9 @@ public class LoginService {
 				// Login success 
 				String loginStatus = "Login success";
 				
-				// (Long russId, String email, String firstName, String lastName, int russYear) {
 				AccessTokenCreation atc = new AccessTokenCreation(russInDB.getRussId(), russInDB.getEmail(), russInDB.getFirstName(), russInDB.getLastName(), russInDB.getRussYear());
 				
-				
-				//String JSONrussTest = getJsonString(russInDB);
-				//System.out.println("***********" +  JSONrussTest);
 				String JSONatc = getJsonString(atc);
-				//String myPassword = "russesamfunnet";
-				//BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-				//textEncryptor.setPassword(myPassword);
-				//String accessToken = textEncryptor.encrypt(JSONruss);
 				String accessToken = encAndDec.encrypt(JSONatc);
 				int expiresInNoOfDays = 7;
 				LoginObjectToReturn loginObjToReturn = new LoginObjectToReturn(loginStatus, accessToken, expiresInNoOfDays);
@@ -112,14 +104,14 @@ public class LoginService {
 
 
 		try {
-			if (loginDAO.getRuss(email) == null) {
+			if (russDAO.getUserRussFromEmail(email) == null) {
 				loginStatus.setLoginStatus("User not in db");
 			} 
-			else if (password.equals(loginDAO.getRuss(email).getRussPassword())) {
+			else if (password.equals(russDAO.getUserRussFromEmail(email).getRussPassword())) {
 					loginStatus.setLoginStatus("Login success");
 					
 				} else {
-					System.out.println(loginDAO.getRuss(email).getRussPassword());
+					System.out.println(russDAO.getUserRussFromEmail(email).getRussPassword());
 					loginStatus.setLoginStatus("Incorrect password");
 				}
 
@@ -127,7 +119,7 @@ public class LoginService {
 			e.printStackTrace();
 		}
 		System.out.println(loginStatus.getLoginStatus().toString());
-		loginStatus.setUserId(loginDAO.getRuss(email).getRussId());
+		loginStatus.setUserId(russDAO.getUserRussFromEmail(email).getRussId());
 		return getJsonString(loginStatus);
 
 	}

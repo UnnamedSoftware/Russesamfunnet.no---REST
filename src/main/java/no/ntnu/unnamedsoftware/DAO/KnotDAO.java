@@ -48,24 +48,6 @@ public class KnotDAO {
 		return "getKnots error";
 	}
 	
-
-	@Transactional
-	public Long getSchoolId(Long theRussId) {
-		Long errorCode = new Long(9001);
-		try(Session currentSession = sessionFactory.openSession();){
-			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", theRussId);
-			Russ test = (Russ) russQuery.uniqueResult();
-			if(test != null) {
-				return test.getSchoolId().getSchoolId();
-			}else if(test == null) {
-				System.out.println("In Get School ID: 5 russ == null");
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return errorCode;
-	}
 	
 	@Transactional
 	public List<Completed> getCompleted(Long theRussId) {
@@ -110,19 +92,6 @@ public class KnotDAO {
 		return completed;
 	}
 	
-	@Transactional
-	public Russ getRuss(Long theRussId) {
-		Russ theRuss = null;
-		try(Session currentSession = sessionFactory.openSession()){
-			Query theQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", theRussId);
-			theRuss = (Russ) theQuery.uniqueResult();
-			return theRuss;
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return theRuss;
-	}
 	
 	@Transactional
 	public Knots getKnot(Long theKnotId) {

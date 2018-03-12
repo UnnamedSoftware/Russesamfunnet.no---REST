@@ -21,10 +21,13 @@ public class RegisterDAO {
 	@Autowired
 	ObjectMapper mapper;
 	
+	@Autowired
+	SchoolDAO schoolDAO;
+	
 	@Transactional
 	public String registerUser(String userId, Long schoolId, String firstName, String lastName)
 	{
-		School school = this.getSchool(schoolId);
+		School school = schoolDAO.getSchoolObject(schoolId);
 		if(school == null)
 		{
 			return "There is no school with that name";
@@ -48,7 +51,7 @@ public class RegisterDAO {
 	public String registerUserFB(String userId, Long schoolId, String firstName, String lastName)
 	{
 		Long userIdOnFacebook = Long.parseLong(userId);
-		School school = this.getSchool(schoolId);
+		School school = schoolDAO.getSchoolObject(schoolId);
 		if(school == null)
 		{
 			return "There is no school with that name";
@@ -69,23 +72,5 @@ public class RegisterDAO {
 		return "registerUserFB error";
 	}
 	
-	@Transactional
-	public School getSchool(Long schoolId) {
-		School school = null;
-		try(Session currentSession = sessionFactory.openSession()){
-			try {
-				Query schoolQuery = currentSession.createQuery("from School s where s.schoolId = :schoolId")
-						.setParameter("schoolId", schoolId);
-				school = (School) schoolQuery.uniqueResult();
-				System.out.println(school.getSchoolName());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return school;
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return school;
-	}
 }
 

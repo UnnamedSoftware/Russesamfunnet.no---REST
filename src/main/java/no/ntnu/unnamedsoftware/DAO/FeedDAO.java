@@ -29,11 +29,14 @@ public class FeedDAO {
 	RussDAO russDAO;
 	
 	@Autowired
+	SchoolDAO schoolDAO;
+	
+	@Autowired
 	ObjectMapper mapper;
 	
 	@Transactional
 	public List<Feed> getSchoolFeed(Long theRussId) {
-		Long theSchoolId = this.getSchoolId(theRussId);
+		Long theSchoolId = schoolDAO.getSchoolId(theRussId);
 		List<Feed> feed = null;
 		try(Session currentSession = sessionFactory.openSession()){
 			Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :schoolId)")
@@ -47,22 +50,6 @@ public class FeedDAO {
 		return feed;
 	}
 	
-	
-	@Transactional
-	public Long getSchoolId(Long theRussId) {
-		Long errorCode = new Long(9001);
-		try(Session currentSession = sessionFactory.openSession()){
-			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", theRussId);
-			Russ test = (Russ) russQuery.uniqueResult();
-			if(test != null) {
-				return test.getSchoolId().getSchoolId();
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return errorCode;
-	}
 	@Transactional
 	public Feed postFeed(Long russId, String message)
 	{	
@@ -70,8 +57,8 @@ public class FeedDAO {
 		Feed feed = new Feed();
 		feed.setMessage(message);
 		feed.setType("School");
-		Russ russ = russDAO.getUserRuss(russId);
-		School school = this.getSchoolObject(russId);
+		Russ russ = russDAO.getUserRussFromId(russId);
+		School school = schoolDAO.getSchoolObject(russId);
 		feed.setRussId(russ);
 		feed.setSchoolId(school);
 		currentSession.save(feed);
@@ -81,23 +68,4 @@ public class FeedDAO {
 			return null;
 		}
 	}
-	
-	@Transactional
-	public School getSchoolObject(Long theRussId) {
-		Russ russ = null;
-		try(Session currentSession = sessionFactory.openSession()){
-			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-					.setParameter("theRussId", theRussId);
-			russ = (Russ) russQuery.uniqueResult();
-			if (russ == null)
-			{
-				//do something to prevent nullPointer
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return russ.getSchoolId();
-	}
-
-
 }

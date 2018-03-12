@@ -23,22 +23,7 @@ public class LoginDAO {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
-	
-	@Transactional
-	public Russ getRuss(String email) {
-		Russ russ = null;
-		try (Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createQuery("from Russ r where r.email =:email").setParameter("email",
-					email);
-			russ = (Russ) russQuery.uniqueResult();
 
-			return russ;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return russ;
-	}
-	
 	@Transactional
 	public Boolean checkUser(String userId) {
 		boolean dbUserId = false;

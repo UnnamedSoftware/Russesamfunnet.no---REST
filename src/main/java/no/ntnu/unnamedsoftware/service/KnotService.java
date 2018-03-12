@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.KnotDAO;
+import no.ntnu.unnamedsoftware.DAO.RussDAO;
+import no.ntnu.unnamedsoftware.DAO.SchoolDAO;
 import no.ntnu.unnamedsoftware.entity.Completed;
 import no.ntnu.unnamedsoftware.entity.KnotTemp;
 import no.ntnu.unnamedsoftware.entity.Knots;
@@ -31,12 +33,18 @@ public class KnotService {
 	KnotDAO knotDAO;
 	
 	@Autowired
+	SchoolDAO schoolDAO;
+	
+	@Autowired
+	RussDAO russDAO;
+	
+	@Autowired
 	ObjectMapper mapper;
 	
 	public String getKnots(Long theRussId)
 	{
 		System.out.println("In Get Knots Service: 1");
-		Long theSchoolId = knotDAO.getSchoolId(theRussId);
+		Long theSchoolId = schoolDAO.getSchoolId(theRussId);
 		System.out.println("In Get Knots Service: 2 ->" + theSchoolId);
 		return knotDAO.getKnots(theSchoolId);
 	}
@@ -62,7 +70,7 @@ public class KnotService {
 		//Listen som skal gjøres om til JSON
 		List<KnotTemp> listToBeReturned = new ArrayList<KnotTemp>();
 		//Knutene fra denne skolen skal hentes
-		Long theSchoolId = knotDAO.getSchoolId(theRussId);
+		Long theSchoolId = schoolDAO.getSchoolId(theRussId);
 		allKnots = knotDAO.getKnotsList(theSchoolId);
 		completedList = knotDAO.getCompletedKnots(theRussId);
 		for(Knots k : allKnots) {
@@ -101,7 +109,7 @@ public class KnotService {
 		Russ theWitness2 = null;
 		
 		//Hente russ object
-		Russ theRuss = knotDAO.getRuss(theRussId);
+		Russ theRuss = russDAO.getUserRussFromId(theRussId);
 		//Hente knute object
 		Knots theKnot = knotDAO.getKnot(theKnotId);
 		//sjekke vitner
@@ -109,13 +117,13 @@ public class KnotService {
 			// vitne1 er ikke lagt til
 			theWitness1 = knotDAO.getEmptyWitness();
 		}else{
-			theWitness1 = knotDAO.getRuss(witness1);
+			theWitness1 = russDAO.getUserRussFromId(witness1);
 		}
 		if(witness2 == 0) {
 			// vitne1 er ikke lagt til
 			theWitness2 = knotDAO.getEmptyWitness();
 		}else{
-			theWitness2 = knotDAO.getRuss(witness2);
+			theWitness2 = russDAO.getUserRussFromId(witness2);
 		}
 		
 		//legge alt inn i databasen
@@ -127,7 +135,7 @@ public class KnotService {
 		
 		
 		//Completed theCompletedKnot = knotDAO.getCompletedKnot(theCompletedKnotId);
-		Russ theWitness = knotDAO.getRuss(witness);
+		Russ theWitness = russDAO.getUserRussFromId(witness);
 		
 		try{
 			//Russ witness1 = theCompletedKnot.getWitnessId1();

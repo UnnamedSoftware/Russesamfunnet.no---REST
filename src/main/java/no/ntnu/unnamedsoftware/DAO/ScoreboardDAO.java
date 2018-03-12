@@ -29,9 +29,12 @@ public class ScoreboardDAO {
 	@Autowired
 	ObjectMapper mapper;
 	
+	@Autowired
+	SchoolDAO schoolDAO;
+	
 	@Transactional
 	public List<Scoreboard> getScoreboardTop10(Long theRussId) {
-		Long theSchoolId = this.getSchoolId(theRussId);
+		Long theSchoolId = schoolDAO.getSchoolId(theRussId);
 		List<Scoreboard> scoreboard = null;
 		try(Session currentSession = sessionFactory.openSession()){
 			Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.schoolId.schoolId = :test) ORDER by points desc")
@@ -50,16 +53,12 @@ public class ScoreboardDAO {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
 		return scoreboard;
-		
-
 	}
-		
 	
 	@Transactional
 	public Integer getRussPosition(Long theRussId) {
-		Long theSchoolId = this.getSchoolId(theRussId);
+		Long theSchoolId = schoolDAO.getSchoolId(theRussId);
 		int count = 0;
 		try(Session currentSession = sessionFactory.openSession()){
 			Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.schoolId.schoolId = :schoolId) ORDER by points desc")
@@ -96,34 +95,6 @@ public class ScoreboardDAO {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-
-	
-	
-	@Transactional
-	public Long getSchoolId(Long theRussId) {
-		Long errorCode = new Long(9001);
-		try(Session currentSession = sessionFactory.openSession()){
-			
-			try{
-				Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
-						.setParameter("theRussId", theRussId);
-				Russ test = (Russ) russQuery.uniqueResult();
-				if(test != null) {
-				//	currentSession.close();
-					return test.getSchoolId().getSchoolId();
-				}
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			//currentSession.close();
-			return errorCode;
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return errorCode;
-
 	}
 
 }
