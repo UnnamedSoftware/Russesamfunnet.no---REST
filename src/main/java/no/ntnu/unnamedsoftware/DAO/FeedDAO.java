@@ -73,6 +73,7 @@ public class FeedDAO {
 		Russ russ = russDAO.getUserRuss(russId);
 		School school = this.getSchoolObject(russId);
 		feed.setRussId(russ);
+		feed.setSchoolId(school);
 		currentSession.save(feed);
 		return getSchoolFeed(russId);
 		} catch(Exception e) {
