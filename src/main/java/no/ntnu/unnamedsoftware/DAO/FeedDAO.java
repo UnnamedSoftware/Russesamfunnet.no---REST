@@ -30,21 +30,24 @@ public class FeedDAO {
 	@Transactional
 	public List<Feed> getSchoolFeed(Long theRussId) {
 		Long theSchoolId = this.getSchoolId(theRussId);
-		Session currentSession = sessionFactory.openSession();
-		Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :schoolId)")
-				.setParameter("schoolId", theSchoolId);
-		List<Feed> feed = feedQuery.list();
-		if(feed == null) System.out.println("DEADBEEF");
-		currentSession.close();
+		List<Feed> feed = null;
+		try(Session currentSession = sessionFactory.openSession()){
+			Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :schoolId)")
+					.setParameter("schoolId", theSchoolId);
+			feed = feedQuery.list();
+			if(feed == null) System.out.println("DEADBEEF");
+			return feed;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		return feed;
 	}
 	
 	
 	@Transactional
 	public Long getSchoolId(Long theRussId) {
-		Session currentSession = sessionFactory.openSession();
 		Long errorCode = new Long(9001);
-		try{
+		try(Session currentSession = sessionFactory.openSession()){
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
 					.setParameter("theRussId", theRussId);
 			Russ test = (Russ) russQuery.uniqueResult();
@@ -54,7 +57,6 @@ public class FeedDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		currentSession.close();
 		return errorCode;
 	}
 

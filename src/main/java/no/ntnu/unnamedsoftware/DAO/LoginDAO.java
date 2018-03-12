@@ -24,62 +24,50 @@ public class LoginDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-
-	
 	@Transactional
 	public Russ getRuss(String email) {
-		Session currentSession = sessionFactory.openSession();
-		//String passwordInJsonString = null;
-		Russ russ = null; 
-		try {
-			Query russQuery = currentSession.createQuery("from Russ r where r.email =:email")
-					.setParameter("email", email);
-		    russ = (Russ) russQuery.uniqueResult();
-			
-		}catch(Exception e) {
-			e.getStackTrace();
+		Russ russ = null;
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createQuery("from Russ r where r.email =:email").setParameter("email",
+					email);
+			russ = (Russ) russQuery.uniqueResult();
+
+			return russ;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		currentSession.close();
 		return russ;
 	}
 	
 	@Transactional
 	public Boolean checkUser(String userId) {
-		Session currentSession = sessionFactory.openSession();
-		//String passwordInJsonString = null;
 		boolean dbUserId = false;
-		try {
+		try(Session currentSession = sessionFactory.openSession()){
 			Query russQuery = currentSession.createQuery("from Russ r where (r.userId = :userId)")
 					.setParameter("userId", userId);
 		    Russ russ = (Russ) russQuery.uniqueResult();
 		    if(russ != null) {
 		    	dbUserId = true;
 		    }
-			
-		}catch(Exception e) {
-			e.getStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		currentSession.close();
 		return dbUserId;
 	}
 	
 	@Transactional
 	public Boolean checkUserFB(String userId) {
-		Session currentSession = sessionFactory.openSession();
-		//String passwordInJsonString = null;
 		boolean dbUserId = false;
-		try {
+		try(Session currentSession = sessionFactory.openSession()) {
 			Query russQuery = currentSession.createQuery("from Russ r where (r.russIdAlt = :userId)")
 					.setParameter("userId", userId);
 		    Russ russ = (Russ) russQuery.uniqueResult();
 		    if(russ != null) {
 		    	dbUserId = true;
 		    }
-			
 		}catch(Exception e) {
 			e.getStackTrace();
 		}
-		currentSession.close();
 		return dbUserId;
 	}
 
