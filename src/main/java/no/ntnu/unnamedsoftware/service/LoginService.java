@@ -20,8 +20,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.LoginDAO;
 import no.ntnu.unnamedsoftware.DAO.RussDAO;
+import no.ntnu.unnamedsoftware.entity.AccessTokenCreation;
+import no.ntnu.unnamedsoftware.entity.LoginObjectToReturn;
 import no.ntnu.unnamedsoftware.entity.LoginStatus;
 import no.ntnu.unnamedsoftware.entity.Russ;
+
+import org.jasypt.*;
+import org.jasypt.util.text.BasicTextEncryptor;
 
 @Service
 public class LoginService {
@@ -34,6 +39,72 @@ public class LoginService {
 
 	@Autowired
 	ObjectMapper mapper;
+	
+	@Autowired
+	EncryptorAndDecryptor encAndDec;
+	
+	public String loginAndGenerateAccessToken(String email, String password) {
+		
+		// Check to see if user exists
+		try {
+			Russ russInDB = loginDAO.getRuss(email);
+			if (russInDB == null) {
+				return "User not in db";
+			} 
+			else if (password.equals(russInDB.getRussPassword())) {
+				// Login success 
+				String loginStatus = "Login success";
+				
+				// (Long russId, String email, String firstName, String lastName, int russYear) {
+				AccessTokenCreation atc = new AccessTokenCreation(russInDB.getRussId(), russInDB.getEmail(), russInDB.getFirstName(), russInDB.getLastName(), russInDB.getRussYear());
+				
+				
+				//String JSONrussTest = getJsonString(russInDB);
+				//System.out.println("***********" +  JSONrussTest);
+				String JSONatc = getJsonString(atc);
+				//String myPassword = "russesamfunnet";
+				//BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+				//textEncryptor.setPassword(myPassword);
+				//String accessToken = textEncryptor.encrypt(JSONruss);
+				String accessToken = encAndDec.encrypt(JSONatc);
+				int expiresInNoOfDays = 7;
+				LoginObjectToReturn loginObjToReturn = new LoginObjectToReturn(loginStatus, accessToken, expiresInNoOfDays);
+				return getJsonString(loginObjToReturn);	
+				} else {
+					System.out.println(russInDB.getRussPassword());
+					return "Incorrect password";
+				}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "Error";
+	}
+	
+	public String decryptedAccessToken(String accessToken) {
+		try {
+			String[] parts = accessToken.split(" ");
+			StringBuilder sb = new StringBuilder();
+			int i = 0;
+			for(String p: parts) {
+				if(i < 1) {
+					sb.append(p);
+				}
+				else{
+					sb.append("+"+p);
+				}
+				i++;
+			}
+			String tokenFixed = sb.toString();
+			String decrypted = encAndDec.decrypt(tokenFixed);
+			System.out.println(decrypted);
+			return decrypted;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "Error";		
+	}
+	
 
 	public String Login(String email, String password) {
 
@@ -83,36 +154,30 @@ public class LoginService {
 		Boolean userIsInDb = false;
 		JSONObject jsonObject = new JSONObject();
 		try {
-			String url = "https://graph.facebook.com/debug_token?input_token=" + accessToken + "&access_token="
-					+ appToken;
-			System.out.println(accessToken);
+			String url = "https://graph.facebook.com/debug_token?input_token=" + accessToken 
+					+ "&access_token=" + appToken;
 			String JSONString = this.uRLConnectionReader(url);
 
 			JSONObject jsonObj = new JSONObject(JSONString);
-			System.out.println("WTF?");
 			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
-			System.out.println("WTF?");
 			String userId = jsonObj2.getString("user_id");
 			app_id = jsonObj2.getString("app_id");
-			System.out.println(userId);
 			userIsInDb = loginDAO.checkUser(userId);
-			//russIdAlt
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (app_id.equals(appID) && userIsInDb == false) {
-			// createUser();
 			return getJsonString(new LoginStatus("User not in db"));
 		} else if (app_id.equals(appID)) {
 			return getJsonString(new LoginStatus("Login success"));
-
 		} else {
 			return getJsonString(new LoginStatus("Wrong appToken"));
 		}
 
 	}
-
+	
+	//Retieves the data from the given url string.
 	public String uRLConnectionReader(String urlString) {
 		try {
 			System.out.println(urlString);
@@ -120,11 +185,8 @@ public class LoginService {
 			con.setRequestMethod("GET");
 			con.setDoOutput(true);
 			con.connect();
-			System.out.println("connection");
 			InputStreamReader inputStream = new InputStreamReader(con.getInputStream());
-			System.out.println("Stream reader");
 			BufferedReader reader = new BufferedReader(inputStream);
-			System.out.println("Buffered reader");
 			StringBuilder results = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -134,7 +196,7 @@ public class LoginService {
 			return results.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "ERROR: Something went wrong";
 		}
-		return "ERROR: Something went wrong";
 	}
 }

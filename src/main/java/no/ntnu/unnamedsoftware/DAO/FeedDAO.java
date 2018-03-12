@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.entity.Feed;
 import no.ntnu.unnamedsoftware.entity.Russ;
+import no.ntnu.unnamedsoftware.entity.School;
 
 @Repository
 public class FeedDAO {
@@ -25,26 +26,32 @@ public class FeedDAO {
 	private SessionFactory sessionFactory;
 	
 	@Autowired
+	RussDAO russDAO;
+	
+	@Autowired
 	ObjectMapper mapper;
 	
 	@Transactional
 	public List<Feed> getSchoolFeed(Long theRussId) {
 		Long theSchoolId = this.getSchoolId(theRussId);
-		Session currentSession = sessionFactory.openSession();
-		Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :schoolId)")
-				.setParameter("schoolId", theSchoolId);
-		List<Feed> feed = feedQuery.list();
-		if(feed == null) System.out.println("DEADBEEF");
-		currentSession.close();
+		List<Feed> feed = null;
+		try(Session currentSession = sessionFactory.openSession()){
+			Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :schoolId)")
+					.setParameter("schoolId", theSchoolId);
+			feed = feedQuery.list();
+			if(feed == null) System.out.println("DEADBEEF");
+			return feed;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		return feed;
 	}
 	
 	
 	@Transactional
 	public Long getSchoolId(Long theRussId) {
-		Session currentSession = sessionFactory.openSession();
 		Long errorCode = new Long(9001);
-		try{
+		try(Session currentSession = sessionFactory.openSession()){
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
 					.setParameter("theRussId", theRussId);
 			Russ test = (Russ) russQuery.uniqueResult();
@@ -54,8 +61,45 @@ public class FeedDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		currentSession.close();
 		return errorCode;
 	}
+	
+	public List<Feed> postFeed(Long russId, String message)
+	{	
+		Session currentSession = sessionFactory.openSession();
+		Feed feed = new Feed();
+		feed.setMessage(message);
+		Russ russ = russDAO.getUserRuss(russId);
+		School school = this.getSchoolObject(russId);
+		feed.setRussId(russ);
+		
+		
+		
+		currentSession.save(feed);
+		currentSession.close();
+		
+		return getSchoolFeed(russId);
+		
+	}
+	
+	@Transactional
+	public School getSchoolObject(Long theRussId) {
+		Session currentSession = sessionFactory.openSession();
+		Russ russ = null;
+		try{
+			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
+					.setParameter("theRussId", theRussId);
+			russ = (Russ) russQuery.uniqueResult();
+			if (russ == null)
+			{
+				//do something to prevent nullPointer
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		currentSession.close();
+		return russ.getSchoolId();
+	}
+
 
 }

@@ -24,6 +24,16 @@ public class LoginController {
 		return loginService.Login(email, password);
 	}
 	
+	@RequestMapping(value="/loginToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String LoginToken(@RequestParam("email") String email, @RequestParam("password") String password) {
+		return loginService.loginAndGenerateAccessToken(email, password);
+	}
+
+	@RequestMapping(value="/decrypt", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String decrypt(@RequestParam("token") String token){
+		return loginService.decryptedAccessToken(token);
+	}
+	
 	@CrossOrigin
 	@RequestMapping(value="/facebookLogin", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String facebookLogin(@RequestParam("accessToken") String accessToken) {

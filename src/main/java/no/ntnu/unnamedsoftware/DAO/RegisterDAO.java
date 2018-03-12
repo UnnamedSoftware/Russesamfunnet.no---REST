@@ -20,82 +20,72 @@ public class RegisterDAO {
 	
 	@Autowired
 	ObjectMapper mapper;
+	
 	@Transactional
 	public String registerUser(String userId, Long schoolId, String firstName, String lastName)
 	{
-		System.out.println("Success");
 		School school = this.getSchool(schoolId);
 		if(school == null)
 		{
 			return "There is no school with that name";
 		}
-		Session currentSession = sessionFactory.openSession();
-		Russ russ = new Russ();
-	//	russ.setRussId(new Long(userId));
-		System.out.println(russ.getRussId());
-		russ.setSchoolId(school);
-		russ.setFirstName(firstName);
-		russ.setLastName(lastName);
-		russ.setRussRole("Russ");
-		russ.setRussStatus("false");
-		
-		currentSession.save(russ);
-	//	currentSession.getTransaction().commit();
-		currentSession.close();
-				
-		
-		return "User successfully registered";
+		try(Session currentSession = sessionFactory.openSession()){
+			Russ russ = new Russ();
+			russ.setSchoolId(school);
+			russ.setFirstName(firstName);
+			russ.setLastName(lastName);
+			russ.setRussRole("Russ");
+			russ.setRussStatus("false");
+			currentSession.save(russ);
+			return "User successfully registered";
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "registerUser error";
 	}
 	
 	@Transactional
 	public String registerUserFB(String userId, Long schoolId, String firstName, String lastName)
 	{
-		
-		
-		System.out.println("Success");
-		
 		Long userIdOnFacebook = Long.parseLong(userId);
-		
 		School school = this.getSchool(schoolId);
 		if(school == null)
 		{
 			return "There is no school with that name";
 		}
-		Session currentSession = sessionFactory.openSession();
-		Russ russ = new Russ();
-	//	russ.setRussId(new Long(userId));
-		System.out.println(russ.getRussId());
-		russ.setRussIdAlt(userIdOnFacebook);
-		russ.setSchoolId(school);
-		russ.setFirstName(firstName);
-		russ.setLastName(lastName);
-		russ.setRussRole("Russ");
-		russ.setRussStatus("false");
-		
-		currentSession.save(russ);
-	//	currentSession.getTransaction().commit();
-		currentSession.close();
-				
-		
-		return "User successfully registered";
+		try(Session currentSession = sessionFactory.openSession()){
+			Russ russ = new Russ();
+			russ.setRussIdAlt(userIdOnFacebook);
+			russ.setSchoolId(school);
+			russ.setFirstName(firstName);
+			russ.setLastName(lastName);
+			russ.setRussRole("Russ");
+			russ.setRussStatus("false");
+			currentSession.save(russ);
+			return "User successfully registered";
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "registerUserFB error";
 	}
 	
-		@Transactional
-		public School getSchool(Long schoolId) {
-			Session currentSession = sessionFactory.openSession();
-			School school = null;
-			try{
+	@Transactional
+	public School getSchool(Long schoolId) {
+		School school = null;
+		try(Session currentSession = sessionFactory.openSession()){
+			try {
 				Query schoolQuery = currentSession.createQuery("from School s where s.schoolId = :schoolId")
 						.setParameter("schoolId", schoolId);
 				school = (School) schoolQuery.uniqueResult();
 				System.out.println(school.getSchoolName());
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-				currentSession.close();
-				return school;
-			
+			return school;
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+		return school;
 	}
-
+}
 

@@ -29,23 +29,21 @@ public class SchoolService {
 	
 	public String getAllSchools()
 	{
-	
-
 	return writeAsJsonString(schoolDAO.getAllSchools());
-	
 	}
+	
 	
 	public String getMunicipalitySchools(String municipality)
 	{
 		return writeAsJsonString(schoolDAO.getMunicipalitySchools(municipality));
-	
 	}
+	
 	
 	public String getLocationSchools(String location)
 	{
 		return writeAsJsonString(schoolDAO.getLocationSchools(location));
-	
 	}
+	
 		
 	public String writeAsJsonString(Object object)
 	{
@@ -53,13 +51,10 @@ public class SchoolService {
 		try {
 			jsonInString = mapper.writeValueAsString(object);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonInString;
