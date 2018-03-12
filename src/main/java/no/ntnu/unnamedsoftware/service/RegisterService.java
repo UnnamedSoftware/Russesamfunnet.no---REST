@@ -69,6 +69,7 @@ public class RegisterService {
 				jsonObject4 = jsonObj3.getJSONObject("age_range");
 				ageRange = jsonObject4.getInt("min");
 				
+				
 				if (app_id.equals(appID) && ageRange >= 17) {
 					loginStatus.setLoginStatus(registerDAO.registerUserFB(userId, schoolId, firstName, lastName));
 					return getJsonString(loginStatus);
