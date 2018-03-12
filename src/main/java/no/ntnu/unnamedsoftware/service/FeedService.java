@@ -42,9 +42,23 @@ public class FeedService {
 		return feedInJsonString;
 	}
 	
-	public void postFeed(Long russId, String message)
+	private String writeAsJsonString(Object object) {
+		String feedInJsonString = null;
+		try {
+			feedInJsonString = mapper.writeValueAsString(object);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return feedInJsonString;
+	}
+	
+	public String postFeed(Long russId, String message)
 	{	
-		feedDAO.postFeed(russId, message); 
+		return writeAsJsonString(feedDAO.postFeed(russId, message)); 
 	
 		
 	}

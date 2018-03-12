@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,11 +27,11 @@ public class FeedController {
 		
 	}
 	
-	@RequestMapping(value="/postFeedToSchool", produces=MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	@RequestMapping(value="/postFeedToSchool", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@ResponseBody
-	public void postfeed(@RequestParam("russId") Long theRussId,@RequestParam("message") String message) {
-		feedService.postFeed(theRussId, message);
+	public String postfeed(@RequestParam("russId") Long theRussId,@RequestParam("message") String message) {
+		return feedService.postFeed(theRussId, message);
 		
 	}
 

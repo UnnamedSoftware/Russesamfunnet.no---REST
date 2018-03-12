@@ -64,7 +64,7 @@ public class FeedDAO {
 		return errorCode;
 	}
 	@Transactional
-	public void postFeed(Long russId, String message)
+	public Feed postFeed(Long russId, String message)
 	{	
 		try(Session currentSession = sessionFactory.openSession()){
 		Feed feed = new Feed();
@@ -75,8 +75,10 @@ public class FeedDAO {
 		feed.setRussId(russ);
 		feed.setSchoolId(school);
 		currentSession.save(feed);
+		return feed;
 		} catch(Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 	
