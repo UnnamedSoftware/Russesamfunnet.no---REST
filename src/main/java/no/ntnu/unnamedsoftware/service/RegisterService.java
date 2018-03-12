@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.RegisterDAO;
+import no.ntnu.unnamedsoftware.entity.LoginStatus;
 
 @Service
 public class RegisterService {
@@ -33,7 +34,7 @@ public class RegisterService {
 	RegisterDAO registerDAO;
 	
 	public String facebookRegister(String accessToken,String birthdate, Long schoolId) {
-
+			LoginStatus loginStatus = new LoginStatus();
 			String userId;
 			String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
 			String appID = "291199641408779";
@@ -49,33 +50,35 @@ public class RegisterService {
 			try {
 				String url = "https://graph.facebook.com/debug_token?input_token=" + accessToken + "&access_token="
 						+ appToken;
-				System.out.println(accessToken);
 				String JSONString = this.uRLConnectionReader(url);
 
 				JSONObject jsonObj = new JSONObject(JSONString);
 				JSONObject jsonObj2 = jsonObj.getJSONObject("data");
 				userId = jsonObj2.getString("user_id");
-				System.out.println(userId);
 				app_id = jsonObj2.getString("app_id");
-				System.out.println(app_id);
 				String newUrl = "https://graph.facebook.com/me?fields=id,first_name,last_name,age_range&access_token=" + accessToken;
 				JSONObject jsonObj3 = new JSONObject(this.uRLConnectionReader(newUrl));
 				firstName = jsonObj3.getString("first_name");
 				lastName = jsonObj3.getString("last_name");
-				//This is temporary, supposed to get birthday from facebook
+				if(birthdate != null)
+				{
 				birthday = birthdate;
-				System.out.println(firstName);
-				System.out.println(lastName);
+				}else {
+					//get birthday from facebook.
+				}
 				jsonObject4 = jsonObj3.getJSONObject("age_range");
 				ageRange = jsonObject4.getInt("min");
-				System.out.println(ageRange);
+				
 				
 				if (app_id.equals(appID) && ageRange >= 17) {
-					return registerDAO.registerUserFB(userId, schoolId, firstName, lastName);
+					loginStatus.setLoginStatus(registerDAO.registerUserFB(userId, schoolId, firstName, lastName));
+					return getJsonString(loginStatus);
+							
 				} else {
 					if(ageRange < 17)
 					{
-						return "User is younger than 17";
+						loginStatus.setLoginStatus("User is younger than 17");
+						return getJsonString(loginStatus);
 					}else {
 						
 					System.out.println("Access token appId is not the same as application appId");
@@ -83,19 +86,19 @@ public class RegisterService {
 					System.out.println(appID);
 					System.out.println("Access token appId");
 					System.out.println(app_id);
-					return "Must log in through the facebook button in the app.";
+					loginStatus.setLoginStatus("Must log in through the facebook button in the app.");
+					return getJsonString(loginStatus);
 					}
 				}
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				return e.getStackTrace().toString();
-			
+				loginStatus.setLoginStatus("Error: something went wrong.");
+				return getJsonString(loginStatus);
 		}
-
 	}
 	
-	
+	//Retieves the data from the given url string.
 	public String uRLConnectionReader(String urlString) {
 		try {
 			System.out.println(urlString);
@@ -103,11 +106,8 @@ public class RegisterService {
 			con.setRequestMethod("GET");
 			con.setDoOutput(true);
 			con.connect();
-			System.out.println("connection");
 			InputStreamReader inputStream = new InputStreamReader(con.getInputStream());
-			System.out.println("Stream reader");
 			BufferedReader reader = new BufferedReader(inputStream);
-			System.out.println("Buffered reader");
 			StringBuilder results = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -117,8 +117,21 @@ public class RegisterService {
             return results.toString();
         } catch (Exception e) {
             e.printStackTrace();
+            return "ERROR: Something went wrong";
         }
-        return "ERROR: Something went wrong";
 	}
-
+	
+	public String getJsonString(Object object) {
+		String objectInJsonString = null;
+		try {
+			objectInJsonString = mapper.writeValueAsString(object);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return objectInJsonString;
+	}
 }

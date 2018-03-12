@@ -26,5 +26,13 @@ public class FeedController {
 		return feedService.getSchoolFeed(theRussId);
 		
 	}
+	
+	@RequestMapping(value="/postFeed", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String postfeed(@RequestParam("russId") Long theRussId,@RequestParam("message") String message) {
+		return feedService.postFeed(theRussId, message);
+		
+	}
 
 }
