@@ -63,30 +63,28 @@ public class FeedDAO {
 		}
 		return errorCode;
 	}
-	
+	@Transactional
 	public List<Feed> postFeed(Long russId, String message)
 	{	
-		Session currentSession = sessionFactory.openSession();
+		try(Session currentSession = sessionFactory.openSession()){
 		Feed feed = new Feed();
 		feed.setMessage(message);
+		feed.setType("School");
 		Russ russ = russDAO.getUserRuss(russId);
 		School school = this.getSchoolObject(russId);
 		feed.setRussId(russ);
-		
-		
-		
 		currentSession.save(feed);
-		currentSession.close();
-		
 		return getSchoolFeed(russId);
-		
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Transactional
 	public School getSchoolObject(Long theRussId) {
-		Session currentSession = sessionFactory.openSession();
 		Russ russ = null;
-		try{
+		try(Session currentSession = sessionFactory.openSession()){
 			Query russQuery = currentSession.createQuery("from Russ r where r.russId = :theRussId")
 					.setParameter("theRussId", theRussId);
 			russ = (Russ) russQuery.uniqueResult();
@@ -97,7 +95,6 @@ public class FeedDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		currentSession.close();
 		return russ.getSchoolId();
 	}
 

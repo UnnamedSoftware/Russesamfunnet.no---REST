@@ -27,7 +27,7 @@ public class FeedController {
 		
 	}
 	
-	@RequestMapping(value="/postFeed", produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/postFeedToSchool", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@ResponseBody
 	public String postfeed(@RequestParam("russId") Long theRussId,@RequestParam("message") String message) {
