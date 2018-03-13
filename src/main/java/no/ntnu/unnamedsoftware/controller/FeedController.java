@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.ntnu.unnamedsoftware.service.AccessTokenDecrypterAndParser;
 import no.ntnu.unnamedsoftware.service.FeedService;
 @CrossOrigin
 @Controller
@@ -17,6 +18,9 @@ public class FeedController {
 	
 	@Autowired
 	private FeedService feedService;
+	
+	@Autowired
+	private AccessTokenDecrypterAndParser tokenParser;
 	
 
 	@RequestMapping(value="/schoolFeed", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -31,6 +35,24 @@ public class FeedController {
 	@Transactional
 	@ResponseBody
 	public String postfeed(@RequestParam("russId") Long theRussId,@RequestParam("message") String message) {
+		return feedService.postFeed(theRussId, message);
+		
+	}
+	
+	@RequestMapping(value="/schoolFeedToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String getfeedToken(@RequestParam String accessToken) {
+		Long theRussId = tokenParser.getRussId(accessToken);
+		return feedService.getSchoolFeed(theRussId);
+		
+	}
+	
+	@RequestMapping(value="/postFeedToSchoolToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String postfeedToken(@RequestParam String accessToken, @RequestParam String message) {
+		Long theRussId = tokenParser.getRussId(accessToken);
 		return feedService.postFeed(theRussId, message);
 		
 	}

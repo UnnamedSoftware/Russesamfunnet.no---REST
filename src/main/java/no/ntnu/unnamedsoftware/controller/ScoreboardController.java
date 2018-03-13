@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.ntnu.unnamedsoftware.service.AccessTokenDecrypterAndParser;
 import no.ntnu.unnamedsoftware.service.RussService;
 import no.ntnu.unnamedsoftware.service.ScoreboardService;
 
@@ -18,6 +19,9 @@ public class ScoreboardController {
 	
 	@Autowired
 	private ScoreboardService scoreboardService;
+	
+	@Autowired
+	private AccessTokenDecrypterAndParser tokenParser;
 	
 	
 	@RequestMapping(value="/scoreboardTop10", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -32,6 +36,22 @@ public class ScoreboardController {
 	@Transactional
 	public String getSchoolScoreboard(@RequestParam Long theRussId)
 	{
+		return scoreboardService.getSchoolScoreboard(theRussId);
+	}
+	
+	@RequestMapping(value="/scoreboardTop10Token", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	
+	public String getScoreboardTop10Token(@RequestParam String accessToken) {
+		Long theRussId = tokenParser.getRussId(accessToken);
+		return scoreboardService.getScoreboardTop10(theRussId);
+	}
+	
+	@RequestMapping(value="/schoolScoreboardToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getSchoolScoreboardToken(@RequestParam String accessToken)
+	{
+		Long theRussId = tokenParser.getRussId(accessToken);
 		return scoreboardService.getSchoolScoreboard(theRussId);
 	}
 

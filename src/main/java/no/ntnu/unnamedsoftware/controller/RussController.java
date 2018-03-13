@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.ntnu.unnamedsoftware.service.AccessTokenDecrypterAndParser;
 import no.ntnu.unnamedsoftware.service.RussService;
 
 
@@ -26,6 +27,9 @@ public class RussController
 {
 	@Autowired
 	private RussService russService;
+	
+	@Autowired
+	private AccessTokenDecrypterAndParser tokenParser;
 	
 	
 	@RequestMapping(value="/russ", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -40,6 +44,13 @@ public class RussController
 	@Transactional
 	public String getUserRuss(@RequestParam Long russId) {
 		
+		return russService.getUserRuss(russId);
+	}
+	
+	@RequestMapping(value="/userRussToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getUserRussToken(@RequestParam String accessToken) {
+		Long russId = tokenParser.getRussId(accessToken);		
 		return russService.getUserRuss(russId);
 	}
     

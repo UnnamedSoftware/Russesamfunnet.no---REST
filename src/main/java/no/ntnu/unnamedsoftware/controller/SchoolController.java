@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.ntnu.unnamedsoftware.entity.*;
+import no.ntnu.unnamedsoftware.service.AccessTokenDecrypterAndParser;
 import no.ntnu.unnamedsoftware.service.SchoolService;
 
 @CrossOrigin
@@ -29,7 +30,6 @@ public class SchoolController {
 	
 	@Autowired
 	private SchoolService schoolService;
-	
 
 	@RequestMapping(value="/getAllSchools", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.ntnu.unnamedsoftware.service.AccessTokenDecrypterAndParser;
 import no.ntnu.unnamedsoftware.service.LoginService;
 
 @CrossOrigin
@@ -17,6 +18,12 @@ public class LoginController {
 	
 	@Autowired
 	private LoginService loginService;
+	
+	@Autowired
+	private AccessTokenDecrypterAndParser accesTokenParser;
+	
+	@Autowired
+	private AccessTokenDecrypterAndParser tokenParser;
 	
 	
 	@RequestMapping(value="/login", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -31,7 +38,7 @@ public class LoginController {
 
 	@RequestMapping(value="/decrypt", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String decrypt(@RequestParam("token") String token){
-		return loginService.decryptedAccessToken(token);
+		return accesTokenParser.decryptedAccessToken(token);
 	}
 	
 	@CrossOrigin
