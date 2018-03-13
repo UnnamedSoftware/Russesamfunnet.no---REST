@@ -43,7 +43,7 @@ public class AccessTokenDecrypterAndParser {
 	public Long getRussId(String accessToken)
 	{
 		JSONObject token = getJSONObjectFromString(decryptedAccessToken(accessToken));
-		return (Long) token.get("russId");
+		return token.getLong("russId");
 	}
 
 }
