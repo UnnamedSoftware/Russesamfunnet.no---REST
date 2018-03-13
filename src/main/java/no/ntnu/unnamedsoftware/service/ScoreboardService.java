@@ -29,38 +29,42 @@ public class ScoreboardService {
 	@Autowired
 	ObjectMapper mapper;
 
-	public String getScoreboard(Long theRussId) {
-		List<Scoreboard> scoreboard = this.getScoreboardTop10(theRussId);
+	public String getScoreboardTop10(Long theRussId) {
+		List<Scoreboard> scoreboard = scoreboardDAO.getSchoolScoreboard(theRussId);
+		ArrayList<Scoreboard> top10 = new ArrayList<>();
+		int countTo10 = 0;
 		Iterator it = scoreboard.iterator();
+		while (it.hasNext() && countTo10 <= 10) {
+			top10.add((Scoreboard) it.next());
+			countTo10++;
+		}
+
+		return this.writeAsJsonString(getScoreboardPosition(top10, theRussId));
+
+	}
+
+	private List<ScoreboardPosition> getScoreboardPosition(List<Scoreboard> top10, Long theRussId) {
+		Iterator it = top10.iterator();
 		ArrayList<ScoreboardPosition> scoreboardPosition = new ArrayList<>();
 		boolean russIsInTop10 = false;
 		int position = 1;
 		while (it.hasNext()) {
 			Scoreboard tempScore = (Scoreboard) it.next();
-			scoreboardPosition.add(
-					new ScoreboardPosition(
-							  tempScore.getScoreboardId()
-							, tempScore.getPoints()
-							, position
-							, tempScore.getRussId()
-							));	
+			scoreboardPosition.add(new ScoreboardPosition(tempScore.getScoreboardId(), tempScore.getPoints(), position,
+					tempScore.getRussId()));
 			position++;
-			
 			if (tempScore.getRussId().getRussId() == theRussId) {
 				russIsInTop10 = true;
 			}
 		}
+
 		if (russIsInTop10 == false) {
 			Scoreboard temp = this.getSingleScoreboard(theRussId);
-			scoreboardPosition.add(
-					new ScoreboardPosition(
-							  temp.getScoreboardId()
-							, temp.getPoints()
-							, this.getRussPosition(theRussId)
-							, temp.getRussId()
-							));	
+			scoreboardPosition.add(new ScoreboardPosition(temp.getScoreboardId(), temp.getPoints(),
+					this.getRussPosition(theRussId), temp.getRussId()));
+
 		}
-		return this.writeAsJsonString(scoreboardPosition);
+		return scoreboardPosition;
 
 	}
 
@@ -78,17 +82,16 @@ public class ScoreboardService {
 		return scoreboardInJsonString;
 	}
 
-	public List<Scoreboard> getScoreboardTop10(Long theRussId) {
-		return scoreboardDAO.getScoreboardTop10(theRussId);
-	}
-
 	public Integer getRussPosition(Long theRussId) {
 		return scoreboardDAO.getRussPosition(theRussId);
 	}
-	
-	private Scoreboard getSingleScoreboard(Long theRussId)
-	{
+
+	private Scoreboard getSingleScoreboard(Long theRussId) {
 		return scoreboardDAO.getScoreboard(theRussId);
+	}
+
+	public String getSchoolScoreboard(Long theRussId) {
+		return writeAsJsonString(getScoreboardPosition(scoreboardDAO.getSchoolScoreboard(theRussId), theRussId));
 	}
 
 }

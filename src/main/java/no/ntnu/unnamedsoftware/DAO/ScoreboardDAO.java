@@ -33,23 +33,16 @@ public class ScoreboardDAO {
 	SchoolDAO schoolDAO;
 	
 	@Transactional
-	public List<Scoreboard> getScoreboardTop10(Long theRussId) {
+	public List<Scoreboard> getSchoolScoreboard(Long theRussId) {
 		Long theSchoolId = schoolDAO.getSchoolId(theRussId);
 		List<Scoreboard> scoreboard = null;
 		try(Session currentSession = sessionFactory.openSession()){
 			Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.schoolId.schoolId = :test) ORDER by points desc")
 					.setParameter("test", theSchoolId);
 			scoreboard = scoreboardQuery.list();
-			ArrayList<Scoreboard> top10 = new ArrayList<>();
-			int countTo10 = 0;
-			Iterator it = scoreboard.iterator();
-			while(it.hasNext() && countTo10 <= 10)
-			{
-				top10.add((Scoreboard) it.next());
-				countTo10 ++;
-			}
+			
 			//currentSession.close();
-			return top10;
+			return scoreboard;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

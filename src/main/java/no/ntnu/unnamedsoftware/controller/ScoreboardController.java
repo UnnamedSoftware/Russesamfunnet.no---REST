@@ -25,7 +25,14 @@ public class ScoreboardController {
 	
 	public String getScoreboardTop10(@RequestParam Long theRussId) {
 		
-		return scoreboardService.getScoreboard(theRussId);
+		return scoreboardService.getScoreboardTop10(theRussId);
+	}
+	
+	@RequestMapping(value="/schoolScoreboard", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getSchoolScoreboard(@RequestParam Long theRussId)
+	{
+		return scoreboardService.getSchoolScoreboard(theRussId);
 	}
 
 }
