@@ -50,7 +50,10 @@ public class ScoreboardService {
 		int position = 1;
 		while (it.hasNext()) {
 			Scoreboard tempScore = (Scoreboard) it.next();
-			scoreboardPosition.add(new ScoreboardPosition(tempScore.getScoreboardId(), tempScore.getPoints(), position,
+			scoreboardPosition.add(new ScoreboardPosition(
+					tempScore.getScoreboardId(),
+					tempScore.getPoints(),
+					position,
 					tempScore.getRussId()));
 			position++;
 			if (tempScore.getRussId().getRussId() == theRussId) {
@@ -83,11 +86,25 @@ public class ScoreboardService {
 	}
 
 	public Integer getRussPosition(Long theRussId) {
-		return scoreboardDAO.getRussPosition(theRussId);
+		int count = 1;
+		
+		Iterator it = scoreboardDAO.getSchoolScoreboard(theRussId).iterator();
+		while(it.hasNext())
+		{
+			Scoreboard tempScoreboard = (Scoreboard) it.next();
+			if(tempScoreboard.getRussId().getRussId() == theRussId)
+			{
+				//currentSession.close();
+				return count;
+			}
+			count++;
+		}
+		//currentSession.close();
+		return count;
 	}
 
 	private Scoreboard getSingleScoreboard(Long theRussId) {
-		return scoreboardDAO.getScoreboard(theRussId);
+		return scoreboardDAO.getSingleScoreboard(theRussId);
 	}
 
 	public String getSchoolScoreboard(Long theRussId) {

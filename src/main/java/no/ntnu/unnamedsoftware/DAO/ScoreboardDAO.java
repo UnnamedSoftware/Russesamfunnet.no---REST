@@ -48,36 +48,9 @@ public class ScoreboardDAO {
 		}
 		return scoreboard;
 	}
-	
+
 	@Transactional
-	public Integer getRussPosition(Long theRussId) {
-		Long theSchoolId = schoolDAO.getSchoolId(theRussId);
-		int count = 0;
-		try(Session currentSession = sessionFactory.openSession()){
-			Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.schoolId.schoolId = :schoolId) ORDER by points desc")
-					.setParameter("schoolId", theSchoolId);
-			List<Scoreboard> scoreboard = scoreboardQuery.list();
-			Iterator it = scoreboard.iterator();
-			while(it.hasNext())
-			{
-				Scoreboard tempScoreboard = (Scoreboard) it.next();
-				if(tempScoreboard.getRussId().getRussId() == theRussId)
-				{
-					//currentSession.close();
-					return count;
-				}
-				count++;
-			}
-			//currentSession.close();
-			return count;
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
-	
-	@Transactional
-	public Scoreboard getScoreboard(Long theRussId) {
+	public Scoreboard getSingleScoreboard(Long theRussId) {
 		try(Session currentSession = sessionFactory.openSession()){
 			Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId.russId = :russId)")
 				.setParameter("russId", theRussId);
