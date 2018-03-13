@@ -44,6 +44,11 @@ public class SchoolService {
 		return writeAsJsonString(schoolDAO.getLocationSchools(location));
 	}
 	
+	public Long getSchool(String name)
+	{
+		return schoolDAO.getSchool(name).getSchoolId();
+	}
+	
 		
 	public String writeAsJsonString(Object object)
 	{

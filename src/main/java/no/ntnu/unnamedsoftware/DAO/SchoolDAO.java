@@ -95,5 +95,21 @@ public class SchoolDAO {
 		}
 		return errorCode;
 	}
+	
+	@Transactional
+	public School getSchool(String schoolName) {
+		Long errorCode = new Long(9001);
+		try(Session currentSession = sessionFactory.openSession()){
+			Query schoolQuery = currentSession.createQuery("from School s where s.schoolName = :schoolName")
+					.setParameter("schoolName", schoolName);
+			School school = (School) schoolQuery.uniqueResult();
+			return school;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
 
 }

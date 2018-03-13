@@ -33,7 +33,11 @@ public class RegisterService {
 	@Autowired
 	RegisterDAO registerDAO;
 	
-	public String facebookRegister(String accessToken,String birthdate, Long schoolId) {
+	@Autowired
+	SchoolService schoolService;
+	
+	public String facebookRegister(String accessToken,String birthdate, String schoolName) {
+			Long schoolId = schoolService.getSchool(schoolName); 
 			LoginStatus loginStatus = new LoginStatus();
 			String userId;
 			String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";

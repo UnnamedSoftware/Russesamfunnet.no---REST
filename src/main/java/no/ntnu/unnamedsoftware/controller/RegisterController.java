@@ -37,7 +37,8 @@ public class RegisterController {
 	ObjectMapper mapper;
 	
 	@RequestMapping(value="/facebookRegister", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String facebookRegister(@RequestParam("accessToken") String accessToken, @RequestParam("birthdate") String birthdate, @RequestParam("schoolId") Long schoolId) {     
-        return registerService.facebookRegister(accessToken, birthdate, schoolId);
+	public String facebookRegister(@RequestParam("accessToken") String accessToken, @RequestParam("birthdate") String birthdate, @RequestParam("schoolId") String schoolId) {     
+        
+		return registerService.facebookRegister(accessToken, birthdate, schoolId);
 	}
 }
