@@ -53,6 +53,13 @@ public class RussController
 		Long russId = tokenParser.getRussId(accessToken);		
 		return russService.getUserRuss(russId);
 	}
+	
+	@RequestMapping(value="/userRussFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getUserRussFacebookToken(@RequestParam String accessToken) {
+		Long russId = tokenParser.decryptFacebookToken(accessToken);		
+		return russService.getUserRuss(russId);
+	}
     
 }
 

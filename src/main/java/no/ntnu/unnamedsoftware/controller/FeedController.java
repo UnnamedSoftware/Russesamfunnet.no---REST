@@ -56,5 +56,23 @@ public class FeedController {
 		return feedService.postFeed(theRussId, message);
 		
 	}
+	
+	@RequestMapping(value="/schoolFeedFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String getfeedFacebookToken(@RequestParam String accessToken) {
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		return feedService.getSchoolFeed(theRussId);
+		
+	}
+	
+	@RequestMapping(value="/postFeedToSchoolFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String postfeedFacebookToken(@RequestParam String accessToken, @RequestParam String message) {
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		return feedService.postFeed(theRussId, message);
+		
+	}
 
 }

@@ -54,5 +54,21 @@ public class ScoreboardController {
 		Long theRussId = tokenParser.getRussId(accessToken);
 		return scoreboardService.getSchoolScoreboard(theRussId);
 	}
+	
+	@RequestMapping(value="/scoreboardTop10FacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	
+	public String getScoreboardTop10FacebookToken(@RequestParam String accessToken) {
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		return scoreboardService.getScoreboardTop10(theRussId);
+	}
+	
+	@RequestMapping(value="/schoolScoreboardFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getSchoolScoreboardFacebookToken(@RequestParam String accessToken)
+	{
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		return scoreboardService.getSchoolScoreboard(theRussId);
+	}
 
 }

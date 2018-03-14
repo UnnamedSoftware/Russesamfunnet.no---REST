@@ -101,4 +101,50 @@ public class KnotController {
 
 		return registered;
 	}
+	
+	@RequestMapping(value="/knotsFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String getKnotsFacebookToken(@RequestParam String accessToken){
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		return knotService.getKnots(theRussId);
+	}
+	
+	@RequestMapping(value="/completedKnotsToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String getCompletedToken(@RequestParam String accessToken){
+		Long theRussId = tokenParser.getRussId(accessToken);
+		return knotService.getCompleted(theRussId);
+	}
+	
+	
+	@RequestMapping(value="/completedKnotsFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String getCompletedFacebookToken(@RequestParam String accessToken){
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		return knotService.getCompleted(theRussId);
+	}
+	
+	@RequestMapping(value="/getKnotsListFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String returnKnotsListFacebookToken(@RequestParam String accessToken){
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		return knotService.getKnotsList(theRussId);
+	}
+	
+	
+	@RequestMapping(value="/registerCompletedKnotFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String registerCompletedKnotFacebookToken(@RequestParam String accessToken, 
+										@RequestParam("knotId") Long theKnotId,
+										@RequestParam("witness1") Long witness1,
+										@RequestParam("witness2") Long witness2){
+		String registered = null;
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		registered = knotService.registerCompletedKnot(theRussId, theKnotId, witness1, witness2);
+
+		return registered;
+	}
+	
+	@RequestMapping(value="/updateKnotFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String updateKnotFacebookToken(@RequestParam String accessToken)
+	{
+		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
+		return "Status: OK";  //knotService.getKnotsList(theRussId);
+	}
+	
 }
