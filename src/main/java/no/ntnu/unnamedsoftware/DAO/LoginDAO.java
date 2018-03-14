@@ -29,7 +29,7 @@ public class LoginDAO {
 		boolean dbUserId = false;
 		try(Session currentSession = sessionFactory.openSession()){
 			Query russQuery = currentSession.createQuery("from Russ r where (r.userId = :userId)")
-					.setParameter("userId", userId);
+					.setParameter("russId", userId);
 		    Russ russ = (Russ) russQuery.uniqueResult();
 		    if(russ != null) {
 		    	dbUserId = true;
