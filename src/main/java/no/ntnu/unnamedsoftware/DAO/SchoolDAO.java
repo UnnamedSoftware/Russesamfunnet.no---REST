@@ -81,6 +81,21 @@ public class SchoolDAO {
 	}
 	
 	@Transactional
+	public School getSchoolObjectFromId(Long schoolId) {
+		School school;
+		try(Session currentSession = sessionFactory.openSession()){
+			Query schoolQuery = currentSession.createQuery("from School s where s.schoolId = :schoolId")
+					.setParameter("schoolId", schoolId);
+			school = (School) schoolQuery.uniqueResult();
+			return school;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	@Transactional
 	public Long getSchoolId(Long theRussId) {
 		Long errorCode = new Long(9001);
 		try(Session currentSession = sessionFactory.openSession()){

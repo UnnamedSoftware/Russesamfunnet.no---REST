@@ -37,7 +37,8 @@ public class RegisterService {
 	SchoolService schoolService;
 	
 	public String facebookRegister(String accessToken,String birthdate, String schoolName) {
-			Long schoolId = schoolService.getSchool(schoolName); 
+			Long schoolId = schoolService.getSchool(schoolName);
+			System.out.println(schoolId);
 			LoginStatus loginStatus = new LoginStatus();
 			String userId;
 			String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
@@ -76,6 +77,7 @@ public class RegisterService {
 				
 				if (app_id.equals(appID) && ageRange >= 17) {
 					loginStatus.setLoginStatus(registerDAO.registerUserFB(userId, schoolId, firstName, lastName));
+					loginStatus.setUserId(Long.valueOf(userId));
 					return getJsonString(loginStatus);
 							
 				} else {

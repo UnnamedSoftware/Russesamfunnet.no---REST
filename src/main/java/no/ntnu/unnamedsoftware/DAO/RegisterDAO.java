@@ -27,7 +27,8 @@ public class RegisterDAO {
 	@Transactional
 	public String registerUser(String userId, Long schoolId, String firstName, String lastName)
 	{
-		School school = schoolDAO.getSchoolObject(schoolId);
+		
+		School school = schoolDAO.getSchoolObjectFromId(schoolId);
 		if(school == null)
 		{
 			return "There is no school with that name";
@@ -51,7 +52,7 @@ public class RegisterDAO {
 	public String registerUserFB(String userId, Long schoolId, String firstName, String lastName)
 	{
 		Long userIdOnFacebook = Long.parseLong(userId);
-		School school = schoolDAO.getSchoolObject(schoolId);
+		School school = schoolDAO.getSchoolObjectFromId(schoolId);
 		if(school == null)
 		{
 			return "There is no school with that name";
