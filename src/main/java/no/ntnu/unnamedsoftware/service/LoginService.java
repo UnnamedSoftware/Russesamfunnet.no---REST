@@ -129,7 +129,7 @@ public class LoginService {
 			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
 			String userId = jsonObj2.getString("user_id");
 			app_id = jsonObj2.getString("app_id");
-			userIsInDb = loginDAO.checkUser(userId);
+			userIsInDb = loginDAO.checkUserFB(userId);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
