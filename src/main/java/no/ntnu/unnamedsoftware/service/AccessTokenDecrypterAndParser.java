@@ -76,7 +76,7 @@ public class AccessTokenDecrypterAndParser {
 			app_id = jsonObj2.getString("app_id");
 			Long russId = russDAO.getRussFromFacebookId(userId).getRussId();
 			System.out.println(Long.valueOf(userId));
-			return Long.valueOf(userId);
+			return Long.valueOf(russId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
