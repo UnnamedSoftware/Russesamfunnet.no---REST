@@ -68,5 +68,21 @@ public class RussDAO {
 		}
 		return russ;
 	}
+	
+	@Transactional
+	public Russ getRussFromFacebookId(String userId) {
+		System.out.println(userId);
+		Long russId = Long.valueOf(userId);
+		try(Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createQuery("from Russ r where r.russIdAlt = :userId")
+					.setParameter("userId", russId);
+		    Russ russ = (Russ) russQuery.uniqueResult();
+		    System.out.println(russ.getFirstName());
+		    return russ;
+		}catch(Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
 
 }

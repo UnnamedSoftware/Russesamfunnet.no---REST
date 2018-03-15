@@ -10,11 +10,16 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import no.ntnu.unnamedsoftware.DAO.RussDAO;
+
 @Service
 public class AccessTokenDecrypterAndParser {
 
 	@Autowired
 	EncryptorAndDecryptor encAndDec;
+	
+	@Autowired
+	RussDAO russDAO;
 
 	public String decryptedAccessToken(String accessToken) {
 		try {
@@ -69,8 +74,7 @@ public class AccessTokenDecrypterAndParser {
 			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
 			userId = jsonObj2.getString("user_id");
 			app_id = jsonObj2.getString("app_id");
-			String newUrl = "https://graph.facebook.com/me?fields=id,first_name,last_name,age_range&access_token="
-					+ accessToken;
+			Long russId = russDAO.getRussFromFacebookId(userId).getRussId();
 			System.out.println(Long.valueOf(userId));
 			return Long.valueOf(userId);
 		} catch (Exception e) {

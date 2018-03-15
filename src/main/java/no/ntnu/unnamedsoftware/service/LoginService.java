@@ -114,7 +114,8 @@ public class LoginService {
 	}
 
 	public String facebookLogin(String accessToken) {
-
+		LoginStatus loginStatus;
+		String userId = null;;
 		String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
 		String appID = "291199641408779";
 		String app_id = null;
@@ -127,7 +128,7 @@ public class LoginService {
 
 			JSONObject jsonObj = new JSONObject(JSONString);
 			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
-			String userId = jsonObj2.getString("user_id");
+			userId = jsonObj2.getString("user_id");
 			app_id = jsonObj2.getString("app_id");
 			userIsInDb = loginDAO.checkUserFB(userId);
 			
@@ -135,9 +136,13 @@ public class LoginService {
 			e.printStackTrace();
 		}
 		if (app_id.equals(appID) && userIsInDb == false) {
+			System.out.println(app_id + "    " + appID);
+			System.out.println(userIsInDb);
 			return getJsonString(new LoginStatus("User not in db"));
 		} else if (app_id.equals(appID)) {
-			return getJsonString(new LoginStatus("Login success"));
+			loginStatus = new LoginStatus("Login success");
+			loginStatus.setUserId(russDAO.getRussFromFacebookId(userId).getRussId());
+			return getJsonString(loginStatus);
 		} else {
 			return getJsonString(new LoginStatus("Wrong appToken"));
 		}
