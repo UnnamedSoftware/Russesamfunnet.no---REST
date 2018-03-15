@@ -81,18 +81,6 @@ public class KnotController {
 		return registered;
 	}
 	
-	@RequestMapping(value="/updateKnot", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String updateKnot(@RequestParam("russId") Long theRussId){
-		return "Status: OK";  //knotService.getKnotsList(theRussId);
-	}
-	
-	@RequestMapping(value="/updateKnotToken", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String updateKnotToken(@RequestParam String accessToken)
-	{
-		Long theRussId = tokenParser.getRussId(accessToken);
-		return "Status: OK";  //knotService.getKnotsList(theRussId);
-	}
-	
 	@RequestMapping(value="/registerWitnessCompletedKnot", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String registerCompletedKnot(@RequestParam("completedId") int theCompletedKnotId,
 										@RequestParam("witness") Long witness){
@@ -140,11 +128,46 @@ public class KnotController {
 		return registered;
 	}
 	
-	@RequestMapping(value="/updateKnotFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String updateKnotFacebookToken(@RequestParam String accessToken)
+	@RequestMapping(value="/addKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String addKnot(@RequestParam("accessToken") String accessToken,@RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
 	{
-		Long theRussId = tokenParser.decryptFacebookToken(accessToken);
-		return "Status: OK";  //knotService.getKnotsList(theRussId);
+		Long russId = tokenParser.getRussId(accessToken);
+		return knotService.addKnot(russId, knotName, knotDescription);
+	}
+	
+	@RequestMapping(value="/addKnotFacebook", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String addKnotFacebook(@RequestParam("accessToken") String accessToken,@RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
+	{
+		Long russId = tokenParser.decryptFacebookToken(accessToken);
+		return knotService.addKnot(russId, knotName, knotDescription);
+	}
+	
+	@RequestMapping(value="/deleteKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String deleteKnot(@RequestParam("accessToken") String accessToken,@RequestParam("knotId") Long knotId)
+	{
+		Long russId = tokenParser.getRussId(accessToken);
+		return knotService.deleteKnot(russId, knotId);
+	}
+	
+	@RequestMapping(value="/deleteKnotFacebook", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String deleteKnotFacebook(@RequestParam("accessToken") String accessToken,@RequestParam("knotId") Long knotId)
+	{
+		Long russId = tokenParser.decryptFacebookToken(accessToken);
+		return knotService.deleteKnot(russId, knotId);
+	}
+	
+	@RequestMapping(value="/updateKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String updateKnot(@RequestParam("accessToken") String accessToken, @RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
+	{
+		Long russId = tokenParser.getRussId(accessToken);
+		return knotService.updateKnot(russId, knotName, knotDescription);
+	}
+	
+	@RequestMapping(value="/updateKnotFacebook", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String updateKnotFacebook(@RequestParam("accessToken") String accessToken,@RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
+	{
+		Long russId = tokenParser.decryptFacebookToken(accessToken);
+		return knotService.updateKnot(russId, knotName, knotDescription);
 	}
 	
 }
