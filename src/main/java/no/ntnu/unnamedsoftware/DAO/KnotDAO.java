@@ -214,8 +214,8 @@ public class KnotDAO {
 	}
 
 	@Transactional
-	public Knots updateKnot(String knotName, String knotDescription) {
-		Knots knot = getKnot(getKnotId(knotName));
+	public Knots updateKnot(Long knotId, String knotName, String knotDescription) {
+		Knots knot = getKnot(knotId);
 		System.out.println(knot.getKnotDetails());
 		try (Session currentSession = sessionFactory.openSession()) {
 			knot.setKnotDetails(knotDescription);

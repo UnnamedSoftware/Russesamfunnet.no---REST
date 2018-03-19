@@ -23,22 +23,6 @@ public class FeedController {
 	private AccessTokenDecrypterAndParser tokenParser;
 	
 
-	@RequestMapping(value="/schoolFeed", produces=MediaType.APPLICATION_JSON_VALUE)
-	@Transactional
-	@ResponseBody
-	public String getfeed(@RequestParam("russId") Long theRussId) {
-		return feedService.getSchoolFeed(theRussId);
-		
-	}
-	
-	@RequestMapping(value="/postFeedToSchool", produces=MediaType.APPLICATION_JSON_VALUE)
-	@Transactional
-	@ResponseBody
-	public String postfeed(@RequestParam("russId") Long theRussId,@RequestParam("message") String message) {
-		return feedService.postFeed(theRussId, message);
-		
-	}
-	
 	@RequestMapping(value="/schoolFeedToken", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@ResponseBody
@@ -74,5 +58,36 @@ public class FeedController {
 		return feedService.postFeed(theRussId, message);
 		
 	}
+	
+	@RequestMapping(value="/postFeedToSchool", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String postfeed(@RequestParam String accessToken, @RequestParam String type, @RequestParam String message) {
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return feedService.postFeed(theRussId, message);
+		
+	}
+	
+	@RequestMapping(value="/schoolFeed", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String getfeed(@RequestParam String accessToken, @RequestParam String type) {
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return feedService.getSchoolFeed(theRussId);
+		
+	}
+
 
 }

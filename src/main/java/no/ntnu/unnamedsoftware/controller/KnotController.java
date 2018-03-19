@@ -155,19 +155,103 @@ public class KnotController {
 		Long russId = tokenParser.decryptFacebookToken(accessToken);
 		return knotService.deleteKnot(russId, knotId);
 	}
+
+	
+	
+	
+	
+	
+	@RequestMapping(value="/knots", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String getKnots(@RequestParam String accessToken, @RequestParam String type){
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.getKnots(theRussId);
+	}
+	
+	@RequestMapping(value="/getKnotsList", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String returnKnotsList(@RequestParam String accessToken, @RequestParam String type){
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.getKnotsList(theRussId);
+	}
+	
+	@RequestMapping(value="/registerCompletedKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String registerCompletedKnot(@RequestParam String accessToken,
+										@RequestParam("type") String type,  
+										@RequestParam("knotId") Long theKnotId,
+										@RequestParam("witness1") Long witness1,
+										@RequestParam("witness2") Long witness2){
+		
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.registerCompletedKnot(theRussId, theKnotId, witness1, witness2);
+	}
+	
+	@RequestMapping(value="/completedKnots", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String getCompleted(@RequestParam String accessToken, @RequestParam String type){
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.getCompleted(theRussId);
+	}
+	
+	@RequestMapping(value="/addKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String addKnot(@RequestParam("accessToken") String accessToken, @RequestParam String type, @RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
+	{
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.addKnot(theRussId, knotName, knotDescription);
+	}
+	
+	@RequestMapping(value="/deleteKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String deleteKnot(@RequestParam("accessToken") String accessToken, @RequestParam String type,@RequestParam("knotId") Long knotId)
+	{
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.deleteKnot(theRussId, knotId);
+	}
 	
 	@RequestMapping(value="/updateKnot", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String updateKnot(@RequestParam("accessToken") String accessToken, @RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
+	public String updateKnot(@RequestParam("accessToken") String accessToken, @RequestParam String type, @RequestParam Long knotId, @RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
 	{
-		Long russId = tokenParser.getRussId(accessToken);
-		return knotService.updateKnot(russId, knotName, knotDescription);
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.updateKnot(theRussId, knotId, knotName, knotDescription);
 	}
 	
-	@RequestMapping(value="/updateKnotFacebook", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String updateKnotFacebook(@RequestParam("accessToken") String accessToken,@RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
-	{
-		Long russId = tokenParser.decryptFacebookToken(accessToken);
-		return knotService.updateKnot(russId, knotName, knotDescription);
-	}
 	
 }

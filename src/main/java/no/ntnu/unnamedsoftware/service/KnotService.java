@@ -203,10 +203,10 @@ public class KnotService {
 		}
 	}
 	
-	public String updateKnot(Long russId, String knotName, String knotDescription) {
+	public String updateKnot(Long russId, Long knotId, String knotName, String knotDescription) {
 		String russRole = russDAO.getUserRussFromId(russId).getRussRole();
 		if ((russRole.equals("Admin")) || (russRole.equals("system administrator"))) {
-			return makeJSON(knotDAO.updateKnot(knotName, knotDescription));
+			return makeJSON(knotDAO.updateKnot(knotId, knotName, knotDescription));
 		} else {
 			return "You do not have permission to execute this command.";
 		}

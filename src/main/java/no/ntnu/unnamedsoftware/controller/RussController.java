@@ -40,13 +40,6 @@ public class RussController
 		return russService.getRuss();
 	}
 	
-	@RequestMapping(value="/userRuss", produces=MediaType.APPLICATION_JSON_VALUE)
-	@Transactional
-	public String getUserRuss(@RequestParam Long russId) {
-		
-		return russService.getUserRuss(russId);
-	}
-	
 	@RequestMapping(value="/userRussToken", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	public String getUserRussToken(@RequestParam String accessToken) {
@@ -59,6 +52,19 @@ public class RussController
 	public String getUserRussFacebookToken(@RequestParam String accessToken) {
 		Long russId = tokenParser.decryptFacebookToken(accessToken);		
 		return russService.getUserRuss(russId);
+	}
+	
+	@RequestMapping(value="/userRuss", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getUserRuss(@RequestParam String accessToken, @RequestParam String type) {
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return russService.getUserRuss(theRussId);
 	}
     
 }
