@@ -215,18 +215,27 @@ public class KnotDAO {
 
 	@Transactional
 	public Knots updateKnot(Long knotId, String knotName, String knotDescription) {
-		Knots knot = getKnot(knotId);
-		System.out.println(knot.getKnotDetails());
+		//Knots knot = getKnot(knotId);
+		//System.out.println(knot.getKnotDetails());
 		try (Session currentSession = sessionFactory.openSession()) {
-			knot.setKnotDetails(knotDescription);
-			knot.setKnotName(knotName);
-			currentSession.update(knot);
-			knot.getKnotDetails();
-			return knot;
+			//Query addWitness = currentSession.createSQLQuery("UPDATE completed SET witness_id1 = "
+			//		+ theWitness.getRussId() + " WHERE completed_id = " + completedKnotId);
+			//addWitness.executeUpdate();
+			
+			Query theQuery = currentSession.createSQLQuery("UPDATE knots SET knot_name='"+knotName+"' WHERE knot_id="+knotId);
+			theQuery.executeUpdate();
+			
+			Query theQuery2 = currentSession.createSQLQuery("UPDATE knots SET knot_details='"+knotDescription+"' WHERE knot_id="+knotId);
+			theQuery2.executeUpdate();
+			//knot.setKnotDetails(knotDescription);
+			//knot.setKnotName(knotName);
+			//currentSession.update(knot);
+			//knot.getKnotDetails();
+			return getKnot(knotId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return knot;
+		return getKnot(knotId);
 	}
 
 	@Transactional
