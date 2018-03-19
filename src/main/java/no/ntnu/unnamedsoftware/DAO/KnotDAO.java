@@ -219,6 +219,7 @@ public class KnotDAO {
 		System.out.println(knot.getKnotDetails());
 		try (Session currentSession = sessionFactory.openSession()) {
 			knot.setKnotDetails(knotDescription);
+			knot.setKnotName(knotName);
 			currentSession.update(knot);
 			knot.getKnotDetails();
 			return knot;
