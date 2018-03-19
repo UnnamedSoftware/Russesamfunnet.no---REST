@@ -63,7 +63,7 @@ public class FeedController {
 	@Transactional
 	@ResponseBody
 	public String postfeed(@RequestParam String accessToken, @RequestParam String type, @RequestParam String message) {
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -78,7 +78,7 @@ public class FeedController {
 	@Transactional
 	@ResponseBody
 	public String getfeed(@RequestParam String accessToken, @RequestParam String type) {
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))

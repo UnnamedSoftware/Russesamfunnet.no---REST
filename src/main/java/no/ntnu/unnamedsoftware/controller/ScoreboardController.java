@@ -57,7 +57,7 @@ public class ScoreboardController {
 	@Transactional
 
 	public String getScoreboardTop10(@RequestParam String accessToken, @RequestParam String type) {
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -70,7 +70,7 @@ public class ScoreboardController {
 	@RequestMapping(value = "/schoolScoreboard", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	public String getSchoolScoreboard(@RequestParam String accessToken, @RequestParam String type) {
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))

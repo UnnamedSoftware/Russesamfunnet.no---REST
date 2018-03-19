@@ -129,7 +129,7 @@ public class KnotController {
 	
 	@RequestMapping(value="/knots", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String getKnots(@RequestParam String accessToken, @RequestParam String type){
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -141,7 +141,7 @@ public class KnotController {
 	
 	@RequestMapping(value="/getKnotsList", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String returnKnotsList(@RequestParam String accessToken, @RequestParam String type){
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -158,7 +158,7 @@ public class KnotController {
 										@RequestParam("witness1") Long witness1,
 										@RequestParam("witness2") Long witness2){
 		
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -170,7 +170,7 @@ public class KnotController {
 	
 	@RequestMapping(value="/completedKnots", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String getCompleted(@RequestParam String accessToken, @RequestParam String type){
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -183,7 +183,7 @@ public class KnotController {
 	@RequestMapping(value="/addKnot", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String addKnot(@RequestParam("accessToken") String accessToken, @RequestParam String type, @RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
 	{
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -196,7 +196,7 @@ public class KnotController {
 	@RequestMapping(value="/deleteKnot", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String deleteKnot(@RequestParam("accessToken") String accessToken, @RequestParam String type,@RequestParam("knotId") Long knotId)
 	{
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -209,7 +209,7 @@ public class KnotController {
 	@RequestMapping(value="/updateKnot", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String updateKnot(@RequestParam("accessToken") String accessToken, @RequestParam String type, @RequestParam Long knotId, @RequestParam("knotName") String knotName,@RequestParam("knotDescription") String knotDescription)
 	{
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))

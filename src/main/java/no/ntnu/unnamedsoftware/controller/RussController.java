@@ -57,7 +57,7 @@ public class RussController
 	@RequestMapping(value="/userRuss", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	public String getUserRuss(@RequestParam String accessToken, @RequestParam String type) {
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
@@ -70,7 +70,7 @@ public class RussController
 	@RequestMapping(value="/getOtherRuss", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	public String getOtherRuss(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long russId) {
-		Long theRussId = null;;
+		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
 		}else if(type.equals("russesamfunnet"))
