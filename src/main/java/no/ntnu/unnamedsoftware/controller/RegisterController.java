@@ -41,4 +41,15 @@ public class RegisterController {
         
 		return registerService.facebookRegister(accessToken, birthdate, schoolId);
 	}
+	
+	@RequestMapping(value="/russasamfunnetRegister", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String russasamfunnetRegister(@RequestParam("email") String email, 
+										 @RequestParam("password") String password, 
+										 @RequestParam("schoolId") String schoolId,
+										 @RequestParam("firstName") String firstName,
+										 @RequestParam("lastName") String lastName) {     
+        
+		return registerService.russasamfunnetRegister(firstName, lastName, email, password, schoolId);
+	}
+	
 }

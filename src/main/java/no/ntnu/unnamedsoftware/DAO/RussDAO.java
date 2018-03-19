@@ -85,4 +85,44 @@ public class RussDAO {
 		return null;
 	}
 
+	@Transactional
+	public List<Russ> getAllRussAtSchool(Long schoolId) {
+		try(Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createQuery("from Russ r where r.schoolId.schoolId = :schoolId")
+					.setParameter("schoolId", schoolId);
+		    List<Russ> russAtSchool = russQuery.list();
+		    System.out.println("russAtSchool " + russAtSchool.size());
+		    return russAtSchool;
+		}catch(Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
+
+	public List<Russ> getAllRussAtSchoolStatusFalse(Long schoolId) {
+		try(Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createQuery("from Russ r where (r.schoolId.schoolId = :schoolId) AND r.russStatus = :russStatus")
+					.setParameter("schoolId", schoolId)
+					.setParameter("russStatus", "false");
+		    List<Russ> russAtSchool = russQuery.list();
+		    System.out.println("russAtSchool " + russAtSchool.size());
+		    return russAtSchool;
+		}catch(Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
+
+	public String confirmRuss(String russToConfirm) {
+		Long russToConfirmId = Long.valueOf(russToConfirm);
+		try(Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createSQLQuery("UPDATE russ SET russ_status='confirmed' WHERE russ_id="+russToConfirmId);
+			int test = russQuery.executeUpdate();
+		    return String.valueOf(test);
+		}catch(Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
+
 }

@@ -72,6 +72,30 @@ public class RegisterDAO {
 		}
 		return "registerUserFB error";
 	}
+
+	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolIdS) {
+		Long schoolId = Long.valueOf(schoolIdS);
+		School school = schoolDAO.getSchoolObjectFromId(schoolId);
+		if(school == null)
+		{
+			return "There is no school with that name";
+		}
+		try(Session currentSession = sessionFactory.openSession()){
+			Russ russ = new Russ();
+			russ.setSchoolId(school);
+			russ.setFirstName(firstName);
+			russ.setLastName(lastName);
+			russ.setEmail(email);
+			russ.setRussPassword(password);
+			russ.setRussRole("Russ");
+			russ.setRussStatus("false");
+			currentSession.save(russ);
+			return "User successfully registered";
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "russesamfunnetRegister error";
+	}
 	
 }
 

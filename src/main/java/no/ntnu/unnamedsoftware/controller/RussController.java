@@ -67,6 +67,53 @@ public class RussController
 		return russService.getUserRuss(theRussId);
 	}
 	
+	@RequestMapping(value="/getAllRussAtSchool", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getAllRussAtSchool(@RequestParam String accessToken, @RequestParam String type) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+			System.out.println("facebook " + theRussId);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+			System.out.println("russesamfunnet " + theRussId);
+		}	
+		return russService.getAllRussAtSchool(theRussId);
+	}
+	
+	@RequestMapping(value="/getAllRussAtSchoolStatusFalse", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getAllRussAtSchoolStatusFalse(@RequestParam String accessToken, @RequestParam String type) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+			System.out.println("facebook " + theRussId);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+			System.out.println("russesamfunnet " + theRussId);
+		}	
+		return russService.getAllRussAtSchoolStatusFalse(theRussId);
+	}
+	
+	@RequestMapping(value="/confirmRuss", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String confirmRuss(@RequestParam String accessToken, 
+					          @RequestParam String type,
+					          @RequestParam String russToConfirm) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+			System.out.println("facebook " + theRussId);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+			System.out.println("russesamfunnet " + theRussId);
+		}	
+		return russService.confirmRuss(theRussId, russToConfirm);
+	}
+	
 	@RequestMapping(value="/getOtherRuss", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	public String getOtherRuss(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long russId) {

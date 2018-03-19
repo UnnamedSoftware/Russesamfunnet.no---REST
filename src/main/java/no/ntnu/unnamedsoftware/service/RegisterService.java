@@ -140,4 +140,9 @@ public class RegisterService {
 		}
 		return objectInJsonString;
 	}
+
+	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolId) {
+		
+		return registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolId);
+	}
 }
