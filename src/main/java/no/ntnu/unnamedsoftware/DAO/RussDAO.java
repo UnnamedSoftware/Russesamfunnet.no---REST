@@ -124,5 +124,17 @@ public class RussDAO {
 		}
 		return null;
 	}
+	
+	public Russ registerAdmin(Long russId)
+	{
+		try(Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createSQLQuery("UPDATE russ SET russ_role='admin' WHERE russ_id="+russId);
+			russQuery.executeUpdate();
+		    return this.getUserRussFromId(russId);
+		}catch(Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
 
 }

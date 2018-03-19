@@ -70,6 +70,20 @@ public class RussService {
 		}
 		return objectInJsonString;
 	}
+	
+	private String writeObjectAsJsonString(Object object) {
+		String objectInJsonString = null;
+		try {
+			objectInJsonString = mapper.writeValueAsString(object);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return objectInJsonString;
+	}
 
 	public String getAllRussAtSchoolStatusFalse(Long theRussId) {
 		//1 - get user
@@ -92,6 +106,15 @@ public class RussService {
 			System.out.println("User is an admin!");
 			return russDAO.confirmRuss(russToConfirm);
 			
+		}
+		return null;
+	}
+	
+	public String registerAdmin(Long theRussId, Long russToMakeAdmin)
+	{
+		Russ user = russDAO.getUserRussFromId(theRussId);
+		if(user.getRussRole().equals("Admin") || user.getRussRole().equals("system administrator")) {
+		return writeObjectAsJsonString(russDAO.registerAdmin(russToMakeAdmin));
 		}
 		return null;
 	}
