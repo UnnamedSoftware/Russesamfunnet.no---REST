@@ -66,6 +66,25 @@ public class RussController
 		}	
 		return russService.getUserRuss(theRussId);
 	}
+	
+	@RequestMapping(value="/getOtherRuss", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getOtherRuss(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long russId) {
+		Long theRussId = null;;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		if(theRussId != null)
+		{
+			return russService.getUserRuss(russId);
+		} else
+		{
+			return null;
+		}
+	}
     
 }
 
