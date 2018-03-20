@@ -137,5 +137,14 @@ public class RussService {
 		}
 		return "You do not have permission to execute this command.";
 	}
+	
+	public String searchForRuss(Long russId, String parameters)
+	{
+		if(russId != null)
+		{
+			return writeAsJsonString(russDAO.searchForRuss(parameters));
+		}
+		return "You need to be logged to an official Russesamfunnet site.";
+	}
 
 }

@@ -185,6 +185,19 @@ public class RussController
 		return russService.deleteUser(theRussId, Long.valueOf(russToDelete));
 	}
 	
+	@RequestMapping(value="/searchForRuss", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String searchForRuss(@RequestParam String accessToken, @RequestParam String type, @RequestParam String parameter)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return russService.searchForRuss(theRussId, parameter);
+	}
 	
     
 }

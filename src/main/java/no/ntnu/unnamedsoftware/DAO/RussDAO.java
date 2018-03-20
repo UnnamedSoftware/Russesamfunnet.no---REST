@@ -12,48 +12,44 @@ import org.springframework.transaction.annotation.Transactional;
 import no.ntnu.unnamedsoftware.entity.Feed;
 import no.ntnu.unnamedsoftware.entity.Russ;
 
-
-
 @Repository
 public class RussDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	@Transactional
-	public List<Russ> getRuss()
-	{
+	public List<Russ> getRuss() {
 		List<Russ> userInfo = null;
-		
-		try(Session currentSession = sessionFactory.openSession()){
-			Query theQuery = currentSession.
-					createQuery("from Russ r"); 
-			
-			userInfo = theQuery.list();;
-			//currentSession.close();
+
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query theQuery = currentSession.createQuery("from Russ r");
+
+			userInfo = theQuery.list();
+			;
+			// currentSession.close();
 			return userInfo;
-			//return JSON
-		}catch(Exception e) {
+			// return JSON
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return userInfo;
 	}
-	
+
 	@Transactional
-	public Russ getUserRussFromId(Long theRussId)
-	{
+	public Russ getUserRussFromId(Long theRussId) {
 		Russ russ = null;
-		try(Session currentSession = sessionFactory.openSession()){
+		try (Session currentSession = sessionFactory.openSession()) {
 			Query russQuery = currentSession.createQuery("from Russ r where (r.russId = :russId)")
 					.setParameter("russId", theRussId);
 			russ = (Russ) russQuery.uniqueResult();
-			//currentSession.close();
+			// currentSession.close();
 			return russ;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return russ;
 	}
-	
+
 	@Transactional
 	public Russ getUserRussFromEmail(String email) {
 		Russ russ = null;
@@ -68,18 +64,18 @@ public class RussDAO {
 		}
 		return russ;
 	}
-	
+
 	@Transactional
 	public Russ getRussFromFacebookId(String userId) {
 		System.out.println(userId);
 		Long russId = Long.valueOf(userId);
-		try(Session currentSession = sessionFactory.openSession()) {
+		try (Session currentSession = sessionFactory.openSession()) {
 			Query russQuery = currentSession.createQuery("from Russ r where r.russIdAlt = :userId")
 					.setParameter("userId", russId);
-		    Russ russ = (Russ) russQuery.uniqueResult();
-		    System.out.println(russ.getFirstName());
-		    return russ;
-		}catch(Exception e) {
+			Russ russ = (Russ) russQuery.uniqueResult();
+			System.out.println(russ.getFirstName());
+			return russ;
+		} catch (Exception e) {
 			e.getStackTrace();
 		}
 		return null;
@@ -87,76 +83,88 @@ public class RussDAO {
 
 	@Transactional
 	public List<Russ> getAllRussAtSchool(Long schoolId) {
-		try(Session currentSession = sessionFactory.openSession()) {
+		try (Session currentSession = sessionFactory.openSession()) {
 			Query russQuery = currentSession.createQuery("from Russ r where r.schoolId.schoolId = :schoolId")
 					.setParameter("schoolId", schoolId);
-		    List<Russ> russAtSchool = russQuery.list();
-		    System.out.println("russAtSchool " + russAtSchool.size());
-		    return russAtSchool;
-		}catch(Exception e) {
+			List<Russ> russAtSchool = russQuery.list();
+			System.out.println("russAtSchool " + russAtSchool.size());
+			return russAtSchool;
+		} catch (Exception e) {
 			e.getStackTrace();
 		}
 		return null;
 	}
 
 	public List<Russ> getAllRussAtSchoolStatusFalse(Long schoolId) {
-		try(Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createQuery("from Russ r where (r.schoolId.schoolId = :schoolId) AND r.russStatus = :russStatus")
-					.setParameter("schoolId", schoolId)
-					.setParameter("russStatus", "false");
-		    List<Russ> russAtSchool = russQuery.list();
-		    System.out.println("russAtSchool " + russAtSchool.size());
-		    return russAtSchool;
-		}catch(Exception e) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession
+					.createQuery("from Russ r where (r.schoolId.schoolId = :schoolId) AND r.russStatus = :russStatus")
+					.setParameter("schoolId", schoolId).setParameter("russStatus", "false");
+			List<Russ> russAtSchool = russQuery.list();
+			System.out.println("russAtSchool " + russAtSchool.size());
+			return russAtSchool;
+		} catch (Exception e) {
 			e.getStackTrace();
 		}
 		return null;
 	}
 
 	public String confirmRuss(Long russToConfirm) {
-		try(Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createSQLQuery("UPDATE russ SET russ_status='confirmed' WHERE russ_id="+russToConfirm);
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession
+					.createSQLQuery("UPDATE russ SET russ_status='confirmed' WHERE russ_id=" + russToConfirm);
 			int test = russQuery.executeUpdate();
-		    return String.valueOf(test);
-		}catch(Exception e) {
+			return String.valueOf(test);
+		} catch (Exception e) {
 			e.getStackTrace();
 		}
 		return null;
 	}
-	
+
 	public String unConfirmRuss(Long russToUnconfirm) {
-		try(Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createSQLQuery("UPDATE russ SET russ_status='false' WHERE russ_id="+russToUnconfirm);
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession
+					.createSQLQuery("UPDATE russ SET russ_status='false' WHERE russ_id=" + russToUnconfirm);
 			int test = russQuery.executeUpdate();
-		    return String.valueOf(test);
-		}catch(Exception e) {
+			return String.valueOf(test);
+		} catch (Exception e) {
 			e.getStackTrace();
 		}
 		return null;
 	}
-	
-	public Russ registerAdmin(Long russId)
-	{
-		try(Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createSQLQuery("UPDATE russ SET russ_role='admin' WHERE russ_id="+russId);
+
+	public Russ registerAdmin(Long russId) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession
+					.createSQLQuery("UPDATE russ SET russ_role='admin' WHERE russ_id=" + russId);
 			russQuery.executeUpdate();
-		    return this.getUserRussFromId(russId);
-		}catch(Exception e) {
+			return this.getUserRussFromId(russId);
+		} catch (Exception e) {
 			e.getStackTrace();
 		}
 		return null;
 	}
-	
-	public String deleteUser(Long russToDelete)
-	{
-		try(Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createSQLQuery("DELETE russ WHERE russ_id="+russToDelete);
+
+	public String deleteUser(Long russToDelete) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createSQLQuery("DELETE russ WHERE russ_id=" + russToDelete);
 			russQuery.executeUpdate();
-		    return "Russ successfully deleted.";
-		}catch(Exception e) {
+			return "Russ successfully deleted.";
+		} catch (Exception e) {
 			e.getStackTrace();
 			return "An error occured";
 		}
+	}
+
+	public List<Russ> searchForRuss(String parameters) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createSQLQuery("SELECT * FROM russ WHERE first_name, lastName  LIKE=" + parameters + "%");
+			List<Russ> russ = russQuery.list();
+			return russ;
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return null;
 	}
 
 }
