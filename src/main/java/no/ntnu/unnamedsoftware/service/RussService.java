@@ -142,7 +142,7 @@ public class RussService {
 	{
 		if(russId != null)
 		{
-			return writeAsJsonString(russDAO.searchForRuss(parameters));
+			return writeAsJsonString(russDAO.searchForRuss(russId, parameters));
 		}
 		return "You need to be logged to an official Russesamfunnet site.";
 	}

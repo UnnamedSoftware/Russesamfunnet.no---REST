@@ -11,11 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import no.ntnu.unnamedsoftware.entity.Feed;
 import no.ntnu.unnamedsoftware.entity.Russ;
+import no.ntnu.unnamedsoftware.entity.School;
 
 @Repository
 public class RussDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	SchoolDAO schoolDAO;
 
 	@Transactional
 	public List<Russ> getRuss() {
@@ -156,13 +160,15 @@ public class RussDAO {
 		}
 	}
 
-	public List<Russ> searchForRuss(String parameters) {
+	public List<Russ> searchForRuss(Long russId, String parameters) {
+		Long schoolId = schoolDAO.getSchoolId(russId);
 		try (Session currentSession = sessionFactory.openSession()) {
 			Query russQuery = currentSession.createSQLQuery("SELECT * FROM russ WHERE (first_name LIKE '" + parameters + "%' or "
 																					+ "last_name  LIKE '" + parameters + "%' or "
 																					+ "russ_status  LIKE '" + parameters + "%' or "
 																					+ "email  LIKE '" + parameters + "%' or "
-																					+ "russ_role  LIKE '" + parameters + "%')");
+																					+ "russ_role  LIKE '" + parameters + "%') and "
+																					+ "school_id=" + schoolId);
 			List<Russ> russ = russQuery.list();
 			return russ;
 		} catch (Exception e) {
