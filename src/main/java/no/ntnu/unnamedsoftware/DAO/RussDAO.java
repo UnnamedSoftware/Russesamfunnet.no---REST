@@ -170,12 +170,13 @@ public class RussDAO {
 																					+ "russ_role  LIKE '" + parameters + "%') and "
 																					+ "school_id=" + schoolId);
 			*/
+			parameter = parameter.toUpperCase();
 			Query russQuery = currentSession
-					.createQuery("from Russ r where (r.firstName like '"+ parameter + "%' or "
-							+ "r.lastName like '"+ parameter + "%' or "
-							+ "r.russStatus like '"+ parameter + "%' or "
-							+ "r.email like '"+ parameter + "%' or "
-							+ "r.russRole like '"+ parameter + "%') " 
+					.createQuery("from Russ r where (upper(r.firstName) like '"+ parameter + "%' or "
+							+ "upper(r.lastName) like '"+ parameter + "%' or "
+							+ "upper(r.russStatus) like '"+ parameter + "%' or "
+							+ "upper(r.email) like '"+ parameter + "%' or "
+							+ "upper(r.russRole) like '"+ parameter + "%') " 
 							+ "and r.schoolId.schoolId =:schoolId")
 					.setParameter("schoolId", schoolId);//.setParameter("parameter", parameter);
 			List<Russ> russ = russQuery.list();
