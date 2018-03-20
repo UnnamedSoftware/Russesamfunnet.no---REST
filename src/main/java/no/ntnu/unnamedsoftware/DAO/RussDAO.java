@@ -160,15 +160,24 @@ public class RussDAO {
 		}
 	}
 
-	public List<Russ> searchForRuss(Long russId, String parameters) {
+	public List<Russ> searchForRuss(Long russId, String parameter) {
 		Long schoolId = schoolDAO.getSchoolId(russId);
 		try (Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createSQLQuery("SELECT * FROM russ WHERE (first_name LIKE '" + parameters + "%' or "
+			/*Query russQuery = currentSession.createSQLQuery("SELECT * FROM russ WHERE (first_name LIKE '" + parameters + "%' or "
 																					+ "last_name  LIKE '" + parameters + "%' or "
 																					+ "russ_status  LIKE '" + parameters + "%' or "
 																					+ "email  LIKE '" + parameters + "%' or "
 																					+ "russ_role  LIKE '" + parameters + "%') and "
 																					+ "school_id=" + schoolId);
+			*/
+			Query russQuery = currentSession
+					.createQuery("from Russ r where (r.firstName like '"+ parameter + "%' or "
+							+ "r.lastName like '"+ parameter + "%' or "
+							+ "r.russStatus like '"+ parameter + "%' or "
+							+ "r.email like '"+ parameter + "%' or "
+							+ "r.russRole like '"+ parameter + "%') " 
+							+ "and r.schoolId.schoolId =:schoolId")
+					.setParameter("schoolId", schoolId);//.setParameter("parameter", parameter);
 			List<Russ> russ = russQuery.list();
 			return russ;
 		} catch (Exception e) {
