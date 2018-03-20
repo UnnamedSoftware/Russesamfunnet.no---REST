@@ -149,6 +149,43 @@ public class RussController
 	}
 	
 	
+	/**
+	 * Changes the "confirmed" value of a russ, either from false to true, or true to false.
+	 * 
+	 * @param accessToken
+	 * @param type
+	 * @param russToConfirm
+	 * @return
+	 */
+	@RequestMapping(value="/toggleRussConfirmation", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String toggleRussConfirmation(@RequestParam String accessToken, @RequestParam String type, @RequestParam String russToConfirm)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return russService.toggleRussConfirmation(theRussId, Long.valueOf(russToConfirm));
+	}
+	
+	@RequestMapping(value="/deleteUser", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String deleteUser(@RequestParam String accessToken, @RequestParam String type, @RequestParam String russToDelete)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return russService.deleteUser(theRussId, Long.valueOf(russToDelete));
+	}
+	
+	
     
 }
 

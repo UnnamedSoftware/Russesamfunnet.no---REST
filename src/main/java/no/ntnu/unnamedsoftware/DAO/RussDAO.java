@@ -113,10 +113,20 @@ public class RussDAO {
 		return null;
 	}
 
-	public String confirmRuss(String russToConfirm) {
-		Long russToConfirmId = Long.valueOf(russToConfirm);
+	public String confirmRuss(Long russToConfirm) {
 		try(Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createSQLQuery("UPDATE russ SET russ_status='confirmed' WHERE russ_id="+russToConfirmId);
+			Query russQuery = currentSession.createSQLQuery("UPDATE russ SET russ_status='confirmed' WHERE russ_id="+russToConfirm);
+			int test = russQuery.executeUpdate();
+		    return String.valueOf(test);
+		}catch(Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
+	
+	public String unConfirmRuss(Long russToUnconfirm) {
+		try(Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createSQLQuery("UPDATE russ SET russ_status='false' WHERE russ_id="+russToUnconfirm);
 			int test = russQuery.executeUpdate();
 		    return String.valueOf(test);
 		}catch(Exception e) {
@@ -135,6 +145,18 @@ public class RussDAO {
 			e.getStackTrace();
 		}
 		return null;
+	}
+	
+	public String deleteUser(Long russToDelete)
+	{
+		try(Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createSQLQuery("DELETE russ WHERE russ_id="+russToDelete);
+			russQuery.executeUpdate();
+		    return "Russ successfully deleted.";
+		}catch(Exception e) {
+			e.getStackTrace();
+			return "An error occured";
+		}
 	}
 
 }
