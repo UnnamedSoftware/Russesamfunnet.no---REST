@@ -158,7 +158,11 @@ public class RussDAO {
 
 	public List<Russ> searchForRuss(String parameters) {
 		try (Session currentSession = sessionFactory.openSession()) {
-			Query russQuery = currentSession.createSQLQuery("SELECT * FROM russ WHERE first_name, lastName  LIKE=" + parameters + "%");
+			Query russQuery = currentSession.createSQLQuery("SELECT * FROM russ WHERE (first_name LIKE '" + parameters + "%' or "
+																					+ "last_name  LIKE '" + parameters + "%' or "
+																					+ "russ_status  LIKE '" + parameters + "%' or "
+																					+ "email  LIKE '" + parameters + "%' or "
+																					+ "russ_role  LIKE '" + parameters + "%')");
 			List<Russ> russ = russQuery.list();
 			return russ;
 		} catch (Exception e) {
