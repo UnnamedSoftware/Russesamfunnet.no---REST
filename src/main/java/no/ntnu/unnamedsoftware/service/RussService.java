@@ -100,7 +100,7 @@ public class RussService {
 
 	public String confirmRuss(Long theRussId, String russToConfirm) {
 		Russ user = russDAO.getUserRussFromId(theRussId);
-		if (user.getRussRole().equals("Admin") || user.getRussRole().equals("system administrator")) {
+		if (user.getRussRole().equals("admin") || user.getRussRole().equals("system administrator")) {
 			System.out.println("User is an admin!");
 			return russDAO.confirmRuss(Long.valueOf(russToConfirm));
 
@@ -108,17 +108,24 @@ public class RussService {
 		return null;
 	}
 
-	public String registerAdmin(Long theRussId, Long russToMakeAdmin) {
+	public String toggleAdmin(Long theRussId, Long russToMakeAdmin) {
 		Russ user = russDAO.getUserRussFromId(theRussId);
-		if (user.getRussRole().equals("Admin") || user.getRussRole().equals("system administrator")) {
-			return writeObjectAsJsonString(russDAO.registerAdmin(russToMakeAdmin));
+		Russ russToAdmin = russDAO.getUserRussFromId(russToMakeAdmin);
+		if (user.getRussRole().equals("admin") || user.getRussRole().equals("system administrator")) {
+			if(russToAdmin.getRussRole().equals("russ"))
+			{
+				return writeObjectAsJsonString(russDAO.registerAdmin(russToMakeAdmin));
+			} else if(russToAdmin.getRussRole().equals("admin"))
+			{
+				return writeObjectAsJsonString(russDAO.removeAdmin(russToMakeAdmin));
+			}
 		}
-		return null;
+		return writeObjectAsJsonString(russToAdmin);
 	}
 
 	public String toggleRussConfirmation(Long russId, Long russToConfirm) {
 		Russ user = russDAO.getUserRussFromId(russId);
-		if (user.getRussRole().equals("Admin") || user.getRussRole().equals("system administrator")) {
+		if (user.getRussRole().equals("admin") || user.getRussRole().equals("system administrator")) {
 			Russ russToBeConfirmed = russDAO.getUserRussFromId(russToConfirm);
 			if (russToBeConfirmed.getRussStatus().equals("confirmed")) {
 				return russDAO.unConfirmRuss(russToConfirm);
@@ -132,7 +139,7 @@ public class RussService {
 	public String deleteUser(Long russId, Long russToDelete)
 	{
 		Russ user = russDAO.getUserRussFromId(russId);
-		if (user.getRussRole().equals("Admin") || user.getRussRole().equals("system administrator")) {
+		if (user.getRussRole().equals("admin") || user.getRussRole().equals("system administrator")) {
 			return russDAO.deleteUser(russToDelete);
 		}
 		return "You do not have permission to execute this command.";

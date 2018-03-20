@@ -133,7 +133,7 @@ public class RussController
 		}
 	}
 	
-	@RequestMapping(value="/registerAdmin", produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/toggleAdmin", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	public String registerAdmin(@RequestParam String accessToken, 
 					          @RequestParam String type,
@@ -145,7 +145,7 @@ public class RussController
 		{
 			theRussId = tokenParser.getRussId(accessToken);
 		}	
-		return russService.registerAdmin(theRussId, Long.valueOf(russToMakeAdmin));
+		return russService.toggleAdmin(theRussId, Long.valueOf(russToMakeAdmin));
 	}
 	
 	

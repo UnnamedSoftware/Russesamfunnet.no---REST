@@ -148,6 +148,18 @@ public class RussDAO {
 		}
 		return null;
 	}
+	
+	public Russ removeAdmin(Long russId) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession
+					.createSQLQuery("UPDATE russ SET russ_role='russ' WHERE russ_id=" + russId);
+			russQuery.executeUpdate();
+			return this.getUserRussFromId(russId);
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
 
 	public String deleteUser(Long russToDelete) {
 		try (Session currentSession = sessionFactory.openSession()) {
