@@ -32,9 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "group")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Group1.findAll", query = "SELECT g FROM Group1 g")
-    , @NamedQuery(name = "Group1.findByGroupId", query = "SELECT g FROM Group1 g WHERE g.groupId = :groupId")
-    , @NamedQuery(name = "Group1.findByGroupName", query = "SELECT g FROM Group1 g WHERE g.groupName = :groupName")})
+    @NamedQuery(name = "Group.findAll", query = "SELECT g FROM Group g")
+    , @NamedQuery(name = "Group.findByGroupId", query = "SELECT g FROM Group g WHERE g.groupId = :groupId")
+    , @NamedQuery(name = "Group.findByGroupName", query = "SELECT g FROM Group g WHERE g.groupName = :groupName")})
 public class Group implements Serializable {
 
     private static final long serialVersionUID = 1L;
