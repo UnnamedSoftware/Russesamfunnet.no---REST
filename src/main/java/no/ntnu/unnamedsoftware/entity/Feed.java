@@ -61,9 +61,9 @@ public class Feed implements Serializable {
     @JoinColumn(name = "school_id", referencedColumnName = "school_id")
     @ManyToOne
     private School schoolId;
-    @JoinColumn(name = "zone_id", referencedColumnName = "zone_id")
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
     @ManyToOne
-    private Zone zoneId;
+    private Group groupId;
 
     public Feed() {
     }
@@ -118,12 +118,12 @@ public class Feed implements Serializable {
         this.schoolId = schoolId;
     }
 
-    public Zone getZoneId() {
-        return zoneId;
+    public Group getGroupId() {
+        return groupId;
     }
 
-    public void setZoneId(Zone zoneId) {
-        this.zoneId = zoneId;
+    public void setGroupId(Group groupId) {
+        this.groupId = groupId;
     }
 
 
