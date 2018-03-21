@@ -38,7 +38,7 @@ public class RegisterDAO {
 			russ.setSchoolId(school);
 			russ.setFirstName(firstName);
 			russ.setLastName(lastName);
-			russ.setRussRole("Russ");
+			russ.setRussRole("russ");
 			russ.setRussStatus("false");
 			currentSession.save(russ);
 			return "User successfully registered";
@@ -63,7 +63,7 @@ public class RegisterDAO {
 			russ.setSchoolId(school);
 			russ.setFirstName(firstName);
 			russ.setLastName(lastName);
-			russ.setRussRole("Russ");
+			russ.setRussRole("russ");
 			russ.setRussStatus("false");
 			currentSession.save(russ);
 			return "User successfully registered";
@@ -87,7 +87,7 @@ public class RegisterDAO {
 			russ.setLastName(lastName);
 			russ.setEmail(email);
 			russ.setRussPassword(password);
-			russ.setRussRole("Russ");
+			russ.setRussRole("russ");
 			russ.setRussStatus("false");
 			currentSession.save(russ);
 			return "User successfully registered";
