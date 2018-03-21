@@ -77,7 +77,7 @@ public class FeedController {
 	@RequestMapping(value="/schoolFeed", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@ResponseBody
-	public String getfeed(@RequestParam String accessToken, @RequestParam String type) {
+	public String getSchoolfeed(@RequestParam String accessToken, @RequestParam String type) {
 		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
@@ -86,6 +86,21 @@ public class FeedController {
 			theRussId = tokenParser.getRussId(accessToken);
 		}	
 		return feedService.getSchoolFeed(theRussId);
+		
+	}
+	
+	@RequestMapping(value="/groupFeed", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String getGroupfeed(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long groupId) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return feedService.getGroupFeed(theRussId, groupId);
 		
 	}
 

@@ -35,6 +35,20 @@ public class FeedDAO {
 	ObjectMapper mapper;
 	
 	@Transactional
+	public List<Feed> getGroupFeed(Long groupId) {
+		List<Feed> feed = null;
+		try(Session currentSession = sessionFactory.openSession()){
+			Query feedQuery = currentSession.createQuery("from Feed f where (f.groupId.groupId = :groupId)")
+					.setParameter("groupId", groupId);
+			feed = feedQuery.list();
+			return feed;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return feed;
+	}
+	
+	@Transactional
 	public List<Feed> getSchoolFeed(Long theRussId) {
 		Long theSchoolId = schoolDAO.getSchoolId(theRussId);
 		List<Feed> feed = null;

@@ -10,48 +10,25 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import no.ntnu.unnamedsoftware.DAO.FeedDAO;
+import no.ntnu.unnamedsoftware.DAO.GroupDAO;
+import no.ntnu.unnamedsoftware.DAO.RussDAO;
 import no.ntnu.unnamedsoftware.entity.Feed;
+import no.ntnu.unnamedsoftware.entity.Group;
+import no.ntnu.unnamedsoftware.entity.Russ;
 
 @Service
-public class FeedService {
-
-	@Autowired
-	FeedDAO feedDAO;
+public class GroupService {
 
 	@Autowired
 	ObjectMapper mapper;
 
 	@Autowired
-	GroupService groupService;
+	GroupDAO groupDAO;
 
-	public String getSchoolFeed(Long theRussId) {
-		List<Feed> schoolFeed = feedDAO.getSchoolFeed(theRussId);
-		return this.writeAsJsonString(schoolFeed);
-	}
+	@Autowired
+	RussDAO russDAO;
 
-	public String getGroupFeed(Long theRussId, Long groupId) {
-		if (groupService.isPartOfGroup(theRussId, groupId)) {
-			return this.writeAsJsonString(feedDAO.getSchoolFeed(groupId));
-		}
-		return null;
-	}
-
-	private String writeAsJsonString(List<Feed> feed) {
-		String feedInJsonString = null;
-		try {
-			feedInJsonString = mapper.writeValueAsString(feed);
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return feedInJsonString;
-	}
-
-	private String writeAsJsonString(Object object) {
+	private String writeObjectAsJsonString(Object object) {
 		String feedInJsonString = null;
 		try {
 			feedInJsonString = mapper.writeValueAsString(object);
@@ -65,9 +42,30 @@ public class FeedService {
 		return feedInJsonString;
 	}
 
-	public String postFeed(Long russId, String message) {
-		return writeAsJsonString(feedDAO.postFeed(russId, message));
+	private String writeAsJsonString(List<Group> object) {
+		String feedInJsonString = null;
+		try {
+			feedInJsonString = mapper.writeValueAsString(object);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return feedInJsonString;
+	}
 
+	public String getGroups(Long russId) {
+		return writeAsJsonString(groupDAO.getGroups(russId));
+	}
+
+	public Boolean isPartOfGroup(Long russId, Long groupId) {
+		List<Russ> group = groupDAO.getGroupRuss(groupId);
+		if (group.contains(russDAO.getUserRussFromId(russId))) {
+			return true;
+		}
+		return false;
 	}
 
 }
