@@ -51,7 +51,7 @@ public class FeedDAO {
 	public List<Feed> getGroupFeed(Long groupId) {
 		List<Feed> feed = null;
 		try(Session currentSession = sessionFactory.openSession()){
-			Query feedQuery = currentSession.createQuery("from Feed f where (f.groupId.group_id = :groupId)")
+			Query feedQuery = currentSession.createQuery("from Feed f where (f.groupId.groupId = :groupId)")
 					.setParameter("groupId", groupId);
 			feed = feedQuery.list();
 			return feed;

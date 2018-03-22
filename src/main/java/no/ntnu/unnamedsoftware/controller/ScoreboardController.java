@@ -79,5 +79,32 @@ public class ScoreboardController {
 		}
 		return scoreboardService.getSchoolScoreboard(theRussId);
 	}
+	/*
+	@RequestMapping(value = "/scoreboardGroupTop3", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
 
+	public String getScoreboardGroupTop3(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long groupId) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}
+		return scoreboardService.getScoreboardGroupTop3(theRussId, groupId);
+	}
+	
+	@RequestMapping(value = "/groupScoreboard", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getGroupScoreboard(@RequestParam String accessToken, @RequestParam String type) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}
+		return scoreboardService.getScoreboardGroup(theRussId);
+	}
+*/
 }

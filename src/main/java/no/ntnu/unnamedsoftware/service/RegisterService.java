@@ -145,4 +145,72 @@ public class RegisterService {
 		
 		return registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolId);
 	}
+	
+	public String facebookRegisterNew(String accessToken, String email, String schoolName, int russYear, String birthdate) {
+		Long schoolId = schoolService.getSchool(schoolName);
+		System.out.println(schoolId);
+		LoginStatus loginStatus = new LoginStatus();
+		String userId;
+		String appToken = "291199641408779|P9GEtCoB6TjzkZjbeAPTbcC2CV4";
+		String appID = "291199641408779";
+		String app_id = null;
+		String firstName = null;
+		String lastName = null;
+		String birthday = "";
+		JSONObject jsonObject4 = null;
+		int ageRange;
+		
+
+		JSONObject jsonObject = new JSONObject();
+		try {
+			String url = "https://graph.facebook.com/debug_token?input_token=" + accessToken + "&access_token="
+					+ appToken;
+			String JSONString = this.uRLConnectionReader(url);
+
+			JSONObject jsonObj = new JSONObject(JSONString);
+			JSONObject jsonObj2 = jsonObj.getJSONObject("data");
+			userId = jsonObj2.getString("user_id");
+			app_id = jsonObj2.getString("app_id");
+			String newUrl = "https://graph.facebook.com/me?fields=id,first_name,last_name,age_range&access_token=" + accessToken;
+			JSONObject jsonObj3 = new JSONObject(this.uRLConnectionReader(newUrl));
+			firstName = jsonObj3.getString("first_name");
+			lastName = jsonObj3.getString("last_name");
+			if(birthdate != null)
+			{
+			birthday = birthdate;
+			}else {
+				//get birthday from facebook.
+			}
+			jsonObject4 = jsonObj3.getJSONObject("age_range");
+			ageRange = jsonObject4.getInt("min");
+			
+			
+			if (app_id.equals(appID) && ageRange >= 17) {
+				loginStatus.setLoginStatus(registerDAO.registerUserFBNew(userId, schoolId, firstName, lastName, email, russYear));
+				loginStatus.setUserId(Long.valueOf(userId));
+				return getJsonString(loginStatus);
+						
+			} else {
+				if(ageRange < 17)
+				{
+					loginStatus.setLoginStatus("User is younger than 17");
+					return getJsonString(loginStatus);
+				}else {
+					
+				System.out.println("Access token appId is not the same as application appId");
+				System.out.println("Application appId");
+				System.out.println(appID);
+				System.out.println("Access token appId");
+				System.out.println(app_id);
+				loginStatus.setLoginStatus("Must log in through the facebook button in the app.");
+				return getJsonString(loginStatus);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			loginStatus.setLoginStatus("Error: something went wrong.");
+			return getJsonString(loginStatus);
+	}
+}
 }

@@ -28,6 +28,9 @@ public class ScoreboardService {
 
 	@Autowired
 	ObjectMapper mapper;
+	
+	@Autowired
+	GroupService groupService;
 
 	public String getScoreboardTop10(Long theRussId) {
 		List<Scoreboard> scoreboard = scoreboardDAO.getSchoolScoreboard(theRussId);
@@ -110,5 +113,19 @@ public class ScoreboardService {
 	public String getSchoolScoreboard(Long theRussId) {
 		return writeAsJsonString(getScoreboardPosition(scoreboardDAO.getSchoolScoreboard(theRussId), theRussId));
 	}
-
+	/*
+	public String getScoreboardGroup(Long russId, Long groupId)
+	{
+		if(groupService.isPartOfGroup(russId, groupId))
+		{
+			return writeAsJsonString(getScoreboardPosition(scoreboardDAO.getScoreboardGroup(groupId)));
+		}
+		return null;
+	}
+	
+	public String getScoreboardGroupTop3(Long russId, Long groupId)
+	{
+		
+	}
+*/
 }

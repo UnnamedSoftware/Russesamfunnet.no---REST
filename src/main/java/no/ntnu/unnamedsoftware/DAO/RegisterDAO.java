@@ -24,10 +24,11 @@ public class RegisterDAO {
 	@Autowired
 	SchoolDAO schoolDAO;
 	
+	
+	//This method should be removed
 	@Transactional
-	public String registerUser(String userId, Long schoolId, String firstName, String lastName)
+	public String registerUser(Long schoolId, String firstName, String lastName)
 	{
-		
 		School school = schoolDAO.getSchoolObjectFromId(schoolId);
 		if(school == null)
 		{
@@ -95,6 +96,33 @@ public class RegisterDAO {
 			e.printStackTrace();
 		}
 		return "russesamfunnetRegister error";
+	}
+	
+	@Transactional
+	public String registerUserFBNew(String userId, Long schoolId, String firstName, String lastName, String email, int russYear)
+	{
+		Long userIdOnFacebook = Long.parseLong(userId);
+		School school = schoolDAO.getSchoolObjectFromId(schoolId);
+		if(school == null)
+		{
+			return "There is no school with that name";
+		}
+		try(Session currentSession = sessionFactory.openSession()){
+			Russ russ = new Russ();
+			russ.setRussIdAlt(userIdOnFacebook);
+			russ.setSchoolId(school);
+			russ.setEmail(email);
+			russ.setRussYear(russYear);
+			russ.setFirstName(firstName);
+			russ.setLastName(lastName);
+			russ.setRussRole("russ");
+			russ.setRussStatus("false");
+			currentSession.save(russ);
+			return "User successfully registered";
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "registerUserFB error";
 	}
 	
 }

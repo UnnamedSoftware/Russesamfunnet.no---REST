@@ -62,5 +62,22 @@ public class ScoreboardDAO {
 		}
 		return null;
 	}
+	/*	
+	@Transactional
+	public List<Scoreboard> getScoreboardGroup(Long groupId) {
+		List<Scoreboard> scoreboard = null;
+		try(Session currentSession = sessionFactory.openSession()){
+			Query scoreboardQuery = currentSession.createQuery("from Scoreboard s where (s.russId. = :groupId) ORDER by points desc")
+					.setParameter("groupId", groupId);
+			scoreboard = scoreboardQuery.list();
+			
+			//currentSession.close();
+			return scoreboard;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return scoreboard;
+	}
+	*/
 
 }

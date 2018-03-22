@@ -42,6 +42,16 @@ public class RegisterController {
 		return registerService.facebookRegister(accessToken, birthdate, schoolId);
 	}
 	
+	@RequestMapping(value="/facebookRegisterNew", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String facebookRegisterNew(@RequestParam("accessToken") String accessToken,
+			@RequestParam("email") String email,
+			@RequestParam("schoolId") String schoolId,
+			@RequestParam("russYear") int russYear,
+			@RequestParam("birthdate") String birthdate) {     
+        
+		return registerService.facebookRegisterNew(accessToken, email, schoolId, russYear, birthdate);
+	}
+	
 	@RequestMapping(value="/russasamfunnetRegister", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String russasamfunnetRegister(@RequestParam("email") String email, 
 										 @RequestParam("password") String password, 
