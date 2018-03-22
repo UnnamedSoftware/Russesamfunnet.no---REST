@@ -96,7 +96,7 @@ public class ScoreboardController {
 	
 	@RequestMapping(value = "/groupScoreboard", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
-	public String getGroupScoreboard(@RequestParam String accessToken, @RequestParam String type) {
+	public String getGroupScoreboard(@RequestParam String accessToken, @RequestParam String type@RequestParam Long groupId) {
 		Long theRussId = null;
 		if (type.equals("facebook")) {
 			theRussId = tokenParser.decryptFacebookToken(accessToken);
@@ -107,4 +107,17 @@ public class ScoreboardController {
 		return scoreboardService.getScoreboardGroup(theRussId);
 	}
 */
+	
+	@RequestMapping(value = "/unsortedGroupScoreboard", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String getUnsortedGroupScoreboard(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long groupId) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}
+		return scoreboardService.getUnsortedScoreboardGroup(theRussId, groupId);
+	}
 }

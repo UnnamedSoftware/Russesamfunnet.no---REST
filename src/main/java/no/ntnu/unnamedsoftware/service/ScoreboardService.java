@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import no.ntnu.unnamedsoftware.DAO.GroupDAO;
 import no.ntnu.unnamedsoftware.DAO.ScoreboardDAO;
 import no.ntnu.unnamedsoftware.entity.Russ;
 import no.ntnu.unnamedsoftware.entity.Scoreboard;
@@ -31,6 +32,9 @@ public class ScoreboardService {
 	
 	@Autowired
 	GroupService groupService;
+	
+	@Autowired
+	GroupDAO groupDAO;
 
 	public String getScoreboardTop10(Long theRussId) {
 		List<Scoreboard> scoreboard = scoreboardDAO.getSchoolScoreboard(theRussId);
@@ -128,4 +132,20 @@ public class ScoreboardService {
 		
 	}
 */
+	
+	public String getUnsortedScoreboardGroup(Long russId, Long groupId)
+	{
+		if(groupService.isPartOfGroup(russId, groupId))
+		{
+			List<Russ> groupRuss = groupDAO.getGroupRuss(groupId);
+			List<Scoreboard> groupScoreboard = new ArrayList<>();
+			Iterator it = groupRuss.iterator();
+			while(it.hasNext())
+			{
+				groupScoreboard.add(scoreboardDAO.getSingleScoreboard((Long) it.next()));
+			}
+			return writeAsJsonString(this.getScoreboardPosition(groupScoreboard, russId));
+		}
+		return null;
+	}
 }
