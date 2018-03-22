@@ -1,5 +1,6 @@
 package no.ntnu.unnamedsoftware.DAO;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -37,11 +38,25 @@ public class GroupDAO {
 	@Transactional
 	public List<Russ> getGroupRuss(Long groupId)
 	{
+		System.out.println("In getGroupRuss method");
 		List<Russ> groupRuss = null;
 		try(Session currentSession = sessionFactory.openSession()){
-			Query groupQuery = currentSession.createQuery("from RussGroup g where (g.groupId.groupId = :groupId)")
+			Query groupQuery = currentSession.createQuery("select g.russId from RussGroup g where (g.groupId.groupId = :groupId)")
 					.setParameter("groupId", groupId);
 			groupRuss = groupQuery.list();
+			System.out.println("After query");
+			if(groupRuss != null)
+			{
+				Iterator it = groupRuss.iterator();
+				while(it.hasNext())
+				{
+					Russ russ = (Russ) it.next();
+					System.out.println(russ.getFirstName());
+				}
+			} else if(groupRuss == null)
+			{
+				System.out.println("There is no russ in this group");
+			}
 			return groupRuss;
 		} catch(Exception e) {
 			e.printStackTrace();

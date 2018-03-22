@@ -35,10 +35,23 @@ public class FeedDAO {
 	ObjectMapper mapper;
 	
 	@Transactional
+	public List<Feed> getAllFeed() {
+		List<Feed> feed = null;
+		try(Session currentSession = sessionFactory.openSession()){
+			Query feedQuery = currentSession.createQuery("from Feed");
+			feed = feedQuery.list();
+			return feed;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return feed;
+	}
+	
+	@Transactional
 	public List<Feed> getGroupFeed(Long groupId) {
 		List<Feed> feed = null;
 		try(Session currentSession = sessionFactory.openSession()){
-			Query feedQuery = currentSession.createQuery("from Feed f where (f.groupId.groupId = :groupId)")
+			Query feedQuery = currentSession.createQuery("from Feed f where (f.groupId.group_id = :groupId)")
 					.setParameter("groupId", groupId);
 			feed = feedQuery.list();
 			return feed;
@@ -56,7 +69,6 @@ public class FeedDAO {
 			Query feedQuery = currentSession.createQuery("from Feed f where (f.schoolId.schoolId = :schoolId)")
 					.setParameter("schoolId", theSchoolId);
 			feed = feedQuery.list();
-			if(feed == null) System.out.println("DEADBEEF");
 			return feed;
 		} catch(Exception e) {
 			e.printStackTrace();

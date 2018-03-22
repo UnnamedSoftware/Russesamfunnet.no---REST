@@ -60,11 +60,12 @@ public class GroupService {
 		return writeAsJsonString(groupDAO.getGroups(russId));
 	}
 
-	public Boolean isPartOfGroup(Long russId, Long groupId) {
+	public boolean isPartOfGroup(Long russId, Long groupId) {
 		List<Russ> group = groupDAO.getGroupRuss(groupId);
 		if (group.contains(russDAO.getUserRussFromId(russId))) {
 			return true;
 		}
+		System.out.println("Russ is not part of the group");
 		return false;
 	}
 

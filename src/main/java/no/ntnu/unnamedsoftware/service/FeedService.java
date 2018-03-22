@@ -32,7 +32,8 @@ public class FeedService {
 
 	public String getGroupFeed(Long theRussId, Long groupId) {
 		if (groupService.isPartOfGroup(theRussId, groupId)) {
-			return this.writeAsJsonString(feedDAO.getSchoolFeed(groupId));
+			System.out.println("Russ is part of the group");
+			return this.writeAsJsonString(feedDAO.getGroupFeed(groupId));
 		}
 		return null;
 	}

@@ -34,9 +34,9 @@ public class RussService {
 	}
 
 	public String getUserRuss(Long theRussId) {
-		List<Russ> russ = new ArrayList<Russ>();
-		russ.add(russDAO.getUserRussFromId(theRussId));
-		return this.writeAsJsonString(russ);
+		Russ russ = russDAO.getUserRussFromId(theRussId);
+		
+		return this.writeObjectAsJsonString(russ);
 	}
 
 	public String getAllRussAtSchool(Long theRussId) {

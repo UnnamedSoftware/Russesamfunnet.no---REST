@@ -48,8 +48,6 @@ public class Group implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "group_name")
     private String groupName;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId")
-    private List<RussGroup> russGroupList;
 
     public Group() {
     }
@@ -77,15 +75,6 @@ public class Group implements Serializable {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    @XmlTransient
-    public List<RussGroup> getRussGroupList() {
-        return russGroupList;
-    }
-
-    public void setRussGroupList(List<RussGroup> russGroupList) {
-        this.russGroupList = russGroupList;
     }
 
     @Override
