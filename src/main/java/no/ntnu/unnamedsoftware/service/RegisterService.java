@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.RegisterDAO;
 import no.ntnu.unnamedsoftware.entity.LoginStatus;
+import no.ntnu.unnamedsoftware.entity.Response;
 
 @Service
 public class RegisterService {
@@ -143,7 +144,7 @@ public class RegisterService {
 
 	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolId) {
 		
-		return registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolId);
+		return getJsonString(new Response(registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolId)));
 	}
 	
 	public String facebookRegisterNew(String accessToken, String email, String schoolName, int russYear, String birthdate) {
