@@ -55,11 +55,11 @@ public class RegisterController {
 	@RequestMapping(value="/russasamfunnetRegister", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String russasamfunnetRegister(@RequestParam("email") String email, 
 										 @RequestParam("password") String password, 
-										 @RequestParam("schoolId") String schoolId,
+										 @RequestParam("schoolId") String schoolName,
 										 @RequestParam("firstName") String firstName,
 										 @RequestParam("lastName") String lastName) {     
         
-		return registerService.russasamfunnetRegister(firstName, lastName, email, password, schoolId);
+		return registerService.russasamfunnetRegister(firstName, lastName, email, password, schoolName);
 	}
 	
 }

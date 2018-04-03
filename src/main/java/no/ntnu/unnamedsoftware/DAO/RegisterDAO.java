@@ -74,8 +74,7 @@ public class RegisterDAO {
 		return "registerUserFB error";
 	}
 
-	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolIdS) {
-		Long schoolId = Long.valueOf(schoolIdS);
+	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, Long schoolId) {
 		School school = schoolDAO.getSchoolObjectFromId(schoolId);
 		if(school == null)
 		{

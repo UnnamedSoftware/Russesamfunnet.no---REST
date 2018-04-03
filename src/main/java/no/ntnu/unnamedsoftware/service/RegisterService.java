@@ -146,9 +146,9 @@ public class RegisterService {
 		return objectInJsonString;
 	}
 
-	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolId) {
+	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolName) {
 		
-		registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolId);
+		registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolService.getSchool(schoolName));
 		return loginService.loginAndGenerateAccessToken(email, password);
 	}
 	
