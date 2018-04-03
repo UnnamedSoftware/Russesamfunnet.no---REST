@@ -168,6 +168,19 @@ public class KnotController {
 		return knotService.registerCompletedKnot(theRussId, theKnotId, witness1, witness2);
 	}
 	
+	@RequestMapping(value="/unRegisterCompletedKnot", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String unRegisterCompletedKnot(@RequestParam String accessToken,	@RequestParam("type") String type, @RequestParam("knotId") Long theKnotId){
+		
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.unRegisterCompletedKnot(theRussId, theKnotId);
+	}
+	
 	@RequestMapping(value="/completedKnots", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String getCompleted(@RequestParam String accessToken, @RequestParam String type){
 		Long theRussId = null;

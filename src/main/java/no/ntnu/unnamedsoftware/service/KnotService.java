@@ -23,6 +23,7 @@ import no.ntnu.unnamedsoftware.DAO.SchoolDAO;
 import no.ntnu.unnamedsoftware.entity.Completed;
 import no.ntnu.unnamedsoftware.entity.KnotTemp;
 import no.ntnu.unnamedsoftware.entity.Knots;
+import no.ntnu.unnamedsoftware.entity.Response;
 import no.ntnu.unnamedsoftware.entity.Russ;
 import no.ntnu.unnamedsoftware.entity.School;
 
@@ -162,6 +163,11 @@ public class KnotService {
 
 		return "Something went wrong";
 	}
+	
+	public String unRegisterCompletedKnot(Long russId, Long knotId)
+	{
+		return makeJSON(new Response(knotDAO.unRegisterCompletedKnot(russId, knotId)));
+	}
 
 	public String getKnot(Long theKnotId) {
 		Knots theKnot = knotDAO.getKnot(theKnotId);
@@ -170,7 +176,7 @@ public class KnotService {
 		return knotJSON;
 	}
 
-	public String makeJSON(Knots theKnot) {
+	public String makeJSON(Object theKnot) {
 		String knotString = null;
 		try {
 			knotString = mapper.writeValueAsString(theKnot);

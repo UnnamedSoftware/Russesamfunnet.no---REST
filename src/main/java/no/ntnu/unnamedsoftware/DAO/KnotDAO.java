@@ -212,6 +212,21 @@ public class KnotDAO {
 		}
 		return "An error occured";
 	}
+	
+	@Transactional
+	public String unRegisterCompletedKnot(Long russId, Long knotId) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query deleteQuery = currentSession.createSQLQuery("delete from completed where completed.knot_id = :knotId and completed.russ_id =:russId");
+			deleteQuery.setParameter("knotId", knotId).setParameter("russId", russId);
+			int result = deleteQuery.executeUpdate();
+			if (result > 0) {
+				return "Knot successfully removed.";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "An error occured";
+	}
 
 	@Transactional
 	public Knots updateKnot(Long knotId, String knotName, String knotDescription) {
