@@ -186,7 +186,7 @@ public class KnotService {
 
 	public String addKnot(Long russId, String knotName, String knotDescription) {
 		String russRole = russDAO.getUserRussFromId(russId).getRussRole();
-		if ((russRole.equals("Admin")) || (russRole.equals("system administrator"))) {
+		if ((russRole.equals("admin")) || (russRole.equals("system administrator"))) {
 			School school = schoolDAO.getSchoolObject(russId);
 			return makeJSON(knotDAO.addKnot(knotName, knotDescription, school));
 		} else {
@@ -196,7 +196,7 @@ public class KnotService {
 
 	public String deleteKnot(Long russId, Long knotId) {
 		String russRole = russDAO.getUserRussFromId(russId).getRussRole();
-		if ((russRole.equals("Admin")) || (russRole.equals("system administrator"))) {
+		if ((russRole.equals("admin")) || (russRole.equals("system administrator"))) {
 			return knotDAO.deleteKnot(knotId);
 		} else {
 			return "You do not have permission to execute this command.";
@@ -205,7 +205,7 @@ public class KnotService {
 	
 	public String updateKnot(Long russId, Long knotId, String knotName, String knotDescription) {
 		String russRole = russDAO.getUserRussFromId(russId).getRussRole();
-		if ((russRole.equals("Admin")) || (russRole.equals("system administrator"))) {
+		if ((russRole.equals("admin")) || (russRole.equals("system administrator"))) {
 			return makeJSON(knotDAO.updateKnot(knotId, knotName, knotDescription));
 		} else {
 			return "You do not have permission to execute this command.";
