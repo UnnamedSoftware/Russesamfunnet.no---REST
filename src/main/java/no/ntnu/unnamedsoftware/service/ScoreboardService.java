@@ -50,8 +50,8 @@ public class ScoreboardService {
 
 	}
 
-	private List<ScoreboardPosition> getScoreboardPosition(List<Scoreboard> top10, Long theRussId) {
-		Iterator it = top10.iterator();
+	private List<ScoreboardPosition> getScoreboardPosition(List<Scoreboard> scoreboard, Long theRussId) {
+		Iterator it = scoreboard.iterator();
 		ArrayList<ScoreboardPosition> scoreboardPosition = new ArrayList<>();
 		boolean russIsInTop10 = false;
 		int position = 1;
@@ -117,12 +117,13 @@ public class ScoreboardService {
 	public String getSchoolScoreboard(Long theRussId) {
 		return writeAsJsonString(getScoreboardPosition(scoreboardDAO.getSchoolScoreboard(theRussId), theRussId));
 	}
-	/*
+	
+	
 	public String getScoreboardGroup(Long russId, Long groupId)
 	{
 		if(groupService.isPartOfGroup(russId, groupId))
 		{
-			return writeAsJsonString(getScoreboardPosition(scoreboardDAO.getScoreboardGroup(groupId)));
+			return writeAsJsonString(getScoreboardPosition(scoreboardDAO.getScoreboardGroup(groupId), russId));
 		}
 		return null;
 	}
@@ -130,8 +131,9 @@ public class ScoreboardService {
 	public String getScoreboardGroupTop3(Long russId, Long groupId)
 	{
 		
+		return null;
 	}
-*/
+
 	
 	public String getUnsortedScoreboardGroup(Long russId, Long groupId)
 	{
