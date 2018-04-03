@@ -149,7 +149,7 @@ public class RegisterService {
 	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolId) {
 		
 		registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolId);
-		return getJsonString(loginService.loginAndGenerateAccessToken(email, password));
+		return loginService.loginAndGenerateAccessToken(email, password);
 	}
 	
 	public String facebookRegisterNew(String accessToken, String email, String schoolName, int russYear, String birthdate) {
