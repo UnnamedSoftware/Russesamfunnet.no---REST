@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.RegisterDAO;
+import no.ntnu.unnamedsoftware.entity.LoginObjectToReturn;
 import no.ntnu.unnamedsoftware.entity.LoginStatus;
 import no.ntnu.unnamedsoftware.entity.Response;
 
@@ -36,6 +37,9 @@ public class RegisterService {
 	
 	@Autowired
 	SchoolService schoolService;
+	
+	@Autowired
+	LoginService loginService;
 	
 	public String facebookRegister(String accessToken,String birthdate, String schoolName) {
 			Long schoolId = schoolService.getSchool(schoolName);
@@ -144,7 +148,10 @@ public class RegisterService {
 
 	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolId) {
 		
-		return getJsonString(new Response(registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolId)));
+		LoginObjectToReturn loginStatus = new LoginObjectToReturn();
+		loginStatus.setLoginStatus(registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolId));
+		loginStatus.setAccessToken(loginService.loginAndGenerateAccessToken(email, password));
+		return getJsonString(loginStatus);
 	}
 	
 	public String facebookRegisterNew(String accessToken, String email, String schoolName, int russYear, String birthdate) {
