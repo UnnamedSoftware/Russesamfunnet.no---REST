@@ -79,7 +79,7 @@ public class RegisterDAO {
 		return "registerUserFB error";
 	}
 
-	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, Long schoolId) {
+	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String salt, Long schoolId) {
 		School school = schoolDAO.getSchoolObjectFromId(schoolId);
 		if(school == null)
 		{
@@ -92,6 +92,7 @@ public class RegisterDAO {
 			russ.setLastName(lastName);
 			russ.setEmail(email);
 			russ.setRussPassword(password);
+			russ.setRussPasswordSalt(salt);
 			russ.setRussRole("russ");
 			russ.setRussStatus("false");
 			currentSession.save(russ);

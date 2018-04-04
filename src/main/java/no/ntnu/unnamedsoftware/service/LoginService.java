@@ -28,6 +28,8 @@ import no.ntnu.unnamedsoftware.entity.Russ;
 import org.jasypt.*;
 import org.jasypt.util.text.BasicTextEncryptor;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 @Service
 public class LoginService {
 
@@ -44,28 +46,43 @@ public class LoginService {
 	EncryptorAndDecryptor encAndDec;
 	
 	public String loginAndGenerateAccessToken(String email, String password) {
-		
+
 		// Check to see if user exists
 		try {
 			Russ russInDB = russDAO.getUserRussFromEmail(email);
 			if (russInDB == null) {
 				return "User not in db";
-			} 
-			else if (password.equals(russInDB.getRussPassword())) {
-				// Login success 
-				String loginStatus = "Login success";
-				
-				AccessTokenCreation atc = new AccessTokenCreation(russInDB.getRussId(), russInDB.getEmail(), russInDB.getFirstName(), russInDB.getLastName(), russInDB.getRussYear());
-				
-				String JSONatc = getJsonString(atc);
-				String accessToken = encAndDec.encrypt(JSONatc);
-				int expiresInNoOfDays = 7;
-				LoginObjectToReturn loginObjToReturn = new LoginObjectToReturn(loginStatus, accessToken, expiresInNoOfDays);
-				return getJsonString(loginObjToReturn);	
+			} else if (russInDB != null) { // else if (password.equals(russInDB.getRussPassword())) {
+
+				// get password from db
+				// get salt from db
+				// salt password from client with salt from db
+				// compare password from db and password from client
+
+				String passwordInDB = russInDB.getRussPassword();
+				String saltInDB = russInDB.getRussPasswordSalt();
+				if (saltInDB != null) {
+					String saltedPasswordFromClient = BCrypt.hashpw(password, saltInDB);
+					if (passwordInDB.equals(saltedPasswordFromClient)) {
+						// Login success
+						String loginStatus = "Login success";
+
+						AccessTokenCreation atc = new AccessTokenCreation(russInDB.getRussId(), russInDB.getEmail(),
+								russInDB.getFirstName(), russInDB.getLastName(), russInDB.getRussYear());
+
+						String JSONatc = getJsonString(atc);
+						String accessToken = encAndDec.encrypt(JSONatc);
+						int expiresInNoOfDays = 7;
+						LoginObjectToReturn loginObjToReturn = new LoginObjectToReturn(loginStatus, accessToken,
+								expiresInNoOfDays);
+						return getJsonString(loginObjToReturn);
+					} else {
+						return "Incorrect password";
+					}
 				} else {
-					System.out.println(russInDB.getRussPassword());
-					return "Incorrect password";
+					return "An error occured";
 				}
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

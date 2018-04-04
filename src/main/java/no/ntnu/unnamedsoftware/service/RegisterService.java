@@ -23,6 +23,8 @@ import no.ntnu.unnamedsoftware.entity.LoginObjectToReturn;
 import no.ntnu.unnamedsoftware.entity.LoginStatus;
 import no.ntnu.unnamedsoftware.entity.Response;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 @Service
 public class RegisterService {
 	
@@ -148,7 +150,13 @@ public class RegisterService {
 
 	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String schoolName) {
 		
-		registerDAO.russasamfunnetRegister(firstName, lastName, email, password, schoolService.getSchool(schoolName));
+		
+		// opprette salt og kryptere passord
+		String salt = BCrypt.gensalt();
+		String encPassword = BCrypt.hashpw(password, salt);
+		
+		
+		registerDAO.russasamfunnetRegister(firstName, lastName, email, encPassword, salt, schoolService.getSchool(schoolName));
 		return loginService.loginAndGenerateAccessToken(email, password);
 	}
 	
