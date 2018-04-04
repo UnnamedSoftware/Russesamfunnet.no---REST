@@ -116,6 +116,7 @@ public class KnotService {
 		// dersom brukeren ønsker det
 		Russ theWitness1 = null;
 		Russ theWitness2 = null;
+		
 
 		// Hente russ object
 		Russ theRuss = russDAO.getUserRussFromId(theRussId);

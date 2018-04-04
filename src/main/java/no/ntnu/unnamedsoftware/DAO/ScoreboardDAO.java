@@ -111,9 +111,17 @@ public class ScoreboardDAO {
 	public Scoreboard incrementScoreboard(Russ russ)
 	{
 		Scoreboard scoreboard = this.getSingleScoreboard(russ.getRussId());
-		try(Session currentSession = sessionFactory.openSession()){
-			scoreboard.setPoints(scoreboard.getPoints() + 1);
-			currentSession.update(scoreboard);
+		try (Session currentSession = sessionFactory.openSession()) {
+			// Query addWitness = currentSession.createSQLQuery("UPDATE completed SET
+			// witness_id1 = "
+			// + theWitness.getRussId() + " WHERE completed_id = " + completedKnotId);
+			// addWitness.executeUpdate();
+
+			int points = scoreboard.getPoints() + 1;
+			Query theQuery = currentSession		
+					.createSQLQuery("UPDATE scoreboard SET points='" + points + "' WHERE russ_id=" + russ.getRussId());
+			theQuery.executeUpdate();
+		System.out.println("Increment");
 			return scoreboard;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -125,12 +133,17 @@ public class ScoreboardDAO {
 	public Scoreboard decreaseScoreboard(Russ russ)
 	{
 		Scoreboard scoreboard = this.getSingleScoreboard(russ.getRussId());
-		try(Session currentSession = sessionFactory.openSession()){
-			if(scoreboard.getPoints() <= 0)
-			{
-				scoreboard.setPoints(scoreboard.getPoints() - 1);
-			}
-			currentSession.update(scoreboard);
+		try (Session currentSession = sessionFactory.openSession()) {
+			// Query addWitness = currentSession.createSQLQuery("UPDATE completed SET
+			// witness_id1 = "
+			// + theWitness.getRussId() + " WHERE completed_id = " + completedKnotId);
+			// addWitness.executeUpdate();
+
+			int points = scoreboard.getPoints() - 1;
+			Query theQuery = currentSession		
+					.createSQLQuery("UPDATE scoreboard SET points='" + points + "' WHERE russ_id=" + russ.getRussId());
+			theQuery.executeUpdate();
+		System.out.println("Increment");
 			return scoreboard;
 		}catch(Exception e) {
 			e.printStackTrace();
