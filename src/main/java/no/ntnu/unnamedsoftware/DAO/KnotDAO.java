@@ -118,19 +118,20 @@ public class KnotDAO {
 	}
 
 	@Transactional
-	public String registerCompletedKnot(Russ theRussId, Knots theKnotId, Russ theWitnessId1, Russ theWitnessId2) {
+	public Completed registerCompletedKnot(Russ theRussId, Knots theKnotId, Russ theWitnessId1, Russ theWitnessId2) {
+		Completed newCompleted = null;
 		try (Session currentSession = sessionFactory.openSession()) {
-			Completed newCompleted = new Completed();
+			newCompleted = new Completed();
 			newCompleted.setRussId(theRussId);
 			newCompleted.setKnotId(theKnotId);
 			newCompleted.setWitnessId1(theWitnessId1);
 			newCompleted.setWitnessId2(theWitnessId2);
 			currentSession.save(newCompleted);
-			return "OK";
+			return newCompleted;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "registerCompletedKnot error";
+		return newCompleted;
 	}
 
 	@Transactional

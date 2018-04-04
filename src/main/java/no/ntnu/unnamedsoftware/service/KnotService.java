@@ -137,7 +137,7 @@ public class KnotService {
 
 		// legge alt inn i databasen
 
-		return knotDAO.registerCompletedKnot(theRuss, theKnot, theWitness1, theWitness2); // knotDAO.registerCompletedKnot(theRussId,
+		return makeJSON(knotDAO.registerCompletedKnot(theRuss, theKnot, theWitness1, theWitness2)); // knotDAO.registerCompletedKnot(theRussId,
 																							// theKnotId);
 	}
 
