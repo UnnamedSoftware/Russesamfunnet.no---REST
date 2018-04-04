@@ -107,5 +107,36 @@ public class ScoreboardDAO {
 		return scoreboard;
 	}
 	
+	@Transactional
+	public Scoreboard incrementScoreboard(Russ russ)
+	{
+		Scoreboard scoreboard = this.getSingleScoreboard(russ.getRussId());
+		try(Session currentSession = sessionFactory.openSession()){
+			scoreboard.setPoints(scoreboard.getPoints() + 1);
+			currentSession.update(scoreboard);
+			return scoreboard;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return scoreboard;
+	}
+	
+	@Transactional
+	public Scoreboard decreaseScoreboard(Russ russ)
+	{
+		Scoreboard scoreboard = this.getSingleScoreboard(russ.getRussId());
+		try(Session currentSession = sessionFactory.openSession()){
+			if(scoreboard.getPoints() <= 0)
+			{
+				scoreboard.setPoints(scoreboard.getPoints() - 1);
+			}
+			currentSession.update(scoreboard);
+			return scoreboard;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return scoreboard;
+	}
+	
 
 }

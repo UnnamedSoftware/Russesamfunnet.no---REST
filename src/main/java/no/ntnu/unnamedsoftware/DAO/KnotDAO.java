@@ -27,6 +27,12 @@ public class KnotDAO {
 
 	@Autowired
 	ObjectMapper mapper;
+	
+	@Autowired
+	ScoreboardDAO scoreboardDAO;
+	
+	@Autowired
+	RussDAO russDAO;
 
 	@Transactional
 	public String getKnots(Long theSchoolId) {
@@ -127,6 +133,7 @@ public class KnotDAO {
 			newCompleted.setWitnessId1(theWitnessId1);
 			newCompleted.setWitnessId2(theWitnessId2);
 			currentSession.save(newCompleted);
+			scoreboardDAO.incrementScoreboard(theRussId);
 			return newCompleted;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -221,6 +228,7 @@ public class KnotDAO {
 			deleteQuery.setParameter("knotId", knotId).setParameter("russId", russId);
 			int result = deleteQuery.executeUpdate();
 			if (result > 0) {
+				scoreboardDAO.decreaseScoreboard(russDAO.getUserRussFromId(russId));
 				return "Knot successfully removed.";
 			}
 		} catch (Exception e) {
