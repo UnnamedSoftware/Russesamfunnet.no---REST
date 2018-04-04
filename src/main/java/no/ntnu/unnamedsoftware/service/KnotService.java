@@ -218,6 +218,10 @@ public class KnotService {
 		}
 	}
 	
+	public String checkIfCompleted(Long russId, Long knotId) {
+		return makeJSON(new Response(knotDAO.checkIfCompleted(russId, knotId)));
+	}
+	
 
 	/*
 	 * IDE! Hente en liste med knuter basert på om skolen ønsker å bruke den
