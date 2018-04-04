@@ -27,10 +27,10 @@ public class KnotDAO {
 
 	@Autowired
 	ObjectMapper mapper;
-	
+
 	@Autowired
 	ScoreboardDAO scoreboardDAO;
-	
+
 	@Autowired
 	RussDAO russDAO;
 
@@ -220,11 +220,12 @@ public class KnotDAO {
 		}
 		return "An error occured";
 	}
-	
+
 	@Transactional
 	public String unRegisterCompletedKnot(Long russId, Long knotId) {
 		try (Session currentSession = sessionFactory.openSession()) {
-			Query deleteQuery = currentSession.createSQLQuery("delete from completed where completed.knot_id = :knotId and completed.russ_id =:russId");
+			Query deleteQuery = currentSession.createSQLQuery(
+					"delete from completed where completed.knot_id = :knotId and completed.russ_id =:russId");
 			deleteQuery.setParameter("knotId", knotId).setParameter("russId", russId);
 			int result = deleteQuery.executeUpdate();
 			if (result > 0) {
@@ -239,22 +240,25 @@ public class KnotDAO {
 
 	@Transactional
 	public Knots updateKnot(Long knotId, String knotName, String knotDescription) {
-		//Knots knot = getKnot(knotId);
-		//System.out.println(knot.getKnotDetails());
+		// Knots knot = getKnot(knotId);
+		// System.out.println(knot.getKnotDetails());
 		try (Session currentSession = sessionFactory.openSession()) {
-			//Query addWitness = currentSession.createSQLQuery("UPDATE completed SET witness_id1 = "
-			//		+ theWitness.getRussId() + " WHERE completed_id = " + completedKnotId);
-			//addWitness.executeUpdate();
-			
-			Query theQuery = currentSession.createSQLQuery("UPDATE knots SET knot_name='"+knotName+"' WHERE knot_id="+knotId);
+			// Query addWitness = currentSession.createSQLQuery("UPDATE completed SET
+			// witness_id1 = "
+			// + theWitness.getRussId() + " WHERE completed_id = " + completedKnotId);
+			// addWitness.executeUpdate();
+
+			Query theQuery = currentSession
+					.createSQLQuery("UPDATE knots SET knot_name='" + knotName + "' WHERE knot_id=" + knotId);
 			theQuery.executeUpdate();
-			
-			Query theQuery2 = currentSession.createSQLQuery("UPDATE knots SET knot_details='"+knotDescription+"' WHERE knot_id="+knotId);
+
+			Query theQuery2 = currentSession
+					.createSQLQuery("UPDATE knots SET knot_details='" + knotDescription + "' WHERE knot_id=" + knotId);
 			theQuery2.executeUpdate();
-			//knot.setKnotDetails(knotDescription);
-			//knot.setKnotName(knotName);
-			//currentSession.update(knot);
-			//knot.getKnotDetails();
+			// knot.setKnotDetails(knotDescription);
+			// knot.setKnotName(knotName);
+			// currentSession.update(knot);
+			// knot.getKnotDetails();
 			return getKnot(knotId);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -275,5 +279,22 @@ public class KnotDAO {
 		}
 		return errorCode;
 
+	}
+
+	@Transactional
+	public String checkIfCompleted(Long russId, Long knotId) {
+		Completed completedKnot = null;
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query theQuery = currentSession
+					.createQuery("from Completed c where c.russId.russId =:russId and c.knotId.knotId =:knotId")
+					.setParameter("russId", russId).setParameter("knotId", knotId);
+			completedKnot = (Completed) theQuery.uniqueResult();
+			if (completedKnot != null) {
+				return "true";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "false";
 	}
 }

@@ -232,5 +232,19 @@ public class KnotController {
 		return knotService.updateKnot(theRussId, knotId, knotName, knotDescription);
 	}
 	
+	@RequestMapping(value="/checkIfCompleted", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String checkIfCompleted(@RequestParam("accessToken") String accessToken, @RequestParam String type, @RequestParam Long knotId)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return knotService.checkIfCompleted(theRussId, knotId);
+	}
+	
+	
 	
 }
