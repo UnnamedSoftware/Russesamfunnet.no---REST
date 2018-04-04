@@ -198,5 +198,29 @@ public class RussDAO {
 		}
 		return null;
 	}
+	
+	public List<Russ> searchForRussByName(Long russId, String parameter) {
+		Long schoolId = schoolDAO.getSchoolId(russId);
+		try (Session currentSession = sessionFactory.openSession()) {
+			/*Query russQuery = currentSession.createSQLQuery("SELECT * FROM russ WHERE (first_name LIKE '" + parameters + "%' or "
+																					+ "last_name  LIKE '" + parameters + "%' or "
+																					+ "russ_status  LIKE '" + parameters + "%' or "
+																					+ "email  LIKE '" + parameters + "%' or "
+																					+ "russ_role  LIKE '" + parameters + "%') and "
+																					+ "school_id=" + schoolId);
+			*/
+			parameter = parameter.toUpperCase();
+			Query russQuery = currentSession
+					.createQuery("from Russ r where (upper(r.firstName) like '"+ parameter + "%' or "
+							+ "upper(r.lastName) like '"+ parameter + "%') "
+							+ "and r.schoolId.schoolId =:schoolId")
+					.setParameter("schoolId", schoolId);//.setParameter("parameter", parameter);
+			List<Russ> russ = russQuery.list();
+			return russ;
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
 
 }

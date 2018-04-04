@@ -153,5 +153,14 @@ public class RussService {
 		}
 		return "You need to be logged to an official Russesamfunnet site.";
 	}
+	
+	public String searchForRussByName(Long russId, String parameters)
+	{
+		if(russId != null)
+		{
+			return writeAsJsonString(russDAO.searchForRussByName(russId, parameters));
+		}
+		return "You need to be logged to an official Russesamfunnet site.";
+	}
 
 }

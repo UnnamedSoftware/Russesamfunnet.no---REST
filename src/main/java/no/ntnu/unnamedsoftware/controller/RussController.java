@@ -199,6 +199,20 @@ public class RussController
 		return russService.searchForRuss(theRussId, parameter);
 	}
 	
+	@RequestMapping(value="/searchForRussByName", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String searchForRussByName(@RequestParam String accessToken, @RequestParam String type, @RequestParam String parameter)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return russService.searchForRussByName(theRussId, parameter);
+	}
+	
     
 }
 
