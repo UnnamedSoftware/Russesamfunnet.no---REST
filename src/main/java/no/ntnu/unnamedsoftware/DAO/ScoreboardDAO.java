@@ -90,6 +90,22 @@ public class ScoreboardDAO {
 		}
 		return scoreboard;
 	}
+	@Transactional
+	public Scoreboard createScoreboard(Russ russ)
+	{
+		Scoreboard scoreboard = new Scoreboard();
+		try(Session currentSession = sessionFactory.openSession()){
+			scoreboard.setRussId(russ);
+			scoreboard.setPoints(0);
+			currentSession.save(scoreboard);
+			
+			//currentSession.close();
+			return scoreboard;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return scoreboard;
+	}
 	
 
 }

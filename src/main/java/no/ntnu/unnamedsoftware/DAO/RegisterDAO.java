@@ -24,6 +24,9 @@ public class RegisterDAO {
 	@Autowired
 	SchoolDAO schoolDAO;
 	
+	@Autowired
+	ScoreboardDAO scoreboardDAO;
+	
 	
 	//This method should be removed
 	@Transactional
@@ -42,6 +45,7 @@ public class RegisterDAO {
 			russ.setRussRole("russ");
 			russ.setRussStatus("false");
 			currentSession.save(russ);
+			scoreboardDAO.createScoreboard(russ);
 			return "User successfully registered";
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -67,6 +71,7 @@ public class RegisterDAO {
 			russ.setRussRole("russ");
 			russ.setRussStatus("false");
 			currentSession.save(russ);
+			scoreboardDAO.createScoreboard(russ);
 			return "User successfully registered";
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -90,6 +95,7 @@ public class RegisterDAO {
 			russ.setRussRole("russ");
 			russ.setRussStatus("false");
 			currentSession.save(russ);
+			scoreboardDAO.createScoreboard(russ);
 			return "User successfully registered";
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -117,6 +123,7 @@ public class RegisterDAO {
 			russ.setRussRole("russ");
 			russ.setRussStatus("false");
 			currentSession.save(russ);
+			scoreboardDAO.createScoreboard(russ);
 			return "User successfully registered";
 		} catch(Exception e) {
 			e.printStackTrace();
