@@ -150,7 +150,7 @@ public class KnotService {
 		try {
 			// Russ witness1 = theCompletedKnot.getWitnessId1();
 			// Russ witness2 = theCompletedKnot.getWitnessId2();
-			return knotDAO.registerWitnessCompletedKnot(theCompletedKnotId, theWitness);
+			return makeJSON(new Response(knotDAO.registerWitnessCompletedKnot(theCompletedKnotId, theWitness)));
 			/*
 			 * if(witness1 == null) { return
 			 * knotDAO.registerWitness1CompletedKnot(theCompletedKnot, theWitness);
@@ -162,7 +162,7 @@ public class KnotService {
 			e.printStackTrace();
 		}
 
-		return "Something went wrong";
+		return makeJSON(new Response("Something went wrong"));
 	}
 	
 	public String unRegisterCompletedKnot(Long russId, Long knotId)
