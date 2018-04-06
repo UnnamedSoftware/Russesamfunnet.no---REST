@@ -251,7 +251,7 @@ public class KnotController {
 	public String addWitness(@RequestParam("accessToken") String accessToken,
 			@RequestParam String type,
 			@RequestParam Long knotId,
-			@RequestParam Russ witness)
+			@RequestParam Long witnessId)
 	{
 		Long theRussId = null;
 		if (type.equals("facebook")) {
@@ -260,7 +260,7 @@ public class KnotController {
 		{
 			theRussId = tokenParser.getRussId(accessToken);
 			}	
-		return knotService.registerWitnessCompletedKnot(knotService.getCompletedKnot(theRussId, knotId).getCompletedId(), witness.getRussId());
+		return knotService.registerWitnessCompletedKnot(knotService.getCompletedKnot(theRussId, knotId).getCompletedId(), witnessId);
 	}
 	
 	@RequestMapping(value="/getCompletedKnot", produces=MediaType.APPLICATION_JSON_VALUE)
