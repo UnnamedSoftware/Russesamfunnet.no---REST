@@ -182,6 +182,11 @@ public class KnotService {
 			return null;
 		}
 	}
+	
+	public String getCompletedKnotAsString(Completed completed)
+	{
+		return makeJSON(completed);
+	}
 
 	public String getKnot(Long theKnotId) {
 		Knots theKnot = knotDAO.getKnot(theKnotId);
