@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.ntnu.unnamedsoftware.entity.Russ;
 import no.ntnu.unnamedsoftware.service.AccessTokenDecrypterAndParser;
 import no.ntnu.unnamedsoftware.service.KnotService;
 @CrossOrigin
@@ -56,15 +57,16 @@ public class KnotController {
 
 		return registered;
 	}
-	
+	/**
 	@RequestMapping(value="/registerWitnessCompletedKnot", produces=MediaType.APPLICATION_JSON_VALUE)
-	public String registerCompletedKnot(@RequestParam("completedId") int theCompletedKnotId,
+	public String registerCompletedKnot(@RequestParam("completedId") Long theCompletedKnotId,
 										@RequestParam("witness") Long witness){
 		String registered = null;
 		registered = knotService.registerWitnessCompletedKnot(theCompletedKnotId, witness);
 
 		return registered;
 	}
+	*/
 	
 	@RequestMapping(value="/knotsFacebookToken", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String getKnotsFacebookToken(@RequestParam String accessToken){
@@ -244,6 +246,24 @@ public class KnotController {
 		}	
 		return knotService.checkIfCompleted(theRussId, knotId);
 	}
+	
+	@RequestMapping(value="/addWitness", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String addWitness(@RequestParam("accessToken") String accessToken,
+			@RequestParam String type,
+			@RequestParam Long knotId,
+			@RequestParam Russ witness)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+			}	
+		return knotService.registerWitnessCompletedKnot(knotService.getCompletedKnot(theRussId, knotId).getCompletedId(), witness.getRussId());
+	}
+	
+	
 	
 	
 	

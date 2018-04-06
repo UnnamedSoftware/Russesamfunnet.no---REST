@@ -142,7 +142,7 @@ public class KnotService {
 																							// theKnotId);
 	}
 
-	public String registerWitnessCompletedKnot(int theCompletedKnotId, Long witness) {
+	public String registerWitnessCompletedKnot(Long theCompletedKnotId, Long witness) {
 
 		// Completed theCompletedKnot = knotDAO.getCompletedKnot(theCompletedKnotId);
 		Russ theWitness = russDAO.getUserRussFromId(witness);
@@ -168,6 +168,19 @@ public class KnotService {
 	public String unRegisterCompletedKnot(Long russId, Long knotId)
 	{
 		return makeJSON(new Response(knotDAO.unRegisterCompletedKnot(russId, knotId)));
+	}
+	
+	public Completed getCompletedKnot(Long russId, Long knotId)
+	{
+		Completed completed = knotDAO.getCompletedKnotNoCompletedId(russId, knotId);
+		if(completed != null)
+		{
+			return completed;
+		} else
+		{
+			System.out.println("Usr has not completed this knot");
+			return null;
+		}
 	}
 
 	public String getKnot(Long theKnotId) {

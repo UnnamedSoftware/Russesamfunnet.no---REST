@@ -160,10 +160,23 @@ public class KnotDAO {
 		}
 		return completedKnot;
 	}
+	
+	public Completed getCompletedKnotNoCompletedId(Long russId, Long knotId)
+	{
+		Completed completedKnot = null;
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query theQuery = currentSession.createQuery("from Completed c where c.russId.russId =:russId and c.knotId.knotId =:knotId")
+					.setParameter("russId", russId).setParameter("knotId", knotId);
+			completedKnot = (Completed) theQuery.uniqueResult();
+			return completedKnot;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return completedKnot;
+	}
 
 	@Transactional
-	public String registerWitnessCompletedKnot(int theCompletedKnotId, Russ theWitness) {
-		Long completedKnotId = new Long(theCompletedKnotId);
+	public String registerWitnessCompletedKnot(Long completedKnotId, Russ theWitness) {
 		try (Session currentSession = sessionFactory.openSession()) {
 			Query theQuery = currentSession.createQuery("from Completed c where c.completedId = :theCompletedKnotId")
 					.setParameter("theCompletedKnotId", completedKnotId);
