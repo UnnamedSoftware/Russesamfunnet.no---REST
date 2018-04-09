@@ -71,7 +71,11 @@ public class ScoreboardDAO {
 	public List<Scoreboard> getScoreboardGroup(Long groupId) {
 		List<Scoreboard> scoreboard = null;
 		try(Session currentSession = sessionFactory.openSession()){
-			Query scoreboardQuery = currentSession.createQuery("select Scoreboard.russId, RussGroup.russId from Scoreboard s inner join RussGroup r ON s.russId = r.russId where RussGroup.groupId.groupId =:groupId")
+			Query scoreboardQuery = currentSession.createQuery(
+					"select sb from Scoreboard sb, RussGroup rg "
+				//	+ "join sb.russId r"
+					+ "where sb.russId.russId = rg.russId "
+					+ "and rg.groupId =:groupId")
 					.setParameter("groupId", groupId);
 		/*	Query scoreboardQuery = currentSession.createSQLQuery("SELECT scoreboard.russ_id, russ_group.russ_id "
 															+ "FROM scoreboard "
@@ -90,6 +94,8 @@ public class ScoreboardDAO {
 		}
 		return scoreboard;
 	}
+	
+	
 	@Transactional
 	public Scoreboard createScoreboard(Russ russ)
 	{
