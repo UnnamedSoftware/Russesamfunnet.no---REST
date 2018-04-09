@@ -32,6 +32,9 @@ public class FeedDAO {
 	SchoolDAO schoolDAO;
 	
 	@Autowired
+	GroupDAO groupDAO;
+	
+	@Autowired
 	ObjectMapper mapper;
 	
 	@Transactional
@@ -87,6 +90,24 @@ public class FeedDAO {
 		School school = schoolDAO.getSchoolObject(russId);
 		feed.setRussId(russ);
 		feed.setSchoolId(school);
+		currentSession.save(feed);
+		return feed;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Transactional
+	public Feed postFeedToGroup(Long russId, String message, Long groupId)
+	{	
+		try(Session currentSession = sessionFactory.openSession()){
+		Feed feed = new Feed();
+		feed.setMessage(message);
+		feed.setType("Group");
+		Russ russ = russDAO.getUserRussFromId(russId);
+		feed.setRussId(russ);
+		feed.setGroupId(groupDAO.getGroup(groupId));
 		currentSession.save(feed);
 		return feed;
 		} catch(Exception e) {

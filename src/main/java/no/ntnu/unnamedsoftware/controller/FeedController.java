@@ -103,6 +103,21 @@ public class FeedController {
 		return feedService.getGroupFeed(theRussId, groupId);
 		
 	}
+	
+	@RequestMapping(value="/postFeedToGroup", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String postFeedToGroup(@RequestParam String accessToken, @RequestParam String type, @RequestParam String message, @RequestParam Long groupId) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return feedService.postFeedToGroup(theRussId, message, groupId);
+		
+	}
 
 
 }

@@ -70,5 +70,10 @@ public class FeedService {
 		return writeAsJsonString(feedDAO.postFeed(russId, message));
 
 	}
+	
+	public String postFeedToGroup(Long russId, String message, Long groupId) {
+		return writeAsJsonString(feedDAO.postFeedToGroup(russId, message, groupId));
+
+	}
 
 }
