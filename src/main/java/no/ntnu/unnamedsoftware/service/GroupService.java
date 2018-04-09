@@ -71,14 +71,14 @@ public class GroupService {
 	}
 
 	public String createGroup(Long russId, String groupName) {
-		return writeObjectAsJsonString(new Response(groupDAO.createGroup(russId, groupName)));
+		return writeObjectAsJsonString(new Response(groupDAO.createGroup(russDAO.getUserRussFromId(russId), groupName)));
 	}
 
 	public String deleteGroup(Long russId, Long groupId) {
 		if (isPartOfGroup(russId, groupId)) {
 			return writeObjectAsJsonString(new Response(groupDAO.deleteGroup(groupId)));
 		} else {
-			return writeObjectAsJsonString(new Response("You need to be part of the group to add new members"));
+			return writeObjectAsJsonString(new Response("You need to be part of the group to delete the group"));
 		}
 	}
 
