@@ -12,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import no.ntnu.unnamedsoftware.entity.Feed;
 import no.ntnu.unnamedsoftware.entity.Group;
+import no.ntnu.unnamedsoftware.entity.Knots;
 import no.ntnu.unnamedsoftware.entity.Russ;
+import no.ntnu.unnamedsoftware.entity.RussGroup;
+import no.ntnu.unnamedsoftware.entity.Scoreboard;
 
 @Repository
 public class GroupDAO {
@@ -33,6 +36,21 @@ public class GroupDAO {
 			e.printStackTrace();
 		}
 		return groups;
+	}
+	
+	@Transactional
+	public Group getGroup(Long groupId)
+	{
+		Group group = null;
+		try(Session currentSession = sessionFactory.openSession()){
+			Query groupQuery = currentSession.createQuery("from Group g where (g.groupId = :groupId)")
+					.setParameter("groupId", groupId);
+			group = (Group) groupQuery.uniqueResult();
+			return group;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return group;
 	}
 	
 	@Transactional
@@ -63,5 +81,61 @@ public class GroupDAO {
 		}
 		return groupRuss;
 	}
+	
+	@Transactional
+	public String createGroup(Long russId, String groupName)
+	{
+		Group group = new Group();
+		try(Session currentSession = sessionFactory.openSession()){
+			group.setGroupName(groupName);
+			currentSession.save(group);
+			
+			//currentSession.close();
+			return "Group successfully created";
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "An error occured";
+	}
+	
+	@Transactional
+	public String deleteGroup(Long groupId)
+	{
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query deleteQuery1 = currentSession.createSQLQuery("delete from RussGroup g where g.groupId.groupId =:groupId");
+			deleteQuery1.setParameter("groupId", groupId);
+			int result1 = deleteQuery1.executeUpdate();
+			
+			Query deleteQuery2 = currentSession.createSQLQuery("delete from Group g where g.groupId =:groupId");
+			deleteQuery2.setParameter("groupId", groupId);
+			int result2 = deleteQuery2.executeUpdate();
+			if (result2 > 0) {
+				return "Group successfully deleted.";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "An error occured";
+	}
+	
+	@Transactional
+	public String addGroupMember(Russ russ, Long groupId)
+	{
+		RussGroup russGroup = new RussGroup();
+		try(Session currentSession = sessionFactory.openSession()){
+			russGroup.setRussGroupId(groupId);
+			russGroup.setRussId(russ);
+			
+			currentSession.save(russGroup);
+			
+			//currentSession.close();
+			return "New group member successfully added";
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "An error occured";
+	}
+	
+	
 
 }

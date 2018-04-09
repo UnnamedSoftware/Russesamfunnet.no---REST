@@ -14,6 +14,7 @@ import no.ntnu.unnamedsoftware.DAO.GroupDAO;
 import no.ntnu.unnamedsoftware.DAO.RussDAO;
 import no.ntnu.unnamedsoftware.entity.Feed;
 import no.ntnu.unnamedsoftware.entity.Group;
+import no.ntnu.unnamedsoftware.entity.Response;
 import no.ntnu.unnamedsoftware.entity.Russ;
 
 @Service
@@ -67,6 +68,26 @@ public class GroupService {
 		}
 		System.out.println("Russ is not part of the group");
 		return false;
+	}
+
+	public String createGroup(Long russId, String groupName) {
+		return writeObjectAsJsonString(new Response(groupDAO.createGroup(russId, groupName)));
+	}
+
+	public String deleteGroup(Long russId, Long groupId) {
+		if (isPartOfGroup(russId, groupId)) {
+			return writeObjectAsJsonString(new Response(groupDAO.deleteGroup(groupId)));
+		} else {
+			return writeObjectAsJsonString(new Response("You need to be part of the group to add new members"));
+		}
+	}
+
+	public String addGroupMember(Long russId, Long groupId, Long russIdToAdd) {
+		if (isPartOfGroup(russId, groupId)) {
+			return writeObjectAsJsonString(new Response(groupDAO.addGroupMember(russDAO.getUserRussFromId(russIdToAdd), groupId)));
+		} else {
+			return writeObjectAsJsonString(new Response("You need to be part of the group to add new members"));
+		}
 	}
 
 }

@@ -36,5 +36,52 @@ public class GroupController {
 		return groupService.getGroups(theRussId);
 		
 	}
+	
+	@RequestMapping(value="/createGroup", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String createGroup(@RequestParam String accessToken, @RequestParam String type, @RequestParam String groupName) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return groupService.createGroup(theRussId, groupName);
+		
+	}
+	
+	@RequestMapping(value="/deleteGroup", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String deleteGroup(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long groupId) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return groupService.deleteGroup(theRussId, groupId);
+		
+	}
+	
+	@RequestMapping(value="/addGroupMember", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String addGroupMember(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long groupId, @RequestParam Long russId) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return groupService.addGroupMember(theRussId, groupId, russId);
+		
+	}
+	
+	
 
 }
