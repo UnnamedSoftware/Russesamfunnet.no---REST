@@ -314,11 +314,15 @@ public class KnotDAO {
 	@Transactional
 	public String removeWitness(Long russId, Long knotId, Long witnessId) {
 		Completed completed = this.getCompletedKnotNoCompletedId(russId, knotId);
+		if(completed.getWitnessId1().getRussId() == witnessId)
+		{
+			completed.setWitnessId1(russDAO.getUserRussFromId(witnessId));
+		}else if(completed.getWitnessId2().getRussId() == witnessId)
+		{
+			completed.setWitnessId2(russDAO.getUserRussFromId(witnessId));
+		}
 		try (Session currentSession = sessionFactory.openSession()) {
-			Query updateQuery = currentSession.createQuery("update completed where completed.witness_id1 =:witnessId or completed.witness_id2 =:witnessId "
-					+ "and completed.completed_id =:completedId");
-			updateQuery.setParameter("witnessId", witnessId).setParameter("completedId", completed.getCompletedId());	
-			completed = (Completed) updateQuery.uniqueResult();
+			currentSession.update(completed);
 				return "Witness successfully removed";
 		} catch (Exception e) {
 			e.printStackTrace();
