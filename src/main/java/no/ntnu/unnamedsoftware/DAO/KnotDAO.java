@@ -310,4 +310,19 @@ public class KnotDAO {
 		}
 		return "false";
 	}
+	
+	@Transactional
+	public String removeWitness(Long russId, Long knotId, Long witnessId) {
+		Completed completed = this.getCompletedKnotNoCompletedId(russId, knotId);
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query updateQuery = currentSession.createQuery("update completed where completed.witness_id1 =:witnessId or completed.witness_id2 =:witnessId "
+					+ "and completed.completed_id =:completedId");
+			updateQuery.setParameter("witnessId", witnessId).setParameter("completedId", completed.getCompletedId());	
+			completed = (Completed) updateQuery.uniqueResult();
+				return "Witness successfully removed";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "An error occured";
+	}
 }

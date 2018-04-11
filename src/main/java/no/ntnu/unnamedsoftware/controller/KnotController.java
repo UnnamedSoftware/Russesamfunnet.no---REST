@@ -275,6 +275,23 @@ public class KnotController {
 		return knotService.getCompletedKnotAsString(knotService.getCompletedKnot(theRussId, knotId));
 		}
 	
+	@RequestMapping(value="/removeWitness", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String removeWitness(@RequestParam("accessToken") String accessToken,
+			@RequestParam String type,
+			@RequestParam Long knotId,
+			@RequestParam Long witnessId)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+			}	
+		return knotService.removeWitness(theRussId, knotId, witnessId);
+	}
+		
+	
 	
 	
 }

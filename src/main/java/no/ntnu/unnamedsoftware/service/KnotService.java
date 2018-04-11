@@ -241,6 +241,11 @@ public class KnotService {
 		return makeJSON(new Response(knotDAO.checkIfCompleted(russId, knotId)));
 	}
 	
+	public String removeWitness(Long russId, Long knotId, Long witnessId)
+	{
+		return makeJSON(new Response(knotDAO.removeWitness(russId, knotId, witnessId)));
+	}
+	
 
 	/*
 	 * IDE! Hente en liste med knuter basert på om skolen ønsker å bruke den
