@@ -115,4 +115,20 @@ public class FeedDAO {
 			return null;
 		}
 	}
+	
+	@Transactional
+	public String deleteMessage(Long russId, Long feedId) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query deleteQuery = currentSession
+					.createSQLQuery("delete from feed where feed.feed_id=" + feedId + " and feed.russ_id=" + russId);
+			int result = deleteQuery.executeUpdate();
+				if(result > 0)
+				{
+					return "Message successfully deleted";
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "An error occured";
+	}
 }

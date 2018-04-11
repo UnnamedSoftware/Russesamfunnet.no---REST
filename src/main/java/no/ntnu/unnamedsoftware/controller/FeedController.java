@@ -118,6 +118,21 @@ public class FeedController {
 		return feedService.postFeedToGroup(theRussId, message, groupId);
 		
 	}
+	
+	@RequestMapping(value="/deleteMessage", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String DeleteMEssage(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long feedId) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return feedService.deleteMessage(theRussId, feedId);
+		
+	}
 
 
 }

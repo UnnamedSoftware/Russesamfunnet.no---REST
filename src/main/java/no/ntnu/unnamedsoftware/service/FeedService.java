@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.FeedDAO;
 import no.ntnu.unnamedsoftware.entity.Feed;
+import no.ntnu.unnamedsoftware.entity.Response;
 
 @Service
 public class FeedService {
@@ -74,6 +75,11 @@ public class FeedService {
 	public String postFeedToGroup(Long russId, String message, Long groupId) {
 		return writeAsJsonString(feedDAO.postFeedToGroup(russId, message, groupId));
 
+	}
+	
+	public String deleteMessage(Long russId, Long feedId)
+	{
+		return writeAsJsonString(new Response(feedDAO.deleteMessage(russId, feedId)));
 	}
 
 }

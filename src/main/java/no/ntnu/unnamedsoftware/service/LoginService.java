@@ -75,6 +75,7 @@ public class LoginService {
 						int expiresInNoOfDays = 7;
 						LoginObjectToReturn loginObjToReturn = new LoginObjectToReturn(loginStatus, accessToken,
 								expiresInNoOfDays);
+						loginObjToReturn.setRussId(russInDB.getRussId());
 						return getJsonString(loginObjToReturn);
 					} else {
 						return "Incorrect password";

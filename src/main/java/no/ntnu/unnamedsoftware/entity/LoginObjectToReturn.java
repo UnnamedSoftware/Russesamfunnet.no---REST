@@ -5,7 +5,16 @@ public class LoginObjectToReturn {
 	private String loginStatus;
 	private String accessToken;
 	private int expiresInDays;
+	private Long russId;
 	
+	public Long getRussId() {
+		return russId;
+	}
+
+	public void setRussId(Long russId) {
+		this.russId = russId;
+	}
+
 	public LoginObjectToReturn() {
 		
 	}
