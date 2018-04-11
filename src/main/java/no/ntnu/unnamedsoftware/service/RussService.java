@@ -162,5 +162,6 @@ public class RussService {
 		}
 		return "You need to be logged to an official Russesamfunnet site.";
 	}
+	
 
 }

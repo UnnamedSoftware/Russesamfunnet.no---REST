@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.RegisterDAO;
+import no.ntnu.unnamedsoftware.DAO.RussDAO;
 import no.ntnu.unnamedsoftware.entity.LoginObjectToReturn;
 import no.ntnu.unnamedsoftware.entity.LoginStatus;
 import no.ntnu.unnamedsoftware.entity.Response;
@@ -39,6 +40,9 @@ public class RegisterService {
 	
 	@Autowired
 	SchoolService schoolService;
+	
+	@Autowired
+	RussDAO russDAO;
 	
 	@Autowired
 	LoginService loginService;
@@ -201,7 +205,8 @@ public class RegisterService {
 			
 			if (app_id.equals(appID) && ageRange >= 17) {
 				loginStatus.setLoginStatus(registerDAO.registerUserFBNew(userId, schoolId, firstName, lastName, email, russYear));
-				loginStatus.setUserId(Long.valueOf(userId));
+
+				loginStatus.setUserId(russDAO.getRussFromFacebookId(""+userId).getRussId());
 				return getJsonString(loginStatus);
 						
 			} else {
