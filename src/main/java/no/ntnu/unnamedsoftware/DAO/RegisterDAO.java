@@ -14,30 +14,30 @@ import no.ntnu.unnamedsoftware.entity.School;
 
 @Repository
 public class RegisterDAO {
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	@Autowired
 	ObjectMapper mapper;
-	
+
 	@Autowired
 	SchoolDAO schoolDAO;
-	
+
+	@Autowired
+	RussDAO russDAO;
+
 	@Autowired
 	ScoreboardDAO scoreboardDAO;
-	
-	
-	//This method should be removed
+
+	// This method should be removed
 	@Transactional
-	public String registerUser(Long schoolId, String firstName, String lastName)
-	{
+	public String registerUser(Long schoolId, String firstName, String lastName) {
 		School school = schoolDAO.getSchoolObjectFromId(schoolId);
-		if(school == null)
-		{
+		if (school == null) {
 			return "There is no school with that name";
 		}
-		try(Session currentSession = sessionFactory.openSession()){
+		try (Session currentSession = sessionFactory.openSession()) {
 			Russ russ = new Russ();
 			russ.setSchoolId(school);
 			russ.setFirstName(firstName);
@@ -47,22 +47,20 @@ public class RegisterDAO {
 			currentSession.save(russ);
 			scoreboardDAO.createScoreboard(russ);
 			return "User successfully registered";
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "registerUser error";
 	}
-	
+
 	@Transactional
-	public String registerUserFB(String userId, Long schoolId, String firstName, String lastName)
-	{
+	public String registerUserFB(String userId, Long schoolId, String firstName, String lastName) {
 		Long userIdOnFacebook = Long.parseLong(userId);
 		School school = schoolDAO.getSchoolObjectFromId(schoolId);
-		if(school == null)
-		{
+		if (school == null) {
 			return "There is no school with that name";
 		}
-		try(Session currentSession = sessionFactory.openSession()){
+		try (Session currentSession = sessionFactory.openSession()) {
 			Russ russ = new Russ();
 			russ.setRussIdAlt(userIdOnFacebook);
 			russ.setSchoolId(school);
@@ -73,47 +71,48 @@ public class RegisterDAO {
 			currentSession.save(russ);
 			scoreboardDAO.createScoreboard(russ);
 			return "User successfully registered";
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "registerUserFB error";
 	}
 
-	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String salt, Long schoolId) {
+	public String russasamfunnetRegister(String firstName, String lastName, String email, String password, String salt,
+			Long schoolId) {
 		School school = schoolDAO.getSchoolObjectFromId(schoolId);
-		if(school == null)
-		{
+		if (school == null) {
 			return "There is no school with that name";
 		}
-		try(Session currentSession = sessionFactory.openSession()){
-			Russ russ = new Russ();
-			russ.setSchoolId(school);
-			russ.setFirstName(firstName);
-			russ.setLastName(lastName);
-			russ.setEmail(email);
-			russ.setRussPassword(password);
-			russ.setRussPasswordSalt(salt);
-			russ.setRussRole("russ");
-			russ.setRussStatus("false");
-			currentSession.save(russ);
-			scoreboardDAO.createScoreboard(russ);
-			return "User successfully registered";
-		} catch(Exception e) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			if (russDAO.getUserRussFromEmail(email) == null) {
+				Russ russ = new Russ();
+				russ.setSchoolId(school);
+				russ.setFirstName(firstName);
+				russ.setLastName(lastName);
+				russ.setEmail(email);
+				russ.setRussPassword(password);
+				russ.setRussPasswordSalt(salt);
+				russ.setRussRole("russ");
+				russ.setRussStatus("false");
+				currentSession.save(russ);
+				scoreboardDAO.createScoreboard(russ);
+				return "User successfully registered";
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "russesamfunnetRegister error";
 	}
-	
+
 	@Transactional
-	public String registerUserFBNew(String userId, Long schoolId, String firstName, String lastName, String email, int russYear)
-	{
+	public String registerUserFBNew(String userId, Long schoolId, String firstName, String lastName, String email,
+			int russYear) {
 		Long userIdOnFacebook = Long.parseLong(userId);
 		School school = schoolDAO.getSchoolObjectFromId(schoolId);
-		if(school == null)
-		{
+		if (school == null) {
 			return "There is no school with that name";
 		}
-		try(Session currentSession = sessionFactory.openSession()){
+		try (Session currentSession = sessionFactory.openSession()) {
 			Russ russ = new Russ();
 			russ.setRussIdAlt(userIdOnFacebook);
 			russ.setSchoolId(school);
@@ -126,11 +125,10 @@ public class RegisterDAO {
 			currentSession.save(russ);
 			scoreboardDAO.createScoreboard(russ);
 			return "User successfully registered";
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "registerUserFB error";
 	}
-	
-}
 
+}
