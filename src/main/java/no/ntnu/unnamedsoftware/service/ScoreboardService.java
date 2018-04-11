@@ -41,7 +41,7 @@ public class ScoreboardService {
 		ArrayList<Scoreboard> top10 = new ArrayList<>();
 		int countTo10 = 0;
 		Iterator it = scoreboard.iterator();
-		while (it.hasNext() && countTo10 <= 10) {
+		while (it.hasNext() && countTo10 < 10) {
 			top10.add((Scoreboard) it.next());
 			countTo10++;
 		}
