@@ -63,8 +63,10 @@ public class ScoreboardService {
 					position,
 					tempScore.getRussId()));
 			position++;
-			if (tempScore.getRussId().getRussId() == theRussId) {
+			System.out.println("Checking " + tempScore.getRussId().getRussId() + " vs " + theRussId);
+			if (tempScore.getRussId().getRussId().equals(theRussId)) {
 				russIsInTop10 = true;
+				System.out.println("Russ is in top 10");
 			}
 		}
 
