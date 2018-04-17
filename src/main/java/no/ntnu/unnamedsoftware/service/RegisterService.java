@@ -160,8 +160,15 @@ public class RegisterService {
 		String encPassword = BCrypt.hashpw(password, salt);
 		
 		
-		registerDAO.russasamfunnetRegister(firstName, lastName, email, encPassword, salt, schoolService.getSchool(schoolName));
-		return loginService.loginAndGenerateAccessToken(email, password);
+		String result = registerDAO.russasamfunnetRegister(firstName, lastName, email, encPassword, salt, schoolService.getSchool(schoolName));
+		if(result.equals("User successfully registered"))
+		{
+			return loginService.loginAndGenerateAccessToken(email, password);
+		} else if(result.equals("Email already in use")){
+			return this.getJsonString(new Response("Email already in use")); 
+		} else {
+			return this.getJsonString(new Response("Error"));
+		}
 	}
 	
 	public String facebookRegisterNew(String accessToken, String email, String schoolName, int russYear, String birthdate) {

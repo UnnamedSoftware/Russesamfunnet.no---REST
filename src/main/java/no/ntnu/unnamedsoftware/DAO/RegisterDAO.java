@@ -97,6 +97,8 @@ public class RegisterDAO {
 				currentSession.save(russ);
 				scoreboardDAO.createScoreboard(russ);
 				return "User successfully registered";
+			} else {
+				return "Email already in use";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
