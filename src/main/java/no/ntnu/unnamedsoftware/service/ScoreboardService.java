@@ -133,7 +133,24 @@ public class ScoreboardService {
 	public String getScoreboardGroupTop3(Long russId, Long groupId)
 	{
 		
+		if(groupService.isPartOfGroup(russId, groupId))
+		{
+			return writeAsJsonString(getScoreboardPosition(getScoreboardTopList(scoreboardDAO.getScoreboardGroup(groupId), 3), russId));
+		}
 		return null;
+	}
+	
+	public List<Scoreboard> getScoreboardTopList(List<Scoreboard> inList, int numberOfScores) {
+		ArrayList<Scoreboard> top = new ArrayList<>();
+		int count = 0;
+		Iterator it = inList.iterator();
+		while (it.hasNext() && count < numberOfScores) {
+			top.add((Scoreboard) it.next());
+			count++;
+		}
+
+		return top;
+
 	}
 
 	

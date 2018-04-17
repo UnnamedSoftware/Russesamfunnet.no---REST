@@ -73,10 +73,11 @@ public class ScoreboardDAO {
 		try(Session currentSession = sessionFactory.openSession()){
 			Query scoreboardQuery = currentSession.createQuery(
 					"select sb from Scoreboard sb, RussGroup rg "
-				//	+ "join sb.russId r"
-					+ "where sb.russId.russId = rg.russId "
-					+ "and rg.groupId =:groupId")
-					.setParameter("groupId", groupId);
+					//+ "join sb.russId on rg.russId"
+					+ "where (rg.groupId = " + groupId + ")"
+					+ "and (sb.russId = rg.russId) "
+					+ "ORDER by points desc");
+					//.setParameter("groupId", groupId);
 		/*	Query scoreboardQuery = currentSession.createSQLQuery("SELECT scoreboard.russ_id, russ_group.russ_id "
 															+ "FROM scoreboard "
 															+ "INNER JOIN russ_group ON scoreboard.russ_id = russ_group.russ_id "
