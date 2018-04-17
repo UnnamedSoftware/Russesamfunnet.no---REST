@@ -140,5 +140,19 @@ public class GroupDAO {
 		}
 		return "An error occured";
 	}
+	
+	@Transactional
+	public String removeGroupMember(Russ russ, Long groupId) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query deleteQuery1 = currentSession
+					.createSQLQuery("delete from russ_group where russ_group.group_id=" + groupId + " and russ_group.russ_id = " + russ.getRussId());
+			int result1 = deleteQuery1.executeUpdate();
+			return "Russ removed from group";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+		}
+		
+	}
 
 }

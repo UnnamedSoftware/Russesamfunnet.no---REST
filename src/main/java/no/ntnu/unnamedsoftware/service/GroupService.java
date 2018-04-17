@@ -71,7 +71,8 @@ public class GroupService {
 	}
 
 	public String createGroup(Long russId, String groupName) {
-		return writeObjectAsJsonString(new Response(groupDAO.createGroup(russDAO.getUserRussFromId(russId), groupName)));
+		return writeObjectAsJsonString(
+				new Response(groupDAO.createGroup(russDAO.getUserRussFromId(russId), groupName)));
 	}
 
 	public String deleteGroup(Long russId, Long groupId) {
@@ -84,7 +85,21 @@ public class GroupService {
 
 	public String addGroupMember(Long russId, Long groupId, Long russIdToAdd) {
 		if (isPartOfGroup(russId, groupId)) {
-			return writeObjectAsJsonString(new Response(groupDAO.addGroupMember(russDAO.getUserRussFromId(russIdToAdd), groupId)));
+			if (!isPartOfGroup(russIdToAdd, groupId)) {
+				return writeObjectAsJsonString(
+						new Response(groupDAO.addGroupMember(russDAO.getUserRussFromId(russIdToAdd), groupId)));
+			} else {
+				return writeObjectAsJsonString(new Response("Russ is already part of the group"));
+			}
+		} else {
+			return writeObjectAsJsonString(new Response("You need to be part of the group to add new members"));
+		}
+	}
+
+	public String removeGroupMember(Long russId, Long groupId, Long russIdToremove) {
+		if (isPartOfGroup(russId, groupId)) {
+			return writeObjectAsJsonString(
+					new Response(groupDAO.removeGroupMember(russDAO.getUserRussFromId(russIdToremove), groupId)));
 		} else {
 			return writeObjectAsJsonString(new Response("You need to be part of the group to add new members"));
 		}

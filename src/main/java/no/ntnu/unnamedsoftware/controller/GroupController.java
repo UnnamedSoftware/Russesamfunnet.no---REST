@@ -83,6 +83,21 @@ public class GroupController {
 		
 	}
 	
+	@RequestMapping(value="/removeGroupMember", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String removeGroupMember(@RequestParam String accessToken, @RequestParam String type, @RequestParam Long groupId, @RequestParam Long russId) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return groupService.removeGroupMember(theRussId, groupId, russId);
+		
+	}
+	
 	
 
 }
