@@ -163,5 +163,27 @@ public class RussService {
 		return "You need to be logged to an official Russesamfunnet site.";
 	}
 	
+	public String searchForRussByNameOutsideSchool(Long russId, String parameters)
+	{
+		if(russId != null)
+		{
+			List<Russ> russ = russDAO.searchForRussByNameOutsideSchool(russId, parameters);
+			
+			List<Russ> russ100 = new ArrayList<>();
+			for(int i = 0; i <= 100 ; i++)
+			{
+				try {
+					russ100.add(russ.get(i));
+				} catch (Exception e)
+				{
+					return writeAsJsonString(russ100);
+				}
+			}
+			
+			return writeAsJsonString(russ100);
+		}
+		return "You need to be logged to an official Russesamfunnet site.";
+	}
+	
 
 }

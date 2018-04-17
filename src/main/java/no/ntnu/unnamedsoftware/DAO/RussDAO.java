@@ -222,5 +222,20 @@ public class RussDAO {
 		}
 		return null;
 	}
+	
+	public List<Russ> searchForRussByNameOutsideSchool(Long russId, String parameter) {
+		try (Session currentSession = sessionFactory.openSession()) {
+		
+			parameter = parameter.toUpperCase();
+			Query russQuery = currentSession
+					.createQuery("from Russ r where (upper(r.firstName) like '"+ parameter + "%' or "
+							+ "upper(r.lastName) like '"+ parameter + "%') ");
+			List<Russ> russ = russQuery.list();
+			return russ;
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return null;
+	}
 
 }
