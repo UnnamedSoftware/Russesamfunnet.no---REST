@@ -1,6 +1,7 @@
 package no.ntnu.unnamedsoftware.DAO;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -33,6 +34,9 @@ public class KnotDAO {
 
 	@Autowired
 	RussDAO russDAO;
+	
+	@Autowired
+	CompletedDAO completedDAO;
 
 	@Transactional
 	public String getKnots(Long theSchoolId) {
@@ -220,7 +224,19 @@ public class KnotDAO {
 
 	@Transactional
 	public String deleteKnot(Long knotId) {
+		try {
 		Knots knot = getKnot(knotId);
+		List<Russ> russ = completedDAO.getRussThatHaveCompletedKnot(knotId);
+		Iterator it = russ.iterator();
+		while(it.hasNext())
+		{
+			Russ tempRuss = (Russ) it.next();
+			scoreboardDAO.decreaseScoreboard(tempRuss);
+		}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		try (Session currentSession = sessionFactory.openSession()) {
 			Query deleteQuery = currentSession.createSQLQuery("delete from knots where knots.knot_id = :knotId");
 			deleteQuery.setParameter("knotId", knotId);
