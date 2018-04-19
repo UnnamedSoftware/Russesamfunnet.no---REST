@@ -237,5 +237,17 @@ public class RussDAO {
 		}
 		return null;
 	}
+	
+	public String setProfilePicture(Long russId, String pictureName) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession
+					.createSQLQuery("UPDATE russ SET profile_picture='" + pictureName +"' WHERE russ_id=" + russId);
+			russQuery.executeUpdate();
+			return "Picture name successfully stored in db";
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return "An error occured";
+	}
 
 }

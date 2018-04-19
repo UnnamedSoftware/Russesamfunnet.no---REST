@@ -227,6 +227,20 @@ public class RussController
 		return russService.searchForRussByNameOutsideSchool(theRussId, parameter);
 	}
 	
+	@RequestMapping(value="/setProfilePicture", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String setProfilePicture(@RequestParam String accessToken, @RequestParam String type, @RequestParam String pictureName)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return russService.setProfilePicture(theRussId, pictureName);
+	}
+	
     
 }
 

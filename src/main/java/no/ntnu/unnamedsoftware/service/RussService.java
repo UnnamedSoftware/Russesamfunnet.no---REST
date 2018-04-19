@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.ntnu.unnamedsoftware.DAO.RussDAO;
+import no.ntnu.unnamedsoftware.entity.Response;
 import no.ntnu.unnamedsoftware.entity.Russ;
 import no.ntnu.unnamedsoftware.entity.School;
 
@@ -183,6 +184,11 @@ public class RussService {
 			return writeAsJsonString(russ100);
 		}
 		return "You need to be logged to an official Russesamfunnet site.";
+	}
+	
+	public String setProfilePicture(Long russId, String pictureName)
+	{
+		return writeObjectAsJsonString(new Response(russDAO.setProfilePicture(russId, pictureName)));
 	}
 	
 
