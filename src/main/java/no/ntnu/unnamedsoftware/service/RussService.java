@@ -191,5 +191,10 @@ public class RussService {
 		return writeObjectAsJsonString(new Response(russDAO.setProfilePicture(russId, pictureName)));
 	}
 	
+	public String setRussCard(Long russId, String pictureName)
+	{
+		return writeObjectAsJsonString(new Response(russDAO.setRussCard(russId, pictureName)));
+	}
+	
 
 }

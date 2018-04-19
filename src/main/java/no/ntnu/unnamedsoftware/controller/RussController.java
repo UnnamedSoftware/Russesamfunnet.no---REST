@@ -241,6 +241,20 @@ public class RussController
 		return russService.setProfilePicture(theRussId, pictureName);
 	}
 	
+	@RequestMapping(value="/setRussCard", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public String setRussCard(@RequestParam String accessToken, @RequestParam String type, @RequestParam String pictureName)
+	{
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return russService.setRussCard(theRussId, pictureName);
+	}
+	
     
 }
 

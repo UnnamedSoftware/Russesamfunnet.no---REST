@@ -249,5 +249,17 @@ public class RussDAO {
 		}
 		return "An error occured";
 	}
+	
+	public String setRussCard(Long russId, String pictureName) {
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession
+					.createSQLQuery("UPDATE russ SET russ_card='" + pictureName +"' WHERE russ_id=" + russId);
+			russQuery.executeUpdate();
+			return "Russ card name successfully stored in db";
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return "An error occured";
+	}
 
 }
