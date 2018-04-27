@@ -38,6 +38,21 @@ public class GroupController {
 		
 	}
 	
+	@RequestMapping(value="/groupsWithScoreboard", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	@ResponseBody
+	public String getGroupWithScoreboard(@RequestParam String accessToken, @RequestParam String type) {
+		Long theRussId = null;
+		if (type.equals("facebook")) {
+			theRussId = tokenParser.decryptFacebookToken(accessToken);
+		}else if(type.equals("russesamfunnet"))
+		{
+			theRussId = tokenParser.getRussId(accessToken);
+		}	
+		return groupService.getGroupsWithScoreboard(theRussId);
+		
+	}
+	
 	@RequestMapping(value="/createGroup", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@ResponseBody

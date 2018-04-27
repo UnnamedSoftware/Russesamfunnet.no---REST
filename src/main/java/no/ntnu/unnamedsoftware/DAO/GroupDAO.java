@@ -27,7 +27,7 @@ public class GroupDAO {
 	public List<Group> getGroups(Long russId) {
 		List<Group> groups = null;
 		try (Session currentSession = sessionFactory.openSession()) {
-			Query groupQuery = currentSession.createQuery("from RussGroup g where (g.russId.russId = :russId)")
+			Query groupQuery = currentSession.createQuery("select g.groupId from RussGroup g where (g.russId.russId = :russId)")
 					.setParameter("russId", russId);
 			groups = groupQuery.list();
 			return groups;

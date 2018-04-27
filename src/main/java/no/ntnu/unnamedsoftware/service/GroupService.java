@@ -1,6 +1,8 @@
 package no.ntnu.unnamedsoftware.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,10 @@ import no.ntnu.unnamedsoftware.DAO.GroupDAO;
 import no.ntnu.unnamedsoftware.DAO.RussDAO;
 import no.ntnu.unnamedsoftware.entity.Feed;
 import no.ntnu.unnamedsoftware.entity.Group;
+import no.ntnu.unnamedsoftware.entity.GroupAndScoreboard;
 import no.ntnu.unnamedsoftware.entity.Response;
 import no.ntnu.unnamedsoftware.entity.Russ;
+import no.ntnu.unnamedsoftware.entity.ScoreboardPosition;
 
 @Service
 public class GroupService {
@@ -28,6 +32,9 @@ public class GroupService {
 
 	@Autowired
 	RussDAO russDAO;
+	
+	@Autowired
+	ScoreboardService scoreboardService;
 
 	private String writeObjectAsJsonString(Object object) {
 		String feedInJsonString = null;
@@ -56,9 +63,37 @@ public class GroupService {
 		}
 		return feedInJsonString;
 	}
+	
+	private String writeAsJsonStringGroupAndScoreboard(List<GroupAndScoreboard> object) {
+		String feedInJsonString = null;
+		try {
+			feedInJsonString = mapper.writeValueAsString(object);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return feedInJsonString;
+	}
 
 	public String getGroups(Long russId) {
 		return writeAsJsonString(groupDAO.getGroups(russId));
+	}
+	
+	public String getGroupsWithScoreboard(Long russId) {
+		List<Group> groups = groupDAO.getGroups(russId);
+		List<GroupAndScoreboard> returnList = new ArrayList<>();
+		Iterator it = groups.iterator();
+		while(it.hasNext())
+		{
+			Group group = (Group) it.next();
+			List<ScoreboardPosition> scoreboard = scoreboardService.ScoreboardGroupTop3(russId, group.getGroupId());
+			returnList.add(new GroupAndScoreboard(group, scoreboard));
+		}
+		
+		return writeAsJsonStringGroupAndScoreboard(returnList);
 	}
 
 	public boolean isPartOfGroup(Long russId, Long groupId) {
