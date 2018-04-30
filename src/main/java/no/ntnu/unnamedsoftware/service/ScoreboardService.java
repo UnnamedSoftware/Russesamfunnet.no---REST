@@ -96,14 +96,12 @@ public class ScoreboardService {
 
 	public Integer getRussPosition(Long theRussId) {
 		int count = 1;
-		
 		Iterator it = scoreboardDAO.getSchoolScoreboard(theRussId).iterator();
 		while(it.hasNext())
 		{
 			Scoreboard tempScoreboard = (Scoreboard) it.next();
-			if(tempScoreboard.getRussId().getRussId() == theRussId)
+			if(tempScoreboard.getRussId().getRussId().equals(theRussId))
 			{
-				//currentSession.close();
 				return count;
 			}
 			count++;
