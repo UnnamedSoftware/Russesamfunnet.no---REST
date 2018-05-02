@@ -49,11 +49,18 @@ public class ScoreboardService {
 		return this.writeAsJsonString(getScoreboardPosition(top10, theRussId));
 
 	}
-
+	/**
+	 * Takes a list of scoreboard and the russId of the user and creates a list of 
+	 * ScoreboardPostition where the user is added at the end if he is not in the
+	 * top list.
+	 * @param scoreboard
+	 * @param theRussId
+	 * @return List<ScoreboardPositio>
+	 */
 	private List<ScoreboardPosition> getScoreboardPosition(List<Scoreboard> scoreboard, Long theRussId) {
 		Iterator it = scoreboard.iterator();
 		ArrayList<ScoreboardPosition> scoreboardPosition = new ArrayList<>();
-		boolean russIsInTop10 = false;
+		boolean russIsInTopList = false;
 		int position = 1;
 		while (it.hasNext()) {
 			Scoreboard tempScore = (Scoreboard) it.next();
@@ -63,21 +70,16 @@ public class ScoreboardService {
 					position,
 					tempScore.getRussId()));
 			position++;
-			System.out.println("Checking " + tempScore.getRussId().getRussId() + " vs " + theRussId);
 			if (tempScore.getRussId().getRussId().equals(theRussId)) {
-				russIsInTop10 = true;
-				System.out.println("Russ is in top 10");
+				russIsInTopList = true;
 			}
 		}
-
-		if (russIsInTop10 == false) {
+		if (russIsInTopList == false) {
 			Scoreboard temp = this.getSingleScoreboard(theRussId);
 			scoreboardPosition.add(new ScoreboardPosition(temp.getScoreboardId(), temp.getPoints(),
 					this.getRussPosition(theRussId), temp.getRussId()));
-
 		}
 		return scoreboardPosition;
-
 	}
 
 	private String writeAsJsonString(List<ScoreboardPosition> scoreboard) {
