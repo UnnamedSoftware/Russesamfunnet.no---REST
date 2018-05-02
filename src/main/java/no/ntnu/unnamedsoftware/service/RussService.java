@@ -39,6 +39,10 @@ public class RussService {
 		
 		return this.writeObjectAsJsonString(russ);
 	}
+	
+	public String checkIfEmailIsInUse(String email) {
+		return this.writeObjectAsJsonString(new Response(russDAO.checkIfEmailIsInUse(email)));
+	}
 
 	public String getAllRussAtSchool(Long theRussId) {
 

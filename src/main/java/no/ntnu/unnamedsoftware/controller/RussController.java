@@ -40,6 +40,14 @@ public class RussController
 		return russService.getRuss();
 	}
 	
+	@RequestMapping(value="/checkIfEmailIsInUse", produces=MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	
+	public String checkIfEmailIsInUse(@RequestParam String email) {
+		
+		return russService.checkIfEmailIsInUse(email);
+	}
+	
 	@RequestMapping(value="/userRussToken", produces=MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	public String getUserRussToken(@RequestParam String accessToken) {

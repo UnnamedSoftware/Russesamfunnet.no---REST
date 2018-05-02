@@ -38,6 +38,24 @@ public class RussDAO {
 		}
 		return userInfo;
 	}
+	
+	@Transactional
+	public String checkIfEmailIsInUse(String email) {
+		Russ russ = null;
+		try (Session currentSession = sessionFactory.openSession()) {
+			Query russQuery = currentSession.createQuery("from Russ r where (r.email = :email)")
+					.setParameter("email", email);
+			russ = (Russ) russQuery.uniqueResult();
+			// currentSession.close();
+			if(russ != null)
+			{
+				return "Email is in use";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "Email is not in use";
+	}
 
 	@Transactional
 	public Russ getUserRussFromId(Long theRussId) {
